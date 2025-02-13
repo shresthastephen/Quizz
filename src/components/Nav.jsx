@@ -24,14 +24,12 @@ const menuItems = [
 
 const Nav = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
-  // Toggle dropdown visibility
   const handleDropdown = (index) => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
 
-  // Click handlers for buttons
   const handleRandomQuiz = () => {
     navigate("/mocktest");
   };
@@ -43,12 +41,12 @@ const Nav = () => {
   return (
     <header className="bg-[#FFAC10] px-10 py-5 shadow-md">
       <nav className="flex justify-between items-center">
-        {/* Left - Title */}
+        {/* Left Title */}
         <div className="text-2xl font-bold text-white">
           <Link to="/">QUIZZPRO</Link>
         </div>
 
-        {/* Middle - Nav Links */}
+        {/* Middle Links */}
         <ul className="flex gap-8">
           {menuItems.map((item, index) => (
             <li key={index} className="relative">
@@ -87,7 +85,7 @@ const Nav = () => {
           ))}
         </ul>
 
-        {/* Right - Buttons */}
+        {/* Right Buttons */}
         <div className="flex gap-4 justify-center">
           <button
             onClick={handleRandomQuiz}

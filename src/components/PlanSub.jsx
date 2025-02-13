@@ -1,5 +1,5 @@
 import React from "react";
-import { BadgeCheck } from "lucide-react"; // Importing the icon from Lucide
+import { BadgeCheck } from "lucide-react";
 
 function PlanSub() {
   return (

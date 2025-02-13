@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +9,7 @@ const SignUp = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   // Handle input changes
   const handleChange = (e) => {
@@ -17,15 +17,15 @@ const SignUp = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle form submission
+  // form submission
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    console.log("Form submitted:", formData); // Log form data
+    e.preventDefault();
+    console.log("Form submitted:", formData);
     setSubmitted(true);
 
-    // Redirect to the home page after a short delay (optional)
+    // Redirect to  homepage
     setTimeout(() => {
-      navigate("/"); // Navigate to home page
+      navigate("/");
     }, 1000);
   };
 
@@ -73,7 +73,7 @@ const SignUp = () => {
                   />
                 </div>
 
-                {/* Email Input */}
+                {/* Email */}
                 <div className="mb-4">
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
@@ -93,7 +93,7 @@ const SignUp = () => {
                   />
                 </div>
 
-                {/* Password Input */}
+                {/* Password */}
                 <div className="mb-4">
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
@@ -113,7 +113,7 @@ const SignUp = () => {
                   />
                 </div>
 
-                {/* Register Button */}
+                {/* Register Btn */}
                 <button
                   type="submit"
                   className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"

@@ -6,7 +6,7 @@ const MockTest = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes countdown
+  const [timeLeft, setTimeLeft] = useState(300);
 
   const questionsPerPage = 3;
 
@@ -21,7 +21,7 @@ const MockTest = () => {
   };
 
   useEffect(() => {
-    shuffleQuestions(); // Shuffle questions on page load
+    shuffleQuestions();
   }, []);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const MockTest = () => {
     return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
   };
 
-  // Handle answer selection
+  // answer selection
   const handleOptionChange = (questionId, option) => {
     setSelectedAnswers((prev) => ({
       ...prev,
@@ -49,11 +49,11 @@ const MockTest = () => {
     }));
   };
 
-  // Handle form submission
+  // submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Check if all questions are answered
+    // Check if all qn are answered
     const currentQuestions = shuffledQuestions.slice(
       currentPage * questionsPerPage,
       (currentPage + 1) * questionsPerPage
@@ -71,7 +71,7 @@ const MockTest = () => {
     }
   };
 
-  // Calculate score
+  // Calculate
   const calculateScore = () => {
     let score = 0;
     shuffledQuestions.forEach((q) => {

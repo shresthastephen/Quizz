@@ -26,11 +26,10 @@ const QuizCards = () => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleNext = () => {
-    if (isAnimating) return; // Prevent triggering multiple animations
+    if (isAnimating) return;
     setIsAnimating(true);
 
     setTimeout(() => {
-      // Move first card to the end
       setCards((prevCards) => [...prevCards.slice(1), prevCards[0]]);
       setIsAnimating(false);
     }, 200);
@@ -41,7 +40,6 @@ const QuizCards = () => {
     setIsAnimating(true);
 
     setTimeout(() => {
-      // Move last card to the front
       setCards((prevCards) => [
         prevCards[prevCards.length - 1],
         ...prevCards.slice(0, -1),

@@ -11,10 +11,9 @@ import Subscription from "./components/Subscription";
 import PlanSub from "./components/PlanSub";
 
 const AppContent = () => {
-  const location = useLocation(); // Get the current route path
+  const location = useLocation();
 
-  // Define routes where the header should be hidden
-  const hideHeaderRoutes = ["/signin", "/signup", "/plansub"]; // Add /subscription1 to this array
+  const hideHeaderRoutes = ["/signin", "/signup", "/plansub"];
   const shouldShowHeader = !hideHeaderRoutes.includes(location.pathname);
 
   return (

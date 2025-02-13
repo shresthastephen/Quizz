@@ -8,7 +8,6 @@ function Subscription() {
   const handleSubscribe = (e) => {
     e.preventDefault();
     if (email) {
-      // After clicking the button, navigate to abc.jsx
       navigate("/Subscription1");
     }
   };

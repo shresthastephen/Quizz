@@ -8,7 +8,7 @@ export default function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simple validation
+    // validation
     if (!email || !password) {
       setError("Please fill in all fields.");
       return;
@@ -35,7 +35,7 @@ export default function SignIn() {
           />
         </div>
 
-        {/* Sign-In Form Container */}
+        {/* form Container */}
         <div className="md:w-1/2 w-full p-6">
           <h2 className="text-2xl font-bold text-gray-700 text-center mb-6">
             Sign In
