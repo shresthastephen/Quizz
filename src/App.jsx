@@ -5,11 +5,12 @@ import SignUp from "./components/SignUp";
 import MockTest from "./components/MockTest";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
+import Entrance from "./components/Entrance";
 import AdminPanel from "./components/AdminPanel";
 import CardSlider from "./components/CardSlider";
 import Subscription from "./components/Subscription";
 import PlanSub from "./components/PlanSub";
-
+import Footer from "./components/Footer";
 const AppContent = () => {
   const location = useLocation();
 
@@ -28,12 +29,14 @@ const AppContent = () => {
               <Hero />
               <CardSlider />
               <Subscription />
+              <Footer />
             </>
           }
         />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/mocktest" element={<MockTest />} />
+        <Route path="/entrance" element={<Entrance />} />
         <Route path="/plansub" element={<PlanSub />} />
 
         {/* <Route path="/adminpanel" element={<AdminPanel />} /> */}

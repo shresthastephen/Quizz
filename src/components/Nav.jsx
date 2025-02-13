@@ -9,7 +9,7 @@ const menuItems = [
       { name: "BCA", link: "/entrance/bca" },
       { name: "CSIT", link: "/entrance/csit" },
       { name: "BIM", link: "/entrance/bim" },
-      { name: "Others", link: "/entrance/others" },
+      { name: "Others", link: "/entrance" },
     ],
   },
   {

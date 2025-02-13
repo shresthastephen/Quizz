@@ -8,7 +8,7 @@ function Subscription() {
   const handleSubscribe = (e) => {
     e.preventDefault();
     if (email) {
-      navigate("/Subscription1");
+      navigate("/plansub");
     }
   };
 
