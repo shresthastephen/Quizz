@@ -10,6 +10,7 @@ import AdminPanel from "./components/AdminPanel";
 import CardSlider from "./components/CardSlider";
 import Subscription from "./components/Subscription";
 import PlanSub from "./components/PlanSub";
+import TestGuides from "./components/TestGuides";
 import Footer from "./components/Footer";
 const AppContent = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const AppContent = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/mocktest" element={<MockTest />} />
         <Route path="/entrance" element={<Entrance />} />
+        <Route path="/testguides" element={<TestGuides />} />
         <Route path="/plansub" element={<PlanSub />} />
 
         {/* <Route path="/adminpanel" element={<AdminPanel />} /> */}

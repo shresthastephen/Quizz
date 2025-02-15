@@ -13,6 +13,14 @@ const menuItems = [
     ],
   },
   {
+    name: "Test Guides",
+    dropdown: [
+      { name: "IELTS", link: "/testguides/ielts" },
+      { name: "PTE", link: "/testguides/ielts" },
+      { name: "SAT", link: "/testguides/ielts" },
+    ],
+  },
+  {
     name: "Features",
     dropdown: [
       { name: "Mock Tests", link: "/mocktest" },

@@ -3,7 +3,7 @@ import { BadgeCheck } from "lucide-react";
 
 function PlanSub() {
   return (
-    <section className="flex flex-col items-center justify-center px-12 py-16 bg-gradient-to-b from-[#ffc65b] to-[#ffac10] text-black mt-20 rounded-3xl ">
+    <section className="flex flex-col items-center h-screen w-screen px-12 py-16 bg-gradient-to-b from-[#ffc65b] to-[#ffac10] text-black">
       <h2 className="text-4xl font-bold mb-4">Choose Your Plan</h2>
       <p className="text-lg mb-8 text-center max-w-lg">
         Subscribe to unlock exclusive quiz challenges, rewards, and premium
