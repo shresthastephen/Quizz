@@ -18,6 +18,7 @@ const menuItems = [
       { name: "IELTS", link: "/testguides/ielts" },
       { name: "PTE", link: "/testguides/ielts" },
       { name: "SAT", link: "/testguides/ielts" },
+      { name: "Others", link: "/testguides" },
     ],
   },
   {
