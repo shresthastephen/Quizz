@@ -1,0 +1,176 @@
+/* General Container Styling */
+.about-container {
+    font-family: 'Outfit', sans-serif;
+    text-align: center;
+    padding: 5vw 4vw;
+    background-color: #f9f9f9;
+    color: #333;
+    min-height: 100vh;
+  }
+  
+  /* Hero Section */
+  .about-hero {
+    background-color: #4a90e2;
+    color: white;
+    padding: 5vw 4vw;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+  }
+  
+  .about-hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 15px;
+    font-weight: bold;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .about-hero p {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  /* About Content Section */
+  .about-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin: 5vw 0;
+  }
+  
+  /* Default Card Styling */
+  .about-card {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    padding: 5vw;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    text-align: left;
+    min-height: 410px;
+  }
+  
+  .about-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  .about-card h2 {
+    color: #4a90e2;
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  
+  .about-card p {
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+    line-height: 1.8;
+    color: #555;
+  }
+  
+  /* Responsive Horizontal Cards */
+  .about-card:first-child,
+  .about-card:last-child {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 4vw;
+    min-height: 250px;
+  }
+  
+  .about-card:first-child h2,
+  .about-card:last-child h2 {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .about-card:first-child p,
+  .about-card:last-child p {
+    flex: 2;
+  }
+  
+  /* Footer Section */
+  .about-footer {
+    background: #4a90e2;
+    color: white;
+    padding: 5vw 4vw;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 5vw;
+  }
+  
+  .about-footer h3 {
+    font-size: clamp(1.8rem, 3.5vw, 2rem);
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  
+  .about-footer p {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.8;
+  }
+  
+  /* Sign-Up Button */
+  .about-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: rgb(0, 0, 0);
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .about-btn:hover {
+    background: #2e6bb2;
+    color: white;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .about-card:first-child,
+    .about-card:last-child {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+      padding: 4vw;
+    }
+  
+    .about-card:first-child h2,
+    .about-card:last-child h2 {
+      min-width: auto;
+    }
+  
+    .about-card:first-child p,
+    .about-card:last-child p {
+      flex: unset;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .about-hero {
+      padding: 7vw 5vw;
+    }
+  
+    .about-card {
+      width: 100%;
+      padding: 6vw;
+    }
+  
+    .about-footer {
+      padding: 7vw 5vw;
+    }
+  }
+  
