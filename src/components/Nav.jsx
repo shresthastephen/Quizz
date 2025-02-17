@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const menuItems = [
-  { name: "About Us", link: "/about" },
+  { name: "About Us", link: "/AboutUs" },
   {
     name: "Entrance",
     dropdown: [
