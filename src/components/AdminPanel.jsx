@@ -46,7 +46,7 @@ export default function App() {
     }
   };
 
-  // ✅ Add new user
+  //  Add new user
   const handleAddUser = async (userData) => {
     try {
       const response = await createUser(userData);
@@ -56,7 +56,7 @@ export default function App() {
     }
   };
 
-  // ✅ Add new category
+  //  Add new category
   const handleAddCategory = async (categoryData) => {
     try {
       const response = await createCategory(categoryData);
@@ -66,7 +66,7 @@ export default function App() {
     }
   };
 
-  // ✅ Add new question
+  //  Add new question
   const handleAddQuestion = async (questionData) => {
     try {
       const response = await createQuestion(questionData);
@@ -76,7 +76,7 @@ export default function App() {
     }
   };
 
-  // ✅ Add new quiz attempt
+  //  Add new quiz attempt
   const handleAddQuizAttempt = async (quizAttemptData) => {
     try {
       const response = await createQuizAttempt(quizAttemptData);
@@ -86,7 +86,7 @@ export default function App() {
     }
   };
 
-  // ✅ Add new subscription
+  //  Add new subscription
   const handleAddSubscription = async (subscriptionData) => {
     try {
       const response = await createSubscription(subscriptionData);
