@@ -15,9 +15,9 @@ const menuItems = [
   {
     name: "Test Guides",
     dropdown: [
-      { name: "IELTS", link: "/testguides/ielts" },
-      { name: "PTE", link: "/testguides/ielts" },
-      { name: "SAT", link: "/testguides/ielts" },
+      { name: "IELTS", link: "/test-guides/ielts" },
+      { name: "PTE", link: "/test-guides/pte" },
+      { name: "SAT", link: "/test-guides/sat" },
       { name: "Others", link: "/testguides" },
     ],
   },
