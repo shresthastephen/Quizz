@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const [formData, setFormData] = useState({
     name: "",
+    gender: "",
     email: "",
     password: "",
   });
@@ -23,7 +24,7 @@ const SignUp = () => {
     console.log("Form submitted:", formData);
     setSubmitted(true);
 
-    // Redirect to  homepage
+    // Redirect to homepage
     setTimeout(() => {
       navigate("/");
     }, 1000);
@@ -71,6 +72,48 @@ const SignUp = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required
                   />
+                </div>
+
+                {/* Gender Selection */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Gender
+                  </label>
+                  <div className="flex space-x-4">
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        checked={formData.gender === "male"}
+                        onChange={handleChange}
+                        className="form-radio"
+                      />
+                      <span className="ml-2">Male</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        checked={formData.gender === "female"}
+                        onChange={handleChange}
+                        className="form-radio"
+                      />
+                      <span className="ml-2">Female</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="other"
+                        checked={formData.gender === "other"}
+                        onChange={handleChange}
+                        className="form-radio"
+                      />
+                      <span className="ml-2">Other</span>
+                    </label>
+                  </div>
                 </div>
 
                 {/* Email */}
