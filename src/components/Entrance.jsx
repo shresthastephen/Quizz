@@ -24,6 +24,21 @@ const Entrance = () => {
           description="Explore the Bachelor of Information Management program."
           link="/entrance/bim"
         />
+        <Card
+          title="BIT"
+          description="Bachelor in Information Technology - A comprehensive course covering all aspects of IT."
+          link="/entrance/bit"
+        />
+        <Card
+          title="BCE"
+          description="Bachelor of Computer Engineering - Focused on hardware and software engineering principles."
+          link="/entrance/bce"
+        />
+        <Card
+          title="BDS"
+          description="Bachelor in Data Science - Learn data analysis, machine learning, and big data techniques."
+          link="/entrance/bds"
+        />
       </div>
     </div>
   );

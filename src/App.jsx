@@ -4,6 +4,7 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import MockTest from "./components/MockTest";
 import Nav from "./components/Nav";
+import AboutUs from "./components/AboutUs";
 import Hero from "./components/Hero";
 import Entrance from "./components/Entrance";
 import AdminPanel from "./components/AdminPanel";
@@ -40,6 +41,15 @@ const AppContent = () => {
         <Route path="/entrance" element={<Entrance />} />
         <Route path="/testguides" element={<TestGuides />} />
         <Route path="/plansub" element={<PlanSub />} />
+        <Route
+          path="/AboutUs"
+          element={
+            <>
+              <AboutUs />
+              <Footer />
+            </>
+          }
+        />
 
         {/* <Route path="/adminpanel" element={<AdminPanel />} /> */}
       </Routes>
