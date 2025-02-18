@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Footer from "./Footer";
 
 const Entrance = () => {
   return (
@@ -9,7 +10,7 @@ const Entrance = () => {
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <Card
+        <Card
           title="IELTS"
           description="A comprehensive guide to prepare for the International English Language Testing System (IELTS) exam."
           link="/test-guides/ielts"

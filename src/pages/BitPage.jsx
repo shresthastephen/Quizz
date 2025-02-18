@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import originalQuestions from "./../lib/questions";
-import Footer from "./Footer";
+import Footer from "../components/Footer";
 
 const MockTest = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({});
