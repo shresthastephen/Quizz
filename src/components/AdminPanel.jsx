@@ -1,15 +1,100 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useNavigate,
-} from "react-router-dom";
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom"; 
+import { useState, useEffect } from "react";
+import CategoryForm from './AdminComponents/CategoryForm';
+import CategoryList from './AdminComponents/CategoryList';
+import QuestionForm from './AdminComponents/QuestionForm';
+import QuestionList from './AdminComponents/QuestionList';
+import QuizAttemptForm from './AdminComponents/QuizAttemptForm';
+import QuizAttemptList from './AdminComponents/QuizAttemptList';
+import SubscriptionForm from './AdminComponents/SubscriptionForm';
+import SubscriptionList from './AdminComponents/SubscriptionList';
+import UserForm from './AdminComponents/UserForm'; // Import UserForm
+import UserList from './AdminComponents/Userlist'; // Import UserList
+
+import { 
+  createCategory, createQuestion, createQuizAttempt, createSubscription,
+  createUser, getCategories, getQuestions, getQuizAttempts, getSubscriptions, getUsers 
+} from '../services/api';
 
 export default function App() {
-  const [courses, setCourses] = useState([]);
-  const [mcqs, setMcqs] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [quizAttempts, setQuizAttempts] = useState([]);
+  const [subscriptions, setSubscriptions] = useState([]);
+  const [users, setUsers] = useState([]); // State for users
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const [categoryRes, questionRes, quizAttemptRes, subscriptionRes, userRes] = await Promise.all([
+        getCategories(),
+        getQuestions(),
+        getQuizAttempts(),
+        getSubscriptions(),
+        getUsers() // Fetch users
+      ]);
+      setCategories(categoryRes.data);
+      setQuestions(questionRes.data);
+      setQuizAttempts(quizAttemptRes.data);
+      setSubscriptions(subscriptionRes.data);
+      setUsers(userRes.data); // Set users data
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  //  Add new user
+  const handleAddUser = async (userData) => {
+    try {
+      const response = await createUser(userData);
+      setUsers([...users, response.data]);
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
+  };
+
+  //  Add new category
+  const handleAddCategory = async (categoryData) => {
+    try {
+      const response = await createCategory(categoryData);
+      setCategories([...categories, response.data]);
+    } catch (error) {
+      console.error("Error creating category:", error);
+    }
+  };
+
+  //  Add new question
+  const handleAddQuestion = async (questionData) => {
+    try {
+      const response = await createQuestion(questionData);
+      setQuestions([...questions, response.data]);
+    } catch (error) {
+      console.error("Error creating question:", error);
+    }
+  };
+
+  //  Add new quiz attempt
+  const handleAddQuizAttempt = async (quizAttemptData) => {
+    try {
+      const response = await createQuizAttempt(quizAttemptData);
+      setQuizAttempts([...quizAttempts, response.data]);
+    } catch (error) {
+      console.error("Error creating quiz attempt:", error);
+    }
+  };
+
+  //  Add new subscription
+  const handleAddSubscription = async (subscriptionData) => {
+    try {
+      const response = await createSubscription(subscriptionData);
+      setSubscriptions([...subscriptions, response.data]);
+    } catch (error) {
+      console.error("Error creating subscription:", error);
+    }
+  };
 
   return (
     <Router>
@@ -18,24 +103,22 @@ export default function App() {
         <div className="flex-1 p-6 relative">
           <AdminProfile />
           <Routes>
-            <Route
-              path="/"
-              element={
-                <Dashboard
-                  courses={courses}
-                  setCourses={setCourses}
-                  mcqs={mcqs}
-                />
-              }
+            <Route 
+              path="/" 
+              element={<Dashboard 
+                categories={categories} 
+                questions={questions} 
+                quizAttempts={quizAttempts} 
+                subscriptions={subscriptions} 
+                users={users} // Pass users to the dashboard
+              />} 
             />
-            <Route
-              path="/add-course"
-              element={<AddCourse setCourses={setCourses} />}
-            />
-            <Route
-              path="/add-mcq"
-              element={<AddMCQ courses={courses} setMcqs={setMcqs} />}
-            />
+            <Route path="/add-category" element={<CategoryForm onSave={handleAddCategory} />} />
+            <Route path="/add-question" element={<QuestionForm onSave={handleAddQuestion} />} />
+            <Route path="/add-quiz-attempt" element={<QuizAttemptForm onSave={handleAddQuizAttempt} />} />
+            <Route path="/add-subscription" element={<SubscriptionForm onSave={handleAddSubscription} />} />
+            <Route path="/add-user" element={<UserForm onSave={handleAddUser} />} /> {/* Add UserForm route */}
+            <Route path="/users" element={<UserList users={users} />} /> {/* Add UserList route */}
           </Routes>
         </div>
       </div>
@@ -50,19 +133,25 @@ function Sidebar() {
       <nav>
         <ul>
           <li className="mb-2">
-            <Link to="/" className="block p-2 bg-gray-200 rounded">
-              Dashboard
-            </Link>
+            <Link to="/" className="block p-2 bg-gray-200 rounded">Dashboard</Link>
           </li>
           <li className="mb-2">
-            <Link to="/add-course" className="block p-2 bg-gray-200 rounded">
-              Add Course
-            </Link>
+            <Link to="/add-category" className="block p-2 bg-gray-200 rounded">Add Category</Link>
+          </li>
+          <li className="mb-2">
+            <Link to="/add-question" className="block p-2 bg-gray-200 rounded">Add Question</Link>
+          </li>
+          <li className="mb-2">
+            <Link to="/add-quiz-attempt" className="block p-2 bg-gray-200 rounded">Add Quiz Attempt</Link>
+          </li>
+          <li className="mb-2">
+            <Link to="/add-subscription" className="block p-2 bg-gray-200 rounded">Add Subscription</Link>
+          </li >
+          <li className="mb-2">
+            <Link to="/add-user" className="block p-2 bg-gray-200 rounded">Add User</Link> {/* Add link to add user */}
           </li>
           <li>
-            <Link to="/add-mcq" className="block p-2 bg-gray-200 rounded">
-              Add MCQ
-            </Link>
+            <Link to="/users" className="block p-2 bg-gray-200 rounded">Users</Link> {/* Add link to user list */}
           </li>
         </ul>
       </nav>
@@ -81,45 +170,62 @@ function AdminProfile() {
   return (
     <div className="absolute top-4 right-4 flex items-center space-x-4 bg-white p-2 shadow-md rounded-lg">
       <span className="font-bold">Admin</span>
-      <button
-        onClick={handleLogout}
-        className="bg-red-500 text-white px-4 py-1 rounded"
-      >
-        Logout
-      </button>
+      <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-1 rounded">Logout</button>
     </div>
   );
 }
 
-function Dashboard({ courses, setCourses, mcqs }) {
-  const handleDelete = (index) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this course?"
-    );
+function Dashboard({ categories, setCategories, questions, setQuestions, quizAttempts, setQuizAttempts, subscriptions, setSubscriptions, users, setUsers }) {
+
+  // Helper function to handle deletion
+  const handleDelete = (type, index) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this item?");
     if (confirmDelete) {
-      const updatedCourses = courses.filter((_, i) => i !== index);
-      setCourses(updatedCourses);
+      let updatedData;
+
+      switch (type) {
+        case "category":
+          updatedData = categories.filter((_, i) => i !== index);
+          setCategories(updatedData);
+          break;
+        case "question":
+          updatedData = questions.filter((_, i) => i !== index);
+          setQuestions(updatedData);
+          break;
+        case "quizAttempt":
+          updatedData = quizAttempts.filter((_, i) => i !== index);
+          setQuizAttempts(updatedData);
+          break;
+        case "subscription":
+          updatedData = subscriptions.filter((_, i) => i !== index);
+          setSubscriptions(updatedData);
+          break;
+        case "user":
+          updatedData = users.filter((_, i) => i !== index);
+          setUsers(updatedData);
+          break;
+        default:
+          break;
+      }
     }
   };
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      <div className="bg-white p-4 shadow-md rounded-lg">
-        <h2 className="text-xl font-bold mb-2">Courses</h2>
-        {courses.length === 0 ? (
-          <p>No courses added yet.</p>
+
+      {/* Categories */}
+      <div className="bg-white p-4 shadow-md rounded-lg mb-4">
+        <h2 className="text-xl font-bold mb-2">Categories</h2>
+        {categories.length === 0 ? (
+          <p>No categories added yet.</p>
         ) : (
           <ul>
-            {courses.map((course, index) => (
+            {categories.map((category, index) => (
               <li key={index} className="flex justify-between p-2 border-b">
-                <span>
-                  {course.name} (Remarks: {course.remarks}) -{" "}
-                  {mcqs.filter((mcq) => mcq.course === course.name).length}{" "}
-                  Questions
-                </span>
+                <span>{category.name}</span>
                 <button
-                  onClick={() => handleDelete(index)}
+                  onClick={() => handleDelete("category", index)}
                   className="bg-red-500 text-white px-2 py-1 rounded"
                 >
                   Delete
@@ -129,123 +235,93 @@ function Dashboard({ courses, setCourses, mcqs }) {
           </ul>
         )}
       </div>
-    </div>
-  );
-}
 
-function AddCourse({ setCourses }) {
-  const [course, setCourse] = useState({ name: "", remarks: "" });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setCourses((prevCourses) => [...prevCourses, course]);
-    alert("Course Added Successfully!");
-  };
-
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Add Course</h1>
-      <div className="max-w-lg mx-auto bg-white p-6 shadow-md rounded-lg">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Course Name"
-            className="w-full p-2 border rounded mb-2"
-            required
-            onChange={(e) => setCourse({ ...course, name: e.target.value })}
-          />
-          <input
-            type="number"
-            placeholder="Remarks"
-            className="w-full p-2 border rounded mb-2"
-            required
-            onChange={(e) => setCourse({ ...course, remarks: e.target.value })}
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded"
-          >
-            Add Course
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-function AddMCQ({ courses, setMcqs }) {
-  const [mcq, setMCQ] = useState({
-    question: "",
-    options: ["", "", "", ""],
-    correct: "",
-    remarks: "",
-    course: "",
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setMcqs((prevMcqs) => [...prevMcqs, mcq]);
-    alert("MCQ Added Successfully!");
-  };
-
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Add MCQ</h1>
-      <div className="max-w-lg mx-auto bg-white p-6 shadow-md rounded-lg">
-        <form onSubmit={handleSubmit}>
-          <select
-            className="w-full p-2 border rounded mb-2"
-            required
-            onChange={(e) => setMCQ({ ...mcq, course: e.target.value })}
-          >
-            <option value="">Select Course</option>
-            {courses.map((course, index) => (
-              <option key={index} value={course.name}>
-                {course.name}
-              </option>
+      {/* Questions */}
+      <div className="bg-white p-4 shadow-md rounded-lg mb-4">
+        <h2 className="text-xl font-bold mb-2">Questions</h2>
+        {questions.length === 0 ? (
+          <p>No questions added yet.</p>
+        ) : (
+          <ul>
+            {questions.map((question, index) => (
+              <li key={index} className="flex justify-between p-2 border-b">
+                <span>{question.text}</span>
+                <button
+                  onClick={() => handleDelete("question", index)}
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
+                  Delete
+                </button>
+              </li>
             ))}
-          </select>
-          <textarea
-            placeholder="Question"
-            className="w-full p-2 border rounded mb-2"
-            required
-            onChange={(e) => setMCQ({ ...mcq, question: e.target.value })}
-          ></textarea>
-          {mcq.options.map((opt, index) => (
-            <input
-              key={index}
-              type="text"
-              placeholder={`Option ${index + 1}`}
-              className="w-full p-2 border rounded mb-2"
-              required
-              onChange={(e) => {
-                let newOptions = [...mcq.options];
-                newOptions[index] = e.target.value;
-                setMCQ({ ...mcq, options: newOptions });
-              }}
-            />
-          ))}
-          <input
-            type="text"
-            placeholder="Correct Answer"
-            className="w-full p-2 border rounded mb-2"
-            required
-            onChange={(e) => setMCQ({ ...mcq, correct: e.target.value })}
-          />
-          <input
-            type="number"
-            placeholder="Remarks"
-            className="w-full p-2 border rounded mb-2"
-            required
-            onChange={(e) => setMCQ({ ...mcq, remarks: e.target.value })}
-          />
-          <button
-            type="submit"
-            className="w-full bg-green-500 text-white p-2 rounded"
-          >
-            Add MCQ
-          </button>
-        </form>
+          </ul>
+        )}
+      </div>
+
+      {/* Quiz Attempts */}
+      <div className="bg-white p-4 shadow-md rounded-lg mb-4">
+        <h2 className="text-xl font-bold mb-2">Quiz Attempts</h2>
+        {quizAttempts.length === 0 ? (
+          <p>No quiz attempts recorded yet.</p>
+        ) : (
+          <ul>
+            {quizAttempts.map((attempt, index) => (
+              <li key={index} className="flex justify-between p-2 border-b">
+                <span>{attempt.user} - {attempt.score} points</span>
+                <button
+                  onClick={() => handleDelete("quizAttempt", index)}
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Subscriptions */}
+      <div className="bg-white p-4 shadow-md rounded-lg mb-4">
+        <h2 className="text-xl font-bold mb-2">Subscriptions</h2>
+        {subscriptions.length === 0 ? (
+          <p>No subscriptions yet.</p>
+        ) : (
+          <ul>
+            {subscriptions.map((subscription, index) => (
+              <li key={index} className="flex justify-between p-2 border-b">
+                <span>{subscription.user} - {subscription.plan}</span>
+                <button
+                  onClick={() => handleDelete("subscription", index)}
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Users */}
+      <div className="bg-white p-4 shadow-md rounded-lg">
+        <h2 className="text-xl font-bold mb-2">Users</h2>
+        {users.length === 0 ? (
+          <p>No users added yet.</p>
+        ) : (
+          <ul>
+            {users.map((user, index) => (
+              <li key={index} className="flex justify-between p-2 border-b">
+                <span>{user.name} - {user.email}</span>
+                <button
+                  onClick={() => handleDelete("user", index)}
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
