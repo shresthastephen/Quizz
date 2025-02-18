@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const menuItems = [
@@ -25,7 +25,6 @@ const menuItems = [
     name: "Features",
     dropdown: [
       { name: "Mock Tests", link: "/mocktest" },
-      { name: "Live Quiz", link: "/features/live-quiz" },
       { name: "Performance Analytics", link: "/features/analytics" },
     ],
   },
@@ -34,6 +33,7 @@ const menuItems = [
 const Nav = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   const handleDropdown = (index) => {
     setOpenDropdown(openDropdown === index ? null : index);
@@ -47,6 +47,20 @@ const Nav = () => {
     navigate("/signin");
   };
 
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <header className="bg-[#FFAC10] px-10 py-5 shadow-md">
       <nav className="flex justify-between items-center">
@@ -56,7 +70,7 @@ const Nav = () => {
         </div>
 
         {/* Middle Links */}
-        <ul className="flex gap-8">
+        <ul className="flex gap-8" ref={dropdownRef}>
           {menuItems.map((item, index) => (
             <li key={index} className="relative">
               {item.dropdown ? (

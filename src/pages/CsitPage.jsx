@@ -1,134 +1,152 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import originalQuestions from "./../lib/questions";
+import Footer from "./Footer";
 
-const Entrance = () => {
-  const navigate = useNavigate();
+const MockTest = () => {
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [currentPage, setCurrentPage] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [shuffledQuestions, setShuffledQuestions] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(300);
+
+  const questionsPerPage = 5; // question
+
+  // Shuffle questions without changing question number
+  const shuffleQuestions = () => {
+    const shuffled = [...originalQuestions];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    setShuffledQuestions(shuffled);
+  };
+
+  useEffect(() => {
+    shuffleQuestions();
+  }, []);
+
+  useEffect(() => {
+    if (submitted || timeLeft <= 0) {
+      return;
+    }
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => prevTime - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft, submitted]);
+
+  // Format time
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
+  };
+
+  // answer selection
+  const handleOptionChange = (questionId, option) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionId]: option,
+    }));
+  };
+
+  // submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Check if all qn are answered
+    const currentQuestions = shuffledQuestions.slice(
+      currentPage * questionsPerPage,
+      (currentPage + 1) * questionsPerPage
+    );
+    const allAnswered = currentQuestions.every((q) => selectedAnswers[q.id]);
+    if (!allAnswered) {
+      alert("Please answer all the questions before proceeding.");
+      return;
+    }
+
+    if (currentPage < shuffledQuestions.length / questionsPerPage - 1) {
+      setCurrentPage((prev) => prev + 1);
+    } else {
+      setSubmitted(true);
+    }
+  };
+
+  // Calculate
+  const calculateScore = () => {
+    let score = 0;
+    shuffledQuestions.forEach((q) => {
+      if (selectedAnswers[q.id] === q.correctAnswer) {
+        score += 1;
+      }
+    });
+    return score;
+  };
+
+  const renderQuestions = () => {
+    const currentQuestions = shuffledQuestions.slice(
+      currentPage * questionsPerPage,
+      (currentPage + 1) * questionsPerPage
+    );
+    return currentQuestions.map((q) => (
+      <div key={q.id} className="mb-6">
+        <h3 className="text-sm ">{q.question}</h3>
+        <div className="mt-2 grid grid-cols-2 gap-4 text-sm">
+          {q.options.map((option, index) => (
+            <label key={index} className="block cursor-pointer">
+              <input
+                type="radio"
+                name={`question-${q.id}`}
+                value={option}
+                checked={selectedAnswers[q.id] === option}
+                onChange={() => handleOptionChange(q.id, option)}
+                className="mr-2"
+              />
+              {option}
+            </label>
+          ))}
+        </div>
+      </div>
+    ));
+  };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center py-5 px-10">
-      {/* Header Section */}
-      <div className="text-4xl font-medium text-black text-center mb-8">Csit Entrance</div>
-      <hr className="w-full border-t-2 mb-4" />
-      <div className="flex justify-between items-center w-full mb-4">
-        <button
-          className="bg-none border-none text-[#FF9800] text-sm cursor-pointer active:text-black"
-          onClick={() => navigate(-1)}
-        >
-          &lt; Back 
-        </button>
-        <div className="text-sm">
-          <span className="mr-4">Time: 2hrs.</span>
-          <span>Full Marks: 100</span>
+    <>
+      <div className="max-w-4xl mx-auto p-6 bg-white border-[#ffac10] border-2 mt-2 shadow-md rounded-lg">
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-2xl font-bold">CsIT</h1>
+          <div className="text-red-500 font-bold text-lg">
+            Time Left: {formatTime(timeLeft)}
+          </div>
         </div>
+        {submitted ? (
+          <div className="text-center">
+            <h2 className="text-xl font-semibold">
+              Your Score: {calculateScore()} / {shuffledQuestions.length}
+            </h2>
+            <p className="mt-4 text-gray-600">
+              Thank you for participating in the test!
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            {renderQuestions()}
+            <div className="text-right">
+              <button
+                type="submit"
+                className="bg-[#ffac10] text-white py-2 px-4 rounded-md hover:text-black transition"
+              >
+                {currentPage < shuffledQuestions.length / questionsPerPage - 1
+                  ? "Next Page"
+                  : "Submit"}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
-      <hr className="w-full border-t-2 mb-4" />
-
-      {/* Progress Tracker */}
-      <div className="flex justify-around mb-6">
-        <div className="p-3 bg-gray-200 rounded-full text-center flex-grow mr-2 cursor-pointer">English</div>
-        <div className="p-3 bg-gray-200 rounded-full text-center flex-grow mr-2 cursor-pointer">Maths</div>
-        <div className="p-3 bg-gray-200 rounded-full text-center flex-grow cursor-pointer">G.K.</div>
-      </div>
-
-      {/* Groups Section */}
-      <div className="w-full mb-6">
-        {/* Group A */}
-        <div className="bg-white p-6 mx-8 mb-8 border border-gray-300 rounded-lg">
-          <h2 className="flex justify-between text-xl font-semibold">
-            Group A (English)
-            <div className="text-sm text-gray-600">50 + 1 = 50</div>
-          </h2>
-
-          <ul className="list-none p-0 mt-6">
-            {[...Array(5)].map((_, index) => (
-              <li key={index} className="mb-6">
-                <p className="text-lg">She is very good ..................... swimming.</p>
-                <div className="flex mt-3">
-                  <label className="text-sm mr-8 cursor-pointer">
-                    <input type="radio" name={`q1-${index}`} /> at
-                  </label>
-                  <label className="text-sm mr-8 cursor-pointer">
-                    <input type="radio" name={`q1-${index}`} /> on
-                  </label>
-                  <label className="text-sm mr-8 cursor-pointer">
-                    <input type="radio" name={`q1-${index}`} /> of
-                  </label>
-                  <label className="text-sm cursor-pointer">
-                    <input type="radio" name={`q1-${index}`} /> by
-                  </label>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Group B */}
-        <div className="bg-white p-6 mx-8 mb-8 border border-gray-300 rounded-lg">
-          <h2 className="flex justify-between text-xl font-semibold">
-            Group B (Maths)
-            <div className="text-sm text-gray-600">40 + 1 = 40</div>
-          </h2>
-          <ul className="list-none p-0 mt-6">
-            {[...Array(5)].map((_, index) => (
-              <li key={index} className="mb-6">
-                <p className="text-lg">She is very good ..................... swimming.</p>
-                <div className="flex mt-3">
-                  <label className="text-sm mr-8 cursor-pointer">
-                    <input type="radio" name={`q2-${index}`} /> at
-                  </label>
-                  <label className="text-sm mr-8 cursor-pointer">
-                    <input type="radio" name={`q2-${index}`} /> on
-                  </label>
-                  <label className="text-sm mr-8 cursor-pointer">
-                    <input type="radio" name={`q2-${index}`} /> of
-                  </label>
-                  <label className="text-sm cursor-pointer">
-                    <input type="radio" name={`q2-${index}`} /> by
-                  </label>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Group C */}
-        <div className="bg-white p-6 mx-8 mb-8 border border-gray-300 rounded-lg">
-          <h2 className="flex justify-between text-xl font-semibold">
-            Group C (G.K.)
-            <div className="text-sm text-gray-600">10 + 1 = 10</div>
-          </h2>
-          <ul className="list-none p-0 mt-6">
-            {[...Array(5)].map((_, index) => (
-              <li key={index} className="mb-6">
-                <p className="text-lg">She is very good ..................... swimming.</p>
-                <div className="flex mt-3">
-                  <label className="text-sm mr-8 cursor-pointer">
-                    <input type="radio" name={`q3-${index}`} /> at
-                  </label>
-                  <label className="text-sm mr-8 cursor-pointer">
-                    <input type="radio" name={`q3-${index}`} /> on
-                  </label>
-                  <label className="text-sm mr-8 cursor-pointer">
-                    <input type="radio" name={`q3-${index}`} /> of
-                  </label>
-                  <label className="text-sm cursor-pointer">
-                    <input type="radio" name={`q3-${index}`} /> by
-                  </label>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Submit Button */}
-      <div className="text-center">
-        <button className="bg-[#03a8e4] text-black py-4 px-8 rounded-lg text-lg cursor-pointer hover:bg-[#0099D3]">
-          Submit Answers
-        </button>
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
-export default Entrance;
+export default MockTest;

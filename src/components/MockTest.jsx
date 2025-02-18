@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import originalQuestions from "./../lib/questions";
+import Footer from "./Footer";
 
 const MockTest = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({});
@@ -8,7 +9,7 @@ const MockTest = () => {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [timeLeft, setTimeLeft] = useState(300);
 
-  const questionsPerPage = 3;
+  const questionsPerPage = 5; // question
 
   // Shuffle questions without changing question number
   const shuffleQuestions = () => {
@@ -89,8 +90,8 @@ const MockTest = () => {
     );
     return currentQuestions.map((q) => (
       <div key={q.id} className="mb-6">
-        <h3 className="text-lg font-medium">{q.question}</h3>
-        <div className="mt-2 grid grid-cols-2 gap-4">
+        <h3 className="text-sm ">{q.question}</h3>
+        <div className="mt-2 grid grid-cols-2 gap-4 text-sm">
           {q.options.map((option, index) => (
             <label key={index} className="block cursor-pointer">
               <input
@@ -110,38 +111,41 @@ const MockTest = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Mock Test Exam</h1>
-        <div className="text-red-500 font-bold text-lg">
-          Time Left: {formatTime(timeLeft)}
-        </div>
-      </div>
-      {submitted ? (
-        <div className="text-center">
-          <h2 className="text-xl font-semibold">
-            Your Score: {calculateScore()} / {shuffledQuestions.length}
-          </h2>
-          <p className="mt-4 text-gray-600">
-            Thank you for participating in the test!
-          </p>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          {renderQuestions()}
-          <div className="text-right">
-            <button
-              type="submit"
-              className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            >
-              {currentPage < shuffledQuestions.length / questionsPerPage - 1
-                ? "Next Page"
-                : "Submit"}
-            </button>
+    <>
+      <div className="max-w-4xl mx-auto p-6 bg-white border-[#ffac10] border-2 mt-2 shadow-md rounded-lg">
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-2xl font-bold">Mock Test Exam</h1>
+          <div className="text-red-500 font-bold text-lg">
+            Time Left: {formatTime(timeLeft)}
           </div>
-        </form>
-      )}
-    </div>
+        </div>
+        {submitted ? (
+          <div className="text-center">
+            <h2 className="text-xl font-semibold">
+              Your Score: {calculateScore()} / {shuffledQuestions.length}
+            </h2>
+            <p className="mt-4 text-gray-600">
+              Thank you for participating in the test!
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            {renderQuestions()}
+            <div className="text-right">
+              <button
+                type="submit"
+                className="bg-[#ffac10] text-white py-2 px-4 rounded-md hover:text-black transition"
+              >
+                {currentPage < shuffledQuestions.length / questionsPerPage - 1
+                  ? "Next Page"
+                  : "Submit"}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+      <Footer />
+    </>
   );
 };
 
