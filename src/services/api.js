@@ -67,3 +67,16 @@ export const editUser = (id, user) => axios.put(`${API_URL}/users/update/${id}`,
 
 // Question-related API functions
 export const getQuestionsByCategory = (cName) => axios.get(`${API_URL}/questions/fetch`, { params: { cName } });
+export const getAllQuestions = () => axios.get(`${API_URL}/questions/all`);
+
+// Category-related API functions
+export const getAllCategories = () => axios.get(`${API_URL}/categories`);
+export const getCategoryByName = (cName) => axios.get(`${API_URL}/categories/name/${cName}`);
+export const getCategoryByCId = (cName) => axios.get(`${API_URL}/categories/${cId}`);
+
+// Quiz Attempt-related API functions
+export const getAllQuizAttempts = () => axios.get(`${API_URL}/quiz-attempts`);
+
+export const getQuizAttemptByQId = (attemptId) => axios.get(`${API_URL}/quiz-attempts/${attemptId}`);
+
+export const UserQuizAttempt = (quizAttempt) => axios.post(`${API_URL}/quiz-attempts`, quizAttempt); //yo ali faulty cha seth ko api sanga milauna parcha   
