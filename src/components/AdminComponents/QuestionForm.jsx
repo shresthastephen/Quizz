@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createQuestion, updateQuestion } from '../../services/api';
+import { createQuestion, updateQuestion, fetchCategories } from '../../services/api';
 
 const QuestionForm = ({ questionToEdit = null, onSave }) => {
   const [question, setQuestion] = useState({
@@ -15,7 +15,22 @@ const QuestionForm = ({ questionToEdit = null, onSave }) => {
     createdBy: '',
   });
 
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
+    // Fetch categories on component mount
+    const fetchCategoryData = async () => {
+      try {
+        const response = await fetchCategories();
+        setCategories(response.data); // Assuming response.data contains the categories
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategoryData();
+
+    // Populate form with the existing question data if editing
     if (questionToEdit) {
       setQuestion(questionToEdit);
     }
@@ -122,14 +137,21 @@ const QuestionForm = ({ questionToEdit = null, onSave }) => {
         />
       </div>
       <div>
-        <label className="block text-gray-700 font-semibold">Category ID:</label>
-        <input
-          type="number"
+        <label className="block text-gray-700 font-semibold">Category:</label>
+        <select
           name="categoryId"
           value={question.categoryId}
           onChange={handleChange}
+          required
           className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
+        >
+          <option value="" disabled>Select a category</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <label className="block text-gray-700 font-semibold">Status:</label>
@@ -165,4 +187,5 @@ const QuestionForm = ({ questionToEdit = null, onSave }) => {
 };
 
 export default QuestionForm;
+
 

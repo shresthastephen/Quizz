@@ -1,26 +1,40 @@
 import React, { useState } from "react";
+import { loginUser } from "../services/api"; // Import the login API function
+import { useNavigate } from "react-router-dom"; // For redirecting after login
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Initialize navigation
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // validation
+    // Validation
     if (!email || !password) {
       setError("Please fill in all fields.");
       return;
     }
 
-    // Example logic for handling sign-in
-    console.log("Sign-In Details:", { email, password });
+    setLoading(true);
+    setError(""); // Clear previous errors
 
-    // Clear the form
-    setEmail("");
-    setPassword("");
-    setError("");
+    try {
+      const response = await loginUser({ email, password });
+
+      console.log("Login successful:", response.data);
+
+      // Redirect user to dashboard or home page
+      navigate("/"); // Change the path as needed
+
+    } catch (error) {
+      setError("Invalid email or password. Please try again.");
+      console.error("Login error:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,7 +49,7 @@ export default function SignIn() {
           />
         </div>
 
-        {/* form Container */}
+        {/* Form Container */}
         <div className="md:w-1/2 w-full p-6">
           <h2 className="text-2xl font-bold text-gray-700 text-center mb-6">
             Sign In
@@ -74,9 +88,14 @@ export default function SignIn() {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
+              disabled={loading}
+              className={`w-full p-3 rounded-lg text-white transition ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-500 hover:bg-blue-600"
+              }`}
             >
-              Sign In
+              {loading ? "Signing In..." : "Sign In"}
             </button>
           </form>
           <div className="mt-4 text-center text-l text-gray-500">

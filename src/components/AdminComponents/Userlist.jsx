@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { getUsers, deleteUser } from '../../services/api';
+import { fetchUsers, deleteUser } from '../../services/api';
 
 const UserList = ({ onEdit }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
       try {
-        const response = await getUsers();
-        setUsers(response.data);
+        const response = await fetchUsers();
+        setUsers(response.data); // response.data will contain the user data
       } catch (error) {
         console.error('Error fetching users:', error);
       }
     };
 
-    fetchUsers();
+    fetchData();
   }, []);
 
   const handleDelete = async (id) => {
@@ -58,3 +58,5 @@ const UserList = ({ onEdit }) => {
 };
 
 export default UserList;
+
+

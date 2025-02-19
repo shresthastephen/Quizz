@@ -8,30 +8,33 @@ const UserForm = ({ userToEdit = null, onSave }) => {
     gender: 'Male',
     userType: 'guest',
     isActive: true,
-    passwordHash: '', // You might want to handle passwords securely
+    passwordHash: '',
   });
 
   useEffect(() => {
     if (userToEdit) {
-      setUser(userToEdit);
+      setUser({ ...userToEdit, passwordHash: '' }); // Prevent displaying password
     }
   }, [userToEdit]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setUser({
       ...user,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const userData = { ...user };
+      if (!userData.passwordHash) delete userData.passwordHash; // Avoid sending empty passwords
+
       if (userToEdit) {
-        await updateUser(userToEdit.id, user);
+        await updateUser(userToEdit.id, userData);
       } else {
-        await createUser(user);
+        await createUser(userData);
       }
       onSave();
     } catch (error) {
@@ -41,6 +44,10 @@ const UserForm = ({ userToEdit = null, onSave }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-semibold mb-4">
+        {userToEdit ? 'Update' : 'Create'} User
+      </h2>
+
       <div>
         <label className="block text-gray-700 font-semibold">Email:</label>
         <input
@@ -52,6 +59,7 @@ const UserForm = ({ userToEdit = null, onSave }) => {
           className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
+
       <div>
         <label className="block text-gray-700 font-semibold">User Name:</label>
         <input
@@ -63,6 +71,7 @@ const UserForm = ({ userToEdit = null, onSave }) => {
           className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
+
       <div>
         <label className="block text-gray-700 font-semibold">Gender:</label>
         <select
@@ -76,6 +85,7 @@ const UserForm = ({ userToEdit = null, onSave }) => {
           <option value="Other">Other</option>
         </select>
       </div>
+
       <div>
         <label className="block text-gray-700 font-semibold">User Type:</label>
         <select
@@ -90,21 +100,30 @@ const UserForm = ({ userToEdit = null, onSave }) => {
           <option value="guest">Guest</option>
         </select>
       </div>
+
       <div>
-        <label className="block text-gray-700 font-semibold">Active:</label>
+        <label className="block text-gray-700 font-semibold">Password:</label>
+        <input
+          type="password"
+          name="passwordHash"
+          value={user.passwordHash}
+          onChange={handleChange}
+          placeholder={userToEdit ? 'Leave blank to keep current password' : ''}
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div className="flex items-center">
+        <label className="text-gray-700 font-semibold mr-2">Active:</label>
         <input
           type="checkbox"
           name="isActive"
           checked={user.isActive}
-          onChange={(e) =>
-            setUser({
-              ...user,
-              isActive: e.target.checked,
-            })
-          }
-          className="mt-1 rounded-md"
+          onChange={handleChange}
+          className="rounded-md"
         />
       </div>
+
       <button
         type="submit"
         className="w-full py-2 mt-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
@@ -116,3 +135,5 @@ const UserForm = ({ userToEdit = null, onSave }) => {
 };
 
 export default UserForm;
+
+
