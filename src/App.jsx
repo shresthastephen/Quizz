@@ -59,8 +59,10 @@ const AppContent = () => {
   const handleEditUser = (user) => setEditingUser(user);
   const handleEditCategory = (category) => setEditingCategory(category);
   const handleEditQuestion = (question) => setEditingQuestion(question);
-  const handleEditSubscription = (subscription) => setEditingSubscription(subscription);
-  const handleEditQuizAttempt = (quizAttempt) => setEditingQuizAttempt(quizAttempt);
+  const handleEditSubscription = (subscription) =>
+    setEditingSubscription(subscription);
+  const handleEditQuizAttempt = (quizAttempt) =>
+    setEditingQuizAttempt(quizAttempt);
 
   return (
     <>
@@ -106,11 +108,26 @@ const AppContent = () => {
 
         {/* Admin Panel Routes */}
         <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/admin/users" element={<UserList onEdit={handleEditUser} />} />
-        <Route path="/admin/categories" element={<CategoryList onEdit={handleEditCategory} />} />
-        <Route path="/admin/questions" element={<QuestionList onEdit={handleEditQuestion} />} />
-        <Route path="/admin/subscriptions" element={<SubscriptionList onEdit={handleEditSubscription} />} />
-        <Route path="/admin/quiz-attempts" element={<QuizAttemptList onEdit={handleEditQuizAttempt} />} />
+        <Route
+          path="/admin/users"
+          element={<UserList onEdit={handleEditUser} />}
+        />
+        <Route
+          path="/admin/categories"
+          element={<CategoryList onEdit={handleEditCategory} />}
+        />
+        <Route
+          path="/admin/questions"
+          element={<QuestionList onEdit={handleEditQuestion} />}
+        />
+        <Route
+          path="/admin/subscriptions"
+          element={<SubscriptionList onEdit={handleEditSubscription} />}
+        />
+        <Route
+          path="/admin/quiz-attempts"
+          element={<QuizAttemptList onEdit={handleEditQuizAttempt} />}
+        />
       </Routes>
 
       {/* Admin Panel Forms (Conditional Rendering) */}
@@ -126,28 +143,40 @@ const AppContent = () => {
           {location.pathname === "/admin/categories" && (
             <>
               <h2>Create/Update Category</h2>
-              <CategoryForm categoryToEdit={editingCategory} onSave={handleCategorySave} />
+              <CategoryForm
+                categoryToEdit={editingCategory}
+                onSave={handleCategorySave}
+              />
             </>
           )}
 
           {location.pathname === "/admin/questions" && (
             <>
               <h2>Create/Update Question</h2>
-              <QuestionForm questionToEdit={editingQuestion} onSave={handleQuestionSave} />
+              <QuestionForm
+                questionToEdit={editingQuestion}
+                onSave={handleQuestionSave}
+              />
             </>
           )}
 
           {location.pathname === "/admin/subscriptions" && (
             <>
               <h2>Create/Update Subscription</h2>
-              <SubscriptionForm subscriptionToEdit={editingSubscription} onSave={handleSubscriptionSave} />
+              <SubscriptionForm
+                subscriptionToEdit={editingSubscription}
+                onSave={handleSubscriptionSave}
+              />
             </>
           )}
 
           {location.pathname === "/admin/quiz-attempts" && (
             <>
               <h2>Create/Update Quiz Attempt</h2>
-              <QuizAttemptForm quizAttemptToEdit={editingQuizAttempt} onSave={handleQuizAttemptSave} />
+              <QuizAttemptForm
+                quizAttemptToEdit={editingQuizAttempt}
+                onSave={handleQuizAttemptSave}
+              />
             </>
           )}
         </Layout>

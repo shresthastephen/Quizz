@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Footer from "./Footer";
 
-const Entrance = () => {
+const TestGuides = () => {
   return (
     <div className="bg-white min-h-screen px-10 py-5">
       <h1 className="text-3xl font-bold text-center text-black mb-8">
@@ -78,4 +77,4 @@ const Card = ({ title, description, link }) => (
   </div>
 );
 
-export default Entrance;
+export default TestGuides;
