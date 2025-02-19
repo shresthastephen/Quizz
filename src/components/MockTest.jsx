@@ -11,7 +11,7 @@ const MockTest = () => {
 
   const questionsPerPage = 5; // question
 
-  // Shuffle questions without changing question number
+  // shuffle
   const shuffleQuestions = () => {
     const shuffled = [...originalQuestions];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -35,7 +35,7 @@ const MockTest = () => {
     return () => clearInterval(timer);
   }, [timeLeft, submitted]);
 
-  // Format time
+  // time
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;

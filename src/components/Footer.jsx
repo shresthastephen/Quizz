@@ -19,7 +19,7 @@ function Footer() {
           </Link>
         </div>
 
-        {/* Nav Links */}
+        {/* Links */}
         <ul className="flex gap-6 text-gray-300 text-m">
           <li>
             <Link to="/about" className="hover:text-yellow-400 transition">
@@ -44,7 +44,7 @@ function Footer() {
           </li>
         </ul>
 
-        {/* Social Media Icons */}
+        {/* Social Media */}
         <div className="flex gap-4 mt-4 md:mt-0">
           <a href="#" className="hover:text-yellow-400 transition">
             <Facebook className="w-5 h-5" />
@@ -58,7 +58,7 @@ function Footer() {
         </div>
       </div>
 
-      {/* Copyright Section */}
+      {/* Copyright */}
       <div className="border-t border-gray-700 mt-6 pt-4 text-center text-gray-400 text-sm flex justify-center items-center gap-1">
         <Copyright className="w-4 h-4" />
         <span>2025 QuizPro. All rights reserved.</span>
