@@ -5,6 +5,7 @@ import { signUpUser } from "../services/api"; // Import the sign-up API function
 const SignUp = () => {
   const [formData, setFormData] = useState({
     name: "",
+    gender: "",
     email: "",
     password: "",
   });
@@ -43,6 +44,8 @@ const SignUp = () => {
         navigate("/");
       }, 1500);
     } catch (error) {
+      console.error("Sign-Up error:", error);  // <-- Add this
+  console.error("Full response:", error.response);  // <-- Log full response
       setError(error.response?.data?.message || "Sign-Up failed. Please try again.");
       console.error("Sign-Up error:", error.response?.data || error.message);
     } finally {
@@ -92,6 +95,48 @@ const SignUp = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required
                   />
+                </div>
+
+                {/* Gender Selection */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Gender
+                  </label>
+                  <div className="flex space-x-4">
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        checked={formData.gender === "male"}
+                        onChange={handleChange}
+                        className="form-radio"
+                      />
+                      <span className="ml-2">Male</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        checked={formData.gender === "female"}
+                        onChange={handleChange}
+                        className="form-radio"
+                      />
+                      <span className="ml-2">Female</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="other"
+                        checked={formData.gender === "other"}
+                        onChange={handleChange}
+                        className="form-radio"
+                      />
+                      <span className="ml-2">Other</span>
+                    </label>
+                  </div>
                 </div>
 
                 {/* Email */}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 const menuItems = [
   { name: "About Us", link: "/AboutUs" },
@@ -33,6 +34,7 @@ const menuItems = [
 
 const Nav = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleDropdown = (index) => {
@@ -48,27 +50,39 @@ const Nav = () => {
   };
 
   return (
-    <header className="bg-[#FFAC10] px-10 py-5 shadow-md">
-      <nav className="flex justify-between items-center">
-        {/* Left Title */}
+    <header className="bg-[#FFAC10] px-6 py-4 shadow-md">
+      <nav className="flex justify-between items-center relative">
+        {/* Logo */}
         <div className="text-2xl font-bold text-white">
           <Link to="/">QUIZZPRO</Link>
         </div>
 
-        {/* Middle Links */}
-        <ul className="flex gap-8">
+        {/* Hamburger Menu for Mobile */}
+        <button
+          className="lg:hidden text-white focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={30} /> : <Menu size={30} />}
+        </button>
+
+        {/* Desktop & Mobile Menu */}
+        <ul
+          className={`absolute lg:static bg-[#FFAC10] pt-4 pb-4 pl-4 pr-4 rounded-[25px] lg:flex lg:items-center gap-8 top-16 left-0 w-full lg:w-auto transform ${
+            menuOpen ? "translate-y-0" : "-translate-y-[500px]"
+          } lg:translate-y-0 transition-all duration-300 ease-in-out lg:flex-row flex flex-col lg:space-x-6 space-y-4 lg:space-y-0`}
+        >
           {menuItems.map((item, index) => (
-            <li key={index} className="relative">
+            <li key={index} className="relative text-center lg:text-left">
               {item.dropdown ? (
                 <>
                   <button
                     onClick={() => handleDropdown(index)}
-                    className="text-lg font-medium text-black focus:text-white"
+                    className="text-lg font-medium text-black focus:text-white w-full lg:w-auto"
                   >
                     {item.name}
                   </button>
                   {openDropdown === index && (
-                    <ul className="absolute left-0 mt-2 bg-white w-44 rounded-md shadow-lg z-50">
+                    <ul className="absolute left-0 mt-2 bg-white w-44 rounded-md shadow-lg z-50 lg:text-left text-center">
                       {item.dropdown.map((subItem, subIndex) => (
                         <li key={subIndex}>
                           <Link
@@ -92,19 +106,35 @@ const Nav = () => {
               )}
             </li>
           ))}
+
+          {/* Mobile Buttons */}
+          <div className="flex flex-col gap-3 lg:hidden">
+            <button
+              onClick={handleRandomQuiz}
+              className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg"
+            >
+              Random Quiz
+            </button>
+            <button
+              onClick={handleSignIn}
+              className="bg-black text-white px-4 py-2 rounded-full text-lg"
+            >
+              Sign In
+            </button>
+          </div>
         </ul>
 
-        {/* Right Buttons */}
-        <div className="flex gap-4 justify-center">
+        {/* Desktop Buttons */}
+        <div className="hidden lg:flex gap-4">
           <button
             onClick={handleRandomQuiz}
-            className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg "
+            className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg"
           >
             Random Quiz
           </button>
           <button
             onClick={handleSignIn}
-            className="bg-black text-white px-4 py-2 rounded-full text-lg "
+            className="bg-black text-white px-4 py-2 rounded-full text-lg"
           >
             Sign In
           </button>

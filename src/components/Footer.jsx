@@ -22,7 +22,7 @@ function Footer() {
         {/* Navigation Links */}
         <ul className="flex gap-6 text-gray-300 text-m">
           <li>
-            <Link to="/about" className="hover:text-yellow-400 transition">
+            <Link to="/AboutUs" className="hover:text-yellow-400 transition">
               About Us
             </Link>
           </li>
