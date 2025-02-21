@@ -44,8 +44,8 @@ const SignUp = () => {
         navigate("/");
       }, 1500);
     } catch (error) {
-      console.error("Sign-Up error:", error);  // <-- Add this
-  console.error("Full response:", error.response);  // <-- Log full response
+      console.error("Sign-Up error:", error);  
+  console.error("Full response:", error.response); 
       setError(error.response?.data?.message || "Sign-Up failed. Please try again.");
       console.error("Sign-Up error:", error.response?.data || error.message);
     } finally {
