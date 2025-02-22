@@ -8,12 +8,8 @@ import Nav from "./components/Nav";
 import AboutUs from "./components/AboutUs";
 import Hero from "./components/Hero";
 import Entrance from "./components/Entrance";
-import BcaPage from "./pages/BcaPage";
-import CsitPage from "./pages/CsitPage";
-import BimPage from "./pages/BimPage";
-import BitPage from "./pages/BitPage";
-import BcePage from "./pages/BcePage";
-import BdsPage from "./pages/BdsPage";
+import CoursePage from "./pages/CoursePage";
+import QuestionTypePage from "./pages/QuestionTypePage";
 import AdminPanel from "./components/AdminPanel";
 import CardSlider from "./components/CardSlider";
 import Subscription from "./components/Subscription";
@@ -55,12 +51,8 @@ const AppContent = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/mocktest" element={<MockTest />} />
         <Route path="/entrance" element={<Entrance />} />
-        <Route path="/entrance/csit" element={<CsitPage />} />
-        <Route path="/entrance/bim" element={<BimPage />} />
-        <Route path="/entrance/bit" element={<BitPage />} />
-        <Route path="/entrance/bce" element={<BcePage />} />
-        <Route path="/entrance/bds" element={<BdsPage />} />
-        <Route path="/entrance/bca" element={<BcaPage />} />
+        <Route path="/entrance/:course" element={<CoursePage />} />
+        <Route path="/entrance/:course/:type" element={<QuestionTypePage />} />
         <Route path="/testguides" element={<TestGuides />} />
         <Route path="/test-guides/ielts" element={<Ielts />} />
         <Route path="/test-guides/sat" element={<Sat />} />
