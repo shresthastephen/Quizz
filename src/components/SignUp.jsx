@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signUpUser } from "../services/api"; // Import the sign-up API function
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
+    gender: "",
     email: "",
     password: "",
   });
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
 
@@ -18,16 +22,36 @@ const SignUp = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // form submission
-  const handleSubmit = (e) => {
+  // Form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
 
-    // Redirect to homepage
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
+    // Validation
+    if (!formData.name || !formData.email || !formData.password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    setLoading(true);
+    setError(""); // Clear previous errors
+
+    try {
+      const response = await signUpUser(formData);
+      console.log("Sign-Up successful:", response.data);
+      setSubmitted(true);
+
+      // Redirect to homepage after a short delay
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } catch (error) {
+      console.error("Sign-Up error:", error);  
+  console.error("Full response:", error.response); 
+      setError(error.response?.data?.message || "Sign-Up failed. Please try again.");
+      console.error("Sign-Up error:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,8 +64,8 @@ const SignUp = () => {
               Welcome to Our Platform
             </h1>
             <p className="text-md lg:text-lg text-gray-600 leading-relaxed">
-              Join us today and take the first step toward simplifying your
-              journey. We’re here to help you every step of the way!
+              Join us today and take the first step toward simplifying your journey.
+              We’re here to help you every step of the way!
             </p>
           </div>
         </div>
@@ -50,16 +74,16 @@ const SignUp = () => {
         <div className="flex-1 flex items-center justify-center p-6">
           <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+
+            {error && <p className="text-red-500 font-semibold mb-4">{error}</p>}
+
             {submitted ? (
-              <p className="text-green-500 font-semibold">Thank you!!</p>
+              <p className="text-green-500 font-semibold">Thank you for signing up!</p>
             ) : (
               <form onSubmit={handleSubmit}>
                 {/* Name Input */}
                 <div className="mb-4">
-                  <label
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                    htmlFor="name"
-                  >
+                  <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="name">
                     Name
                   </label>
                   <input
@@ -74,7 +98,7 @@ const SignUp = () => {
                   />
                 </div>
 
-                {/* Gender  */}
+                {/* Gender Selection */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Gender
@@ -118,10 +142,7 @@ const SignUp = () => {
 
                 {/* Email */}
                 <div className="mb-4">
-                  <label
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                    htmlFor="email"
-                  >
+                  <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
                     Email
                   </label>
                   <input
@@ -138,10 +159,7 @@ const SignUp = () => {
 
                 {/* Password */}
                 <div className="mb-4">
-                  <label
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                    htmlFor="password"
-                  >
+                  <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="password">
                     Password
                   </label>
                   <input
@@ -156,12 +174,15 @@ const SignUp = () => {
                   />
                 </div>
 
-                {/* Register Btn */}
+                {/* Register Button */}
                 <button
                   type="submit"
-                  className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
+                  disabled={loading}
+                  className={`w-full p-3 rounded-lg text-white transition ${
+                    loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+                  }`}
                 >
-                  Sign Up
+                  {loading ? "Signing Up..." : "Sign Up"}
                 </button>
 
                 <div className="mt-4 text-center text-l text-gray-500">

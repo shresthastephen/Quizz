@@ -1,24 +1,30 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./style/CardSlider.css";
 import Vector1 from "../assets/Vector1.png";
 import Vector2 from "../assets/Vector2.png";
 
 const QuizCards = () => {
+  const navigate = useNavigate(); // Initialize navigation
+
   const initialCards = [
     {
       title: "ENTRANCE",
       description:
         "Prepare for entrance exams with expert guidance tailored to help you achieve your desired score.",
+      route: "/entrance", // Define the route
     },
     {
       title: "IELTS/PTE",
       description:
         "Prepare for IELTS and PTE with expert guidance tailored to help you achieve your desired score.",
+      route: "/testguides",
     },
     {
       title: "QUIZ",
       description:
         "Prepare for quizzes with expert guidance tailored to help you achieve your desired score.",
+      route: "/mocktest",
     },
   ];
 
@@ -48,6 +54,10 @@ const QuizCards = () => {
     }, 200);
   };
 
+  const handleCardClick = (route) => {
+    navigate(route); // Navigate to the clicked card's route
+  };
+
   return (
     <div className="quiz-cards-container">
       <button className="control-btn previous" onClick={handlePrevious}>
@@ -58,10 +68,9 @@ const QuizCards = () => {
           {cards.map((card, index) => (
             <div
               key={index}
-              className={`quiz-card 
-             ${index === 1 ? "active" : ""}`}
+              className={`quiz-card ${index === 1 ? "active" : ""}`}
+              onClick={() => handleCardClick(card.route)} // Make card clickable
             >
-              {/* <div className="card-icon"><img src ={image}></img></div> */}
               <h3>{card.title}</h3>
               <p>{card.description}</p>
             </div>
