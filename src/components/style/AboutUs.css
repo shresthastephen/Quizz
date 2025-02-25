@@ -10,7 +10,7 @@
   
   /* Hero Section */
   .about-hero {
-    background-color: #4a90e2;
+    background: linear-gradient(to bottom, #ffac10, #ffc65b);
     color: white;
     padding: 5vw 4vw;
     border-radius: 12px;
@@ -62,7 +62,7 @@
   }
   
   .about-card h2 {
-    color: #4a90e2;
+    color: #ffac10;
     font-size: clamp(1.5rem, 3vw, 1.8rem);
     margin-bottom: 15px;
     font-weight: bold;
@@ -119,7 +119,7 @@
 
 .faq-section .title span {
   font-weight: bold;
-  color: #4a90e2;
+  color: #ffac10;
 }
 
 /* FAQ Section */
@@ -175,7 +175,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
-  color: #4a90e2;
+  color: #ffc65b;
 }
 
 .faq-toggle:hover {
@@ -186,7 +186,7 @@
 /* Join Us Section */
 .about-footer {
   flex: 1;
-  background: #4a90e2;
+  background: #ffc65b;
   color: white;
   padding: 3rem;
   border-radius: 12px;
@@ -224,7 +224,7 @@
 }
 
 .about-btn:hover {
-  background: #2e6bb2;
+  background: #ffc65b;
   color: white;
   transform: scale(1.05);
 }
@@ -269,7 +269,7 @@
 .about-social-media {
   text-align: center;
   padding: 2rem;
-  background-color: #2e6bb2;
+  background-color: #ffc65b;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin: 4rem auto;
@@ -307,12 +307,12 @@
 }
 
 .social-icon {
-  color: #4a90e2;
+  color: #ffc65b;
   transition: color 0.3s ease-in-out;
 }
 
 .social-links a:hover .social-icon {
-  color: #2e6bb2;
+  color: #ffc65b;
 }
 
 .custom-hr {

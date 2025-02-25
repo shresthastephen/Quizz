@@ -34,3 +34,4 @@ const Card = ({ title, description, link }) => (
 );
 
 export default TestGuides;
+export default TestGuides;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
@@ -26,7 +26,6 @@ const menuItems = [
     name: "Features",
     dropdown: [
       { name: "Mock Tests", link: "/mocktest" },
-      { name: "Live Quiz", link: "/features/live-quiz" },
       { name: "Performance Analytics", link: "/features/analytics" },
     ],
   },
@@ -36,6 +35,7 @@ const Nav = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   const handleDropdown = (index) => {
     setOpenDropdown(openDropdown === index ? null : index);
@@ -48,6 +48,19 @@ const Nav = () => {
   const handleSignIn = () => {
     navigate("/signin");
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="bg-[#FFAC10] px-6 py-4 shadow-md">
