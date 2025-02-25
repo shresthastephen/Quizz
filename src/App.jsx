@@ -15,9 +15,8 @@ import CardSlider from "./components/CardSlider";
 import Subscription from "./components/Subscription";
 import PlanSub from "./components/PlanSub";
 import TestGuides from "./components/TestGuides";
-import Ielts from "./pages/Ielts";
-import Sat from "./pages/Sat";
-import Pte from "./pages/Pte";
+import TestGuidePage from "./pages/TestGuidePage";
+import TestTypePage from "./pages/TestTypePage";
 import Footer from "./components/Footer";
 
 // Admin Components
@@ -54,9 +53,8 @@ const AppContent = () => {
         <Route path="/entrance/:course" element={<CoursePage />} />
         <Route path="/entrance/:course/:type" element={<QuestionTypePage />} />
         <Route path="/testguides" element={<TestGuides />} />
-        <Route path="/test-guides/ielts" element={<Ielts />} />
-        <Route path="/test-guides/sat" element={<Sat />} />
-        <Route path="/test-guides/pte" element={<Pte />} />
+        <Route path="/test-guides/:test" element={<TestGuidePage />} />
+        <Route path="/test-guides/:test/:type" element={<TestTypePage />} />
         <Route path="/plansub" element={<PlanSub />} />
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/admin" element={<AdminPanel />} />

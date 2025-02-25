@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; 
+import { useParams, useNavigate } from "react-router-dom";
 
-const questionTypes = {
+const testTypes = {
   free: "Free Trial",
   model: "Model Set",
   old: "Old Questions",
   "real-time": "Real-Time Quiz",
 };
 
-const QuestionTypePage = () => {
-  const { course, type } = useParams();
-  const navigate = useNavigate(); 
-  const typeName = questionTypes[type] || "Unknown Type";
+const TestTypePage = () => {
+  const { test, type } = useParams();
+  const navigate = useNavigate();
+  const typeName = testTypes[type] || "Unknown Type";
 
   // Example: Check if the user is logged in (using localStorage for simplicity)
   const isLoggedIn = !!localStorage.getItem("userToken");
@@ -27,7 +27,7 @@ const QuestionTypePage = () => {
 
     // Handle login redirection
     const handleLoginRedirect = () => {
-      navigate("/signin"); 
+      navigate("/signin");
     };
 
     return (
@@ -56,14 +56,14 @@ const QuestionTypePage = () => {
   return (
     <div className="bg-white min-h-screen px-10 py-5 text-center">
       <h1 className="text-3xl font-bold text-black mb-8">
-        {typeName} - {course.toUpperCase()} Exam
+        {typeName} - {test.toUpperCase()} Test Guide
       </h1>
       <p className="text-gray-700">
-        Welcome to the {typeName} section for {course.toUpperCase()}!
+        Welcome to the {typeName} section for {test.toUpperCase()}!
       </p>
-      {/* Add your question rendering logic here */}
+      {/* Add your test content here */}
     </div>
   );
 };
 
-export default QuestionTypePage;
+export default TestTypePage;

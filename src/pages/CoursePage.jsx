@@ -21,20 +21,20 @@ const CoursePage = () => {
       </h1>
 
       <div className="flex flex-wrap justify-center gap-8 overflow-x-auto">
-        <Card title="Free Trial" description="Try sample questions for free." link={`/entrance/${course}/free`} />
-        <Card title="Model Set" description="Practice with model sets (requires login + subscription)." link={`/entrance/${course}/model`} />
-        <Card title="Old Set" description="Solve past entrance exam questions (requires login + subscription)." link={`/entrance/${course}/old`} />
-        <Card title="Real Time" description="Attempt real-time quizzes (requires login + subscription)." link={`/entrance/${course}/real-time`} />
+        <Card title="Free Trial" description="Try sample entrance questions for free." link={`/entrance/${course}/free`} />
+        <Card title="Model Set" description="Practice with model sets." link={`/entrance/${course}/model`} />
+        <Card title="Old Set" description="Solve past entrance exam questions." link={`/entrance/${course}/old`} />
+        <Card title="Real Time" description="Attempt real-time entrance quizzes." link={`/entrance/${course}/real-time`} />
       </div>
     </div>
   );
 };
 
 const Card = ({ title, description, link }) => (
-  <div className="border-2 border-[#FFAC10] rounded-lg shadow-lg p-6 text-center w-72">
-    <h2 className="text-2xl font-semibold text-[#FFAC10]">{title}</h2>
-    <p className="text-sm text-gray-700 mt-2">{description}</p>
-    <Link to={link} className="inline-block mt-4 bg-[#FFAC10] text-white py-2 px-4 rounded-full">
+  <div className="border-2 border-[#FFAC10] rounded-lg shadow-lg p-8 text-center w-96 h-80 flex flex-col justify-center items-center">
+    <h2 className="text-3xl font-extrabold text-[#FFAC10]">{title}</h2>
+    <p className="text-lg text-gray-700 mt-4">{description}</p>
+    <Link to={link} className="inline-block mt-6 bg-[#FFAC10] text-white py-3 px-6 rounded-full text-lg">
       Learn More
     </Link>
   </div>
