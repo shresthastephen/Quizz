@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { fetchQuestions, deleteQuestion } from '../../services/api'; // Adjust the import according to your project structure
+import { fetchFreeQuestions, deleteFreeQuestion } from '../../services/api'; // Adjust the import according to your project structure
 
-const QuestionList = () => {
+const FreeQuestionList = () => {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
     // Fetch questions when the component mounts
     const loadQuestions = async () => {
       try {
-        const response = await fetchQuestions();
+        const response = await fetchFreeQuestions();
         setQuestions(response.data);
       } catch (error) {
         console.error("Error fetching questions:", error);
@@ -19,7 +19,7 @@ const QuestionList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteQuestion(id);
+      await deleteFreeQuestion(id);
       setQuestions(questions.filter(question => question.id !== id)); // Remove the deleted question from the list
     } catch (error) {
       console.error("Error deleting question:", error);
@@ -27,8 +27,8 @@ const QuestionList = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Question List</h2>
+    <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-xl font-semibold mb-4">Free Question List</h2>
       <table className="w-full border-collapse border border-gray-200">
         <thead>
           <tr className="bg-gray-100">
@@ -56,4 +56,5 @@ const QuestionList = () => {
   );
 };
 
-export default QuestionList;
+export default FreeQuestionList;
+

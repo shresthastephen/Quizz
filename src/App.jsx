@@ -22,13 +22,18 @@ import Footer from "./components/Footer";
 // Admin Components
 import CategoryForm from "./components/AdminComponents/CategoryForm";
 import CategoryList from "./components/AdminComponents/CategoryList";
-import QuestionForm from "./components/AdminComponents/QuestionForm";
-import QuestionList from "./components/AdminComponents/QuestionList";
+import FreeQuestionForm from "./components/AdminComponents/FreeQuestionForm";
+import FreeQuestionList from "./components/AdminComponents/FreeQuestionList";
 import UserForm from "./components/AdminComponents/UserForm";
 import UserList from "./components/AdminComponents/UserList";
-import SubscriptionForm from "./components/AdminComponents/SubscriptionForm";
-import SubscriptionList from "./components/AdminComponents/SubscriptionList";
-
+import PurchaseForm from "./components/AdminComponents/PurchaseForm";
+import PurchaseList from "./components/AdminComponents/PurchaseList";
+import QuizAttemptForm from "./components/AdminComponents/QuizAttemptForm";
+import QuizAttemptList from "./components/AdminComponents/QuizAttemptList";
+import SetForm from "./components/AdminComponents/SetForm";
+import SetList from "./components/AdminComponents/SetList";
+import QuestionList from './components/AdminComponents/QuestionList';
+import QuestionForm from './components/AdminComponents/QuestionForm';
 
 const AppContent = () => {
   const location = useLocation();
@@ -39,7 +44,9 @@ const AppContent = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [editingCategory, setEditingCategory] = useState(null);
   const [editingQuestion, setEditingQuestion] = useState(null);
-  const [editingSubscription, setEditingSubscription] = useState(null);
+  const [editingPurchase, setEditingPurchase] = useState(null);
+  const [editingQuizAttempt, setEditingQuizAttempt] = useState(null);
+  const [editingSet, setEditingSet] = useState(null);
 
   return (
     <>
@@ -61,7 +68,6 @@ const AppContent = () => {
         <Route path="/admin/users" element={<UserList />} />
         <Route path="/admin/categories" element={<CategoryList />} />
         <Route path="/admin/questions" element={<QuestionList />} />
-        <Route path="/admin/subscriptions" element={<SubscriptionList />} />
       </Routes>
     </>
   );

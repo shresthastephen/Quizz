@@ -6,7 +6,6 @@ const SignUp = () => {
   const [formData, setFormData] = useState({
     name: "",
     gender: "",
-    gender: "",
     email: "",
     password: "",
   });

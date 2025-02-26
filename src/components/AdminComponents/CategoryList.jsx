@@ -1,70 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { fetchCategories, deleteCategory } from '../../services/api';
+import { fetchCategories, deleteCategory } from '../../services/api'; // Adjust the import according to your project structure
 
-const CategoryList = ({ onEdit }) => {
+const CategoryList = () => {
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Fetch categories when the component mounts
     const loadCategories = async () => {
-      setLoading(true);
-      setError(null);
       try {
         const response = await fetchCategories();
         setCategories(response.data);
       } catch (error) {
-        setError('Failed to fetch categories. Please try again.');
-        console.error('Error fetching categories:', error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching categories:", error);
       }
     };
     loadCategories();
   }, []);
 
-  const handleDelete = async (cId) => {
-    if (!window.confirm('Are you sure you want to delete this category?')) return;
+  const handleDelete = async (id) => {
     try {
-      await deleteCategory(cId);
-      setCategories(categories.filter(category => category.cId !== cId));
+      await deleteCategory(id);
+      setCategories(categories.filter(category => category.id !== id)); // Remove the deleted category from the list
     } catch (error) {
-      console.error('Error deleting category:', error);
-      setError('Failed to delete category. Please try again.');
+      console.error("Error deleting category:", error);
     }
   };
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-xl font-bold mb-4">Category List</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      {loading ? (
-        <p>Loading categories...</p>
-      ) : (
-        <ul className="space-y-2">
+    <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-xl font-semibold mb-4">Category List</h2>
+      <table className="w-full border-collapse border border-gray-200">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border border-gray-300 px-4 py-2 text-left">Category Name</th>
+            <th className="border border-gray-300 px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
           {categories.map((category) => (
-            <li key={category.cId} className="flex justify-between items-center p-2 border rounded-md">
-              <span>{category.name}</span>
-              <div>
-                <button 
-                  onClick={() => onEdit(category)} 
-                  className="mr-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  Edit
-                </button>
-                <button 
-                  onClick={() => handleDelete(category.cId)} 
-                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+            <tr key={category.id} className="border border-gray-200">
+              <td className="border border-gray-300 px-4 py-2">{category.name}</td>
+              <td className="border border-gray-300 px-4 py-2 text-center">
+                <button
+                  onClick={() => handleDelete(category.id)}
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition duration-300"
                 >
                   Delete
                 </button>
-              </div>
-            </li>
+              </td>
+            </tr>
           ))}
-        </ul>
-      )}
+        </tbody>
+      </table>
     </div>
   );
 };
 
 export default CategoryList;
+
