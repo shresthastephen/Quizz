@@ -19,6 +19,8 @@ function Sidebar() {
         <ul>
           <li className="mb-2"><Link to="/admin/categories" className="block p-2 bg-gray-200 rounded">Categories</Link></li>
           <li className="mb-2"><Link to="/admin/add-category" className="block p-2 bg-gray-200 rounded">Add Category</Link></li>
+          <li className="mb-2"><Link to="/admin/free-questions" className="block p-2 bg-gray-200 rounded">Free Questions</Link></li>
+          <li className="mb-2"><Link to="/admin/add-free-question" className="block p-2 bg-gray-200 rounded">Add Free Question</Link></li>
           <li className="mb-2"><Link to="/admin/questions" className="block p-2 bg-gray-200 rounded">Questions</Link></li>
           <li className="mb-2"><Link to="/admin/add-question" className="block p-2 bg-gray-200 rounded">Add Question</Link></li>
           <li className="mb-2"><Link to="/admin/users" className="block p-2 bg-gray-200 rounded">Users</Link></li>
