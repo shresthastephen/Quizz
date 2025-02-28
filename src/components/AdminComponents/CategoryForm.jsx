@@ -21,13 +21,16 @@ const CategoryForm = ({ categoryId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submit button clicked!");
     const category = { name: categoryName };
 
     try {
       if (categoryId) {
         await updateCategory(categoryId, category);
+        console.log("Category updated successfully.");
       } else {
         await createCategory(category);
+        console.log("Category created successfully.");
       }
       setCategoryName(''); // Reset input after submission
     } catch (error) {
