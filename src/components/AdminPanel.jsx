@@ -13,9 +13,9 @@ import QuizAttemptList from "./AdminComponents/QuizAttemptList";
 import SetForm from "./AdminComponents/SetForm";
 import SetList from "./AdminComponents/SetList";
 
-import axios from "axios";
+import axios from 'axios';
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = 'http://localhost:8080/api';
 
 export default function App() {
   return (

@@ -32,8 +32,8 @@ import QuizAttemptForm from "./components/AdminComponents/QuizAttemptForm";
 import QuizAttemptList from "./components/AdminComponents/QuizAttemptList";
 import SetForm from "./components/AdminComponents/SetForm";
 import SetList from "./components/AdminComponents/SetList";
-import QuestionList from './components/AdminComponents/QuestionList';
-import QuestionForm from './components/AdminComponents/QuestionForm';
+import QuestionList from "./components/AdminComponents/QuestionList";
+import QuestionForm from "./components/AdminComponents/QuestionForm";
 
 const AppContent = () => {
   const location = useLocation();
@@ -52,7 +52,17 @@ const AppContent = () => {
     <>
       {shouldShowHeader && <Nav />}
       <Routes>
-        <Route path="/" element={<><Hero /><CardSlider /><Subscription /><Footer /></>} />
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <CardSlider />
+              <Subscription />
+              <Footer />
+            </>
+          }
+        />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/mocktest" element={<MockTest />} />
@@ -64,10 +74,23 @@ const AppContent = () => {
         <Route path="/test-guides/:test/:type" element={<TestTypePage />} />
         <Route path="/plansub" element={<PlanSub />} />
         <Route path="/AboutUs" element={<AboutUs />} />
+
+        {/* Admin Routes */}
         <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/admin/users" element={<UserList />} />
+        <Route path="/admin/category-form" element={<CategoryForm />} />
         <Route path="/admin/categories" element={<CategoryList />} />
-        <Route path="/admin/questions" element={<QuestionList />} />
+        <Route path="/admin/free-question-form" element={<FreeQuestionForm />} />
+        <Route path="/admin/free-question-list" element={<FreeQuestionList />} />
+        <Route path="/admin/user-form" element={<UserForm />} />
+        <Route path="/admin/users" element={<UserList />} />
+        <Route path="/admin/purchase-form" element={<PurchaseForm />} />
+        <Route path="/admin/purchase-list" element={<PurchaseList />} />
+        <Route path="/admin/quiz-attempt-form" element={<QuizAttemptForm />} />
+        <Route path="/admin/quiz-attempt-list" element={<QuizAttemptList />} />
+        <Route path="/admin/set-form" element={<SetForm />} />
+        <Route path="/admin/set-list" element={<SetList />} />
+        <Route path="/admin/question-form" element={<QuestionForm />} />
+        <Route path="/admin/question-list" element={<QuestionList />} />
       </Routes>
     </>
   );
