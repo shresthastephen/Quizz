@@ -1,44 +1,42 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+const courses = [
+  { id: "bca", name: "BCA", description: "Bachelor of Computer Applications." },
+  {
+    id: "csit",
+    name: "CSIT",
+    description: "Computer Science and Information Technology.",
+  },
+  {
+    id: "bim",
+    name: "BIM",
+    description: "Bachelor of Information Management.",
+  },
+  {
+    id: "bit",
+    name: "BIT",
+    description: "Bachelor in Information Technology.",
+  },
+  { id: "bce", name: "BCE", description: "Bachelor of Computer Engineering." },
+  { id: "bds", name: "BDS", description: "Bachelor of Dental Surgery." },
+];
+
 const Entrance = () => {
   return (
     <div className="bg-white min-h-screen px-10 py-5">
       <h1 className="text-3xl font-bold text-center text-black mb-8">
         Entrance Exams
       </h1>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <Card
-          title="BCA"
-          description="A comprehensive course for Bachelor of Computer Applications."
-          link="/entrance/bca"
-        />
-        <Card
-          title="CSIT"
-          description="A detailed guide to the Computer Science and Information Technology course."
-          link="/entrance/csit"
-        />
-        <Card
-          title="BIM"
-          description="Explore the Bachelor of Information Management program."
-          link="/entrance/bim"
-        />
-        <Card
-          title="BIT"
-          description="Bachelor in Information Technology - A comprehensive course covering all aspects of IT."
-          link="/entrance/bit"
-        />
-        <Card
-          title="BCE"
-          description="Bachelor of Computer Engineering - Focused on hardware and software engineering principles."
-          link="/entrance/bce"
-        />
-        <Card
-          title="BDS"
-          description="Bachelor in Data Science - Learn data analysis, machine learning, and big data techniques."
-          link="/entrance/bds"
-        />
+        {courses.map((course) => (
+          <Card
+            key={course.id}
+            title={course.name}
+            description={course.description}
+            link={`/entrance/${course.id}`}
+          />
+        ))}
       </div>
     </div>
   );
