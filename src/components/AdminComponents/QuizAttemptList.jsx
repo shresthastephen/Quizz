@@ -1,44 +1,51 @@
-// src/components/QuizAttemptList.jsx
 import React, { useEffect, useState } from 'react';
-import { getQuizAttempts, deleteQuizAttempt } from '../../services/api';
+import { fetchAttemptsByUser } from '../../services/api'; // Adjust the import accordingly
 
-const QuizAttemptList = ({ onEdit }) => {
-  const [quizAttempts, setQuizAttempts] = useState([]);
+const QuizAttemptList = ({ userId }) => {
+  const [attempts, setAttempts] = useState([]);
 
   useEffect(() => {
-    const fetchQuizAttempts = async () => {
+    // Fetch attempts for the specific user when the component mounts
+    const loadAttempts = async () => {
       try {
-        const response = await getQuizAttempts();
-        setQuizAttempts(response.data);
+        const response = await fetchAttemptsByUser(userId);
+        setAttempts(response.data);
       } catch (error) {
-        console.error('Error fetching quiz attempts:', error);
+        console.error("Error fetching quiz attempts:", error);
       }
     };
-
-    fetchQuizAttempts();
-  }, []);
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteQuizAttempt(id);
-      setQuizAttempts(quizAttempts.filter(attempt => attempt.id !== id));
-    } catch (error) {
-      console.error('Error deleting quiz attempt:', error);
-    }
-  };
+    loadAttempts();
+  }, [userId]);
 
   return (
-    <div>
-      <h2>Quiz Attempt List</h2>
-      <ul>
-        {quizAttempts.map((attempt) => (
-          <li key={attempt.id}>
-            User ID: {attempt.userId}, Question ID: {attempt.questionId}, Correct: {attempt.isCorrect ? 'Yes' : 'No'}
-            <button onClick={() => onEdit(attempt)}>Edit</button>
-            <button onClick={() => handleDelete(attempt.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-xl font-semibold mb-4">Quiz Attempts for User ID: {userId}</h2>
+      <table className="w-full table-auto">
+        <thead>
+          <tr>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Attempt ID</th>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Quiz Name</th>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Status</th>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {attempts.length > 0 ? (
+            attempts.map((attempt) => (
+              <tr key={attempt.id} className="border-b">
+                <td className="px-4 py-2 text-sm text-gray-600">{attempt.id}</td>
+                <td className="px-4 py-2 text-sm text-gray-600">{attempt.quizName}</td>
+                <td className="px-4 py-2 text-sm text-gray-600">{attempt.status}</td>
+                <td className="px-4 py-2 text-sm text-gray-600">{attempt.score}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4" className="px-4 py-2 text-sm text-center text-gray-500">No attempts found</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -1,166 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { createQuestion, updateQuestion } from '../../services/api';
+import { createQuestion, updateQuestion, fetchQuestionById } from '../../services/api'; // Adjust the import accordingly
 
-const QuestionForm = ({ questionToEdit = null, onSave }) => {
-  const [question, setQuestion] = useState({
-    question: '',
-    option1: '',
-    option2: '',
-    option3: '',
-    option4: '',
-    answer: '',
-    remark: '',
-    categoryId: '',
-    status: 'draft',
-    createdBy: '',
-  });
+const QuestionForm = ({ questionId }) => {
+  const [questionText, setQuestionText] = useState('');
 
   useEffect(() => {
-    if (questionToEdit) {
-      setQuestion(questionToEdit);
+    if (questionId) {
+      // If we are editing, fetch the question details
+      const loadQuestion = async () => {
+        try {
+          const response = await fetchQuestionById(questionId);
+          setQuestionText(response.data.text);
+        } catch (error) {
+          console.error("Error fetching question:", error);
+        }
+      };
+      loadQuestion();
     }
-  }, [questionToEdit]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setQuestion({
-      ...question,
-      [name]: value,
-    });
-  };
+  }, [questionId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const question = { text: questionText };
+
     try {
-      if (questionToEdit) {
-        await updateQuestion(questionToEdit.id, question);
+      if (questionId) {
+        await updateQuestion(questionId, question);
       } else {
         await createQuestion(question);
       }
-      onSave();
+      // Reset form after successful submission
+      setQuestionText('');
     } catch (error) {
-      console.error('Error saving question:', error);
+      console.error("Error submitting question:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <div>
-        <label className="block text-gray-700 font-semibold">Question:</label>
-        <input
-          type="text"
-          name="question"
-          value={question.question}
-          onChange={handleChange}
-          required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Option 1:</label>
-        <input
-          type="text"
-          name="option1"
-          value={question.option1}
-          onChange={handleChange}
-          required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Option 2:</label>
-        <input
-          type="text"
-          name="option2"
-          value={question.option2}
-          onChange={handleChange}
-          required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Option 3:</label>
-        <input
-          type="text"
-          name="option3"
-          value={question.option3}
-          onChange={handleChange}
-          required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Option 4:</label>
-        <input
-          type="text"
-          name="option4"
-          value={question.option4}
-          onChange={handleChange}
-          required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Answer:</label>
-        <input
-          type="text"
-          name="answer"
-          value={question.answer}
-          onChange={handleChange}
-          required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Remark:</label>
-        <input
-          type="text"
-          name="remark"
-          value={question.remark}
-          onChange={handleChange}
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Category ID:</label>
-        <input
-          type="number"
-          name="categoryId"
-          value={question.categoryId}
-          onChange={handleChange}
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Status:</label>
-        <select
-          name="status"
-          value={question.status}
-          onChange={handleChange}
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-xl font-semibold mb-4">{questionId ? "Edit Question" : "Create Question"}</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Question Text:</label>
+          <textarea
+            value={questionText}
+            onChange={(e) => setQuestionText(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
         >
-          <option value="draft">Draft</option>
-          <option value="published">Published</option>
-          <option value="archived">Archived</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Created By:</label>
-        <input
-          type="number"
-          name="createdBy"
-          value={question.createdBy}
-          onChange={handleChange}
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full py-2 mt-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
-      >
-        {questionToEdit ? 'Update' : 'Create'} Question
-      </button>
-    </form>
+          {questionId ? "Update" : "Create"}
+        </button>
+      </form>
+    </div>
   );
 };
 

@@ -1,72 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import { createCategory, updateCategory } from '../../services/api';
+import { createCategory, updateCategory, fetchCategoryById } from '../../services/api'; // Adjust the import accordingly
 
-const CategoryForm = ({ categoryToEdit = null, onSave }) => {
-  const [category, setCategory] = useState({
-    name: '',
-    remark: '',
-  });
+const CategoryForm = ({ categoryId }) => {
+  const [categoryName, setCategoryName] = useState('');
 
   useEffect(() => {
-    if (categoryToEdit) {
-      setCategory(categoryToEdit);
+    if (categoryId) {
+      // If we are editing, fetch the category details
+      const loadCategory = async () => {
+        try {
+          const response = await fetchCategoryById(categoryId);
+          setCategoryName(response.data.name);
+        } catch (error) {
+          console.error("Error fetching category:", error);
+        }
+      };
+      loadCategory();
     }
-  }, [categoryToEdit]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCategory({
-      ...category,
-      [name]: value,
-    });
-  };
+  }, [categoryId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submit button clicked!");
+    const category = { name: categoryName };
+
     try {
-      if (categoryToEdit) {
-        await updateCategory(categoryToEdit.id, category);
+      if (categoryId) {
+        await updateCategory(categoryId, category);
+        console.log("Category updated successfully.");
       } else {
         await createCategory(category);
+        console.log("Category created successfully.");
       }
-      onSave();
+      setCategoryName(''); // Reset input after submission
     } catch (error) {
-      console.error('Error saving category:', error);
+      console.error("Error submitting category:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-      <div>
-        <label className="block text-gray-700 font-semibold">Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={category.name}
-          onChange={handleChange}
-          required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700 font-semibold">Remark:</label>
-        <input
-          type="text"
-          name="remark"
-          value={category.remark}
-          onChange={handleChange}
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full py-2 mt-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
-      >
-        {categoryToEdit ? 'Update' : 'Create'} Category
-      </button>
-    </form>
+    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-xl font-semibold mb-4">{categoryId ? "Edit Category" : "Create Category"}</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Category Name:</label>
+          <input
+            type="text"
+            value={categoryName}
+            onChange={(e) => setCategoryName(e.target.value)}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+        >
+          {categoryId ? "Update" : "Create"}
+        </button>
+      </form>
+    </div>
   );
 };
 
 export default CategoryForm;
-

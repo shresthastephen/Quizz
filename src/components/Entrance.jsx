@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 const courses = [
   { id: "bca", name: "BCA", description: "Bachelor of Computer Applications." },
+
   {
     id: "csit",
     name: "CSIT",
@@ -18,6 +19,7 @@ const courses = [
     name: "BIT",
     description: "Bachelor in Information Technology.",
   },
+
   { id: "bce", name: "BCE", description: "Bachelor of Computer Engineering." },
   { id: "bds", name: "BDS", description: "Bachelor of Dental Surgery." },
 ];
