@@ -18,6 +18,9 @@ import TestGuides from "./components/TestGuides";
 import TestGuidePage from "./pages/TestGuidePage";
 import TestTypePage from "./pages/TestTypePage";
 import Footer from "./components/Footer";
+import SetPage from "./pages/SetPage";
+import DefaultPage from "./pages/DefaultPage";
+import QuestionGeneratePage from "./pages/QuestionGeneratePage";
 
 const AppContent = () => {
   const location = useLocation();
@@ -41,6 +44,12 @@ const AppContent = () => {
         <Route path="/test-guides/:test/:type" element={<TestTypePage />} />
         <Route path="/plansub" element={<PlanSub />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/entrance/:course/old/:set" element={<SetPage />} /> 
+        <Route path="/test-guides/:test/old/:set" element={<SetPage />} />
+        <Route path="/entrance/:course/model/default" element={<DefaultPage />} />
+        <Route path="/entrance/:course/real-time/set" element={<QuestionGeneratePage />} /> 
+        <Route path="/test-guides/:test/model/default" element={<DefaultPage />} />
+        <Route path="/test-guides/:test/real-time/set" element={<QuestionGeneratePage />} /> 
       </Routes>
     </>
   );
@@ -55,4 +64,5 @@ const App = () => {
 };
 
 export default App;
+
 

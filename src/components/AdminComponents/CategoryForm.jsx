@@ -26,9 +26,11 @@ const CategoryForm = ({ categoryId }) => {
 
     try {
       if (categoryId) {
+        console.log("update");
         await updateCategory(categoryId, category);
         console.log("Category updated successfully.");
       } else {
+        console.log("create");
         await createCategory(category);
         console.log("Category created successfully.");
       }
