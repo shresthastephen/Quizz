@@ -63,8 +63,8 @@ const Nav = () => {
   }, []);
 
   return (
-    <header className="bg-[#FFAC10] px-6 py-4 shadow-md">
-      <nav className="flex justify-between items-center relative">
+    <header className="bg-[#FFAC10] px-6 py-4 shadow-md relative z-50">
+      <nav className="flex justify-between items-center relative z-50">
         {/* Logo */}
         <div className="text-2xl font-bold text-white">
           <Link to="/">QUIZZPRO</Link>
@@ -72,7 +72,7 @@ const Nav = () => {
 
         {/* Hamburger Menu for Mobile */}
         <button
-          className="lg:hidden text-white focus:outline-none"
+          className="lg:hidden text-white focus:outline-none z-50"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={30} /> : <Menu size={30} />}
@@ -82,15 +82,15 @@ const Nav = () => {
         <ul
           className={`absolute lg:static bg-[#FFAC10] pt-4 pb-4 pl-4 pr-4 rounded-[25px] lg:flex lg:items-center gap-8 top-16 left-0 w-full lg:w-auto transform ${
             menuOpen ? "translate-y-0" : "-translate-y-[500px]"
-          } lg:translate-y-0 transition-all duration-300 ease-in-out lg:flex-row flex flex-col lg:space-x-6 space-y-4 lg:space-y-0`}
+          } lg:translate-y-0 transition-all duration-300 ease-in-out lg:flex-row flex flex-col lg:space-x-6 space-y-4 lg:space-y-0 z-50`}
         >
           {menuItems.map((item, index) => (
-            <li key={index} className="relative text-center lg:text-left">
+            <li key={index} className="relative text-center lg:text-left z-50">
               {item.dropdown ? (
                 <>
                   <button
                     onClick={() => handleDropdown(index)}
-                    className="text-lg font-medium text-black focus:text-white w-full lg:w-auto"
+                    className="text-lg font-medium text-black focus:text-white w-full lg:w-auto z-50"
                   >
                     {item.name}
                   </button>
@@ -121,7 +121,7 @@ const Nav = () => {
           ))}
 
           {/* Mobile Buttons */}
-          <div className="flex flex-col gap-3 lg:hidden">
+          <div className="flex flex-col gap-3 lg:hidden z-50">
             <button
               onClick={handleRandomQuiz}
               className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg"
@@ -138,7 +138,7 @@ const Nav = () => {
         </ul>
 
         {/* Desktop Buttons */}
-        <div className="hidden lg:flex gap-4">
+        <div className="hidden lg:flex gap-4 z-50">
           <button
             onClick={handleRandomQuiz}
             className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg"
