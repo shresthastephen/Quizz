@@ -42,11 +42,63 @@ export const deleteSet = (setId) => axios.delete(`${API_URL}/sets/${setId}`);
 export const fetchUsers = () => axios.get(`${API_URL}/users`);
 export const fetchUserById = (userId) => axios.get(`${API_URL}/users/${userId}`);
 export const createUser = (user) => axios.post(`${API_URL}/users`, user);
-export const updateUser = (userId, user) => axios.put(`${API_URL}/users/${userId}`, user);
+export const updateUsers = (userId, user) => axios.put(`${API_URL}/users/${userId}`, user);
 export const deleteUser = (userId) => axios.delete(`${API_URL}/users/${userId}`);
 
-// User-related API functions
-export const signUpUser = (user) => axios.post(`${API_URL}/users/signup`, user);
-export const loginUser = (user) => axios.post(`${API_URL}/users/login`, user);
-export const logoutUser = () => axios.post(`${API_URL}/users/logout`);
-export const editUser = (id, user) => axios.put(`${API_URL}/users/update/${id}`, user);
+// ========== AUTH APIs ==========
+
+// Sign Up
+export const signUpUser = (user) =>
+    axios.post(`${API_URL}/users/signup`, user);
+  
+  // Email Verification
+  export const verifyEmail = (email, code) =>
+    axios.post(`${API_URL}/users/verify`, null, {
+      params: { email, code },
+    });
+  
+  // Login
+  export const loginUser = (user) =>
+    axios.post(`${API_URL}/users/login`, user);
+  
+  // Logout
+  export const logoutUser = () =>
+    axios.post(`${API_URL}/users/logout`);
+  
+  // Forgot Password
+  export const forgotPassword = (email) =>
+    axios.post(`${API_URL}/users/forgot-password`, null, {
+      params: { email },
+    });
+  
+  // Reset Password
+  export const resetPassword = (email, code, newPassword) =>
+    axios.post(`${API_URL}/users/reset-password`, null, {
+      params: { email, code, newPassword },
+    });
+  
+  // Update User Profile
+  export const updateUser = (userId, user, currentPassword) =>
+    axios.put(`${API_URL}/users/update/${userId}`, user, {
+      params: { currentPassword },
+    });
+  
+  // Verify New Email (after user updates their email)
+  export const verifyEmailUpdate = (email, code) =>
+    axios.post(`${API_URL}/users/verify-email-update`, null, {
+      params: { email, code },
+    });
+  
+  // ========== OAUTH2 ==========
+  
+  // Replace with your actual OAuth2 config
+  const OAUTH2_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
+  const CLIENT_ID = '379686626116-v84ksb84h5ppvhtkoep8t1c4jfhkaevd.apps.googleusercontent.com';
+  const REDIRECT_URI = 'http://localhost:5175/callback';
+  const SCOPE = 'openid email profile';
+  
+  // Start OAuth2 Login
+  export const initiateOAuth2Login = () => {
+    const url = `${OAUTH2_AUTHORIZATION_URL}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}`;
+    window.location.href = url;
+  };
