@@ -33,80 +33,20 @@
     animation: fadeIn 1.5s ease-in-out;
   }
   
-  /* About Content Section */
-  .about-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;
-    margin: 5vw 0;
-  }
   
-  /* Default Card Styling */
-  .about-card {
-    background: white;
-    width: 90%;
-    max-width: 400px;
-    padding: 5vw;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    text-align: left;
-    min-height: 410px;
-  }
+
   
-  .about-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  }
-  
-  .about-card h2 {
-    color: #ffac10;
-    font-size: clamp(1.5rem, 3vw, 1.8rem);
-    margin-bottom: 15px;
-    font-weight: bold;
-  }
-  
-  .about-card p {
-    font-size: clamp(1rem, 2.2vw, 1.1rem);
-    line-height: 1.8;
-    color: #555;
-  }
-  
-  /* Responsive Horizontal Cards */
-  .about-card:first-child,
-  .about-card:last-child {
-    width: 100%;
-    max-width: 900px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 4vw;
-    min-height: 250px;
-  }
-  
-  .about-card:first-child h2,
-  .about-card:last-child h2 {
-    flex: 1;
-    min-width: 200px;
-  }
-  
-  .about-card:first-child p,
-  .about-card:last-child p {
-    flex: 2;
-  }
+
   
  /* FAQ Section Parent Container */
 .faq-section {
   display: flex;
   justify-content: space-between;
-  padding: 4rem 100px; /* Adjust padding for balance */
+  padding: 2rem;
   gap: 2rem;
-  align-items: flex-start;
   background-color: #f9fafc;
-  border: 1px solid #e6eaf2;
-  border-radius: 12px; /* Rounded corners for the parent */
+  border: 1px solid #ffac10;
+  border-radius: 12px; 
 }
 
 /* Title Styling */
@@ -185,17 +125,12 @@
 
 /* Join Us Section */
 .about-footer {
-  flex: 1;
+  height: fit-content;
   background: #ffc65b;
   color: white;
   padding: 3rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 0; /* Space between FAQ and Join Us section */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
   text-align: left;
 }
 
@@ -207,7 +142,7 @@
 
 .about-footer p {
   font-size: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0.8rem;
 }
 
 /* Join Us Button Styling */
@@ -215,18 +150,14 @@
   display: inline-block;
   padding: 12px 24px;
   background: rgb(0, 0, 0);
-  color: #ffffff;
   font-weight: bold;
   text-decoration: none;
   border-radius: 8px;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .about-btn:hover {
-  background: #ffc65b;
-  color: white;
-  transform: scale(1.05);
+  border: 2px solid white;
 }
 
 /* Responsive Design for Mobile */

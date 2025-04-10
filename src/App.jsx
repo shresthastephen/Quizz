@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import React from "react";
 
 // Import public components
@@ -32,7 +37,25 @@ const AppContent = () => {
       {shouldShowHeader && <Nav />}
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<><Hero /><CardSlider /><Subscription /><Footer /></>} />
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <CardSlider />
+              <Subscription />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/aboutus"
+          element={
+            <>
+              <AboutUs /> <Footer />
+            </>
+          }
+        />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/mocktest" element={<MockTest />} />
@@ -43,13 +66,24 @@ const AppContent = () => {
         <Route path="/test-guides/:test" element={<TestGuidePage />} />
         <Route path="/test-guides/:test/:type" element={<TestTypePage />} />
         <Route path="/plansub" element={<PlanSub />} />
-        <Route path="/aboutus" element={<AboutUs />} />
-        <Route path="/entrance/:course/old/:set" element={<SetPage />} /> 
+        <Route path="/entrance/:course/old/:set" element={<SetPage />} />
         <Route path="/test-guides/:test/old/:set" element={<SetPage />} />
-        <Route path="/entrance/:course/model/default" element={<DefaultPage />} />
-        <Route path="/entrance/:course/real-time/set" element={<QuestionGeneratePage />} /> 
-        <Route path="/test-guides/:test/model/default" element={<DefaultPage />} />
-        <Route path="/test-guides/:test/real-time/set" element={<QuestionGeneratePage />} /> 
+        <Route
+          path="/entrance/:course/model/default"
+          element={<DefaultPage />}
+        />
+        <Route
+          path="/entrance/:course/real-time/set"
+          element={<QuestionGeneratePage />}
+        />
+        <Route
+          path="/test-guides/:test/model/default"
+          element={<DefaultPage />}
+        />
+        <Route
+          path="/test-guides/:test/real-time/set"
+          element={<QuestionGeneratePage />}
+        />
       </Routes>
     </>
   );
@@ -64,5 +98,3 @@ const App = () => {
 };
 
 export default App;
-
-

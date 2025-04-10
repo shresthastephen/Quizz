@@ -42,38 +42,40 @@ const AboutUs = () => {
       <section className="about-content">
         <div className="about-card">
           <h2>Who We Are</h2>
-          <p>
+          <p className="text-justify">
             Welcome to <strong>QuizzPro</strong>, where learning meets fun! We
             provide interactive quizzes to help you test your knowledge, prepare
-            for exams, and engage with a community of learners.
+            for exams, and engage with a community of learners. Welcome to{" "}
+            <strong>QuizzPro</strong>, where learning meets fun! We provide
+            interactive quizzes to help you test your knowledge, prepare for
+            exams, and engage with a community of learners.
           </p>
         </div>
-        <hr />
-        <div className="about-card">
-          <h2>Our Mission</h2>
-          <p>
-            We aim to make learning accessible, engaging, and effective for
-            everyone. Our quizzes help users boost their skills while having
-            fun!
-          </p>
-        </div>
+        <div className="flex flex-col md:flex-row gap-6 p-4 justify-center">
+          {/* mission */}
+          <div className="w-full md:max-w-md bg-white px-6 py-16 rounded-lg shadow-md transition-transform duration-300 hover:-translate-y-2">
+            <h1 className="text-2xl font-bold mb-6 text-[#ffac10]">
+              Our Mission
+            </h1>
+            <p className="text-gray-700">
+              We aim to make learning accessible, engaging, and effective for
+              everyone. Our quizzes help users boost their skills while having
+              fun!
+            </p>
+          </div>
 
-        <div className="about-card">
-          <h2>What We Offer</h2>
-          <ul>
-            <li> Diverse Quiz Categories</li>
-            <li> Personalized Learning & Progress Tracking</li>
-            <li> Real-time Mock Tests (LokSewa, IELTS, TSC, etc.)</li>
-            <li> Competitive Challenges & Leaderboards</li>
-          </ul>
-        </div>
-        <hr />
-        <div className="about-card">
-          <h2>Meet the Team</h2>
-          <p>
-            We are a passionate group of educators, developers, and quiz
-            enthusiasts dedicated to making learning an exciting journey.
-          </p>
+          {/* offer */}
+          <div className="w-full md:max-w-md bg-white px-6 py-16 rounded-lg shadow-md transition-transform duration-300 hover:-translate-y-2 ">
+            <h1 className="text-2xl font-bold mb-6 text-[#ffac10]">
+              What We Offer
+            </h1>
+            <p className="text-gray-700">
+              - Diverse Quiz Categories <br />
+              - Personalized Learning & Progress Tracking <br />
+              - Real-time Mock Tests (LokSewa, IELTS, TSC, etc.) <br />-
+              Competitive Challenges & Leaderboards
+            </p>
+          </div>
         </div>
       </section>
 

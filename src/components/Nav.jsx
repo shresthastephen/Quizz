@@ -36,6 +36,7 @@ const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const navRef = useRef(null); // Added navRef
 
   const handleDropdown = (index) => {
     setOpenDropdown(openDropdown === index ? null : index);
@@ -54,6 +55,10 @@ const Nav = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpenDropdown(null);
       }
+
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -64,7 +69,10 @@ const Nav = () => {
 
   return (
     <header className="bg-[#FFAC10] px-6 py-4 shadow-md relative z-50">
-      <nav className="flex justify-between items-center relative z-50">
+      <nav
+        ref={navRef}
+        className="flex justify-between items-center relative z-50"
+      >
         {/* Logo */}
         <div className="text-2xl font-bold text-white">
           <Link to="/">QUIZZPRO</Link>
@@ -80,6 +88,7 @@ const Nav = () => {
 
         {/* Desktop & Mobile Menu */}
         <ul
+          ref={dropdownRef}
           className={`absolute lg:static bg-[#FFAC10] pt-4 pb-4 pl-4 pr-4 rounded-[25px] lg:flex lg:items-center gap-8 top-16 left-0 w-full lg:w-auto transform ${
             menuOpen ? "translate-y-0" : "-translate-y-[500px]"
           } lg:translate-y-0 transition-all duration-300 ease-in-out lg:flex-row flex flex-col lg:space-x-6 space-y-4 lg:space-y-0 z-50`}
