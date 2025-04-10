@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { logoutUser } from "../services/api";  
 
 const menuItems = [
   { name: "About Us", link: "/AboutUs" },
@@ -50,6 +51,17 @@ const Nav = () => {
     navigate("/signin");
   };
 
+  // Handle Logout
+  const handleLogout = async () => {
+    try {
+      await logoutUser();  
+      localStorage.removeItem("user");  
+    } catch (error) {
+      console.error("Logout failed:", error);
+      alert("An error occurred during logout.");
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -69,10 +81,7 @@ const Nav = () => {
 
   return (
     <header className="bg-[#FFAC10] px-6 py-4 shadow-md relative z-50">
-      <nav
-        ref={navRef}
-        className="flex justify-between items-center relative z-50"
-      >
+      <nav ref={navRef} className="flex justify-between items-center relative z-50">
         {/* Logo */}
         <div className="text-2xl font-bold text-white">
           <Link to="/">QUIZZPRO</Link>
@@ -143,6 +152,13 @@ const Nav = () => {
             >
               Sign In
             </button>
+            {/* Add Logout Button if user is logged in */}
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
+            >
+              Logout
+            </button>
           </div>
         </ul>
 
@@ -159,6 +175,13 @@ const Nav = () => {
             className="bg-black text-white px-4 py-2 rounded-full text-lg"
           >
             Sign In
+          </button>
+          {/* Add Logout Button if user is logged in */}
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
+          >
+            Logout
           </button>
         </div>
       </nav>

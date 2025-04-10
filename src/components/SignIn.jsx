@@ -1,37 +1,32 @@
 import React, { useState } from "react";
-import { loginUser } from "../services/api"; // Import the login API function
-import { useNavigate } from "react-router-dom"; // For redirecting after login
+import { loginUser, initiateOAuth2Login } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
-export default function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Login = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate();
+
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    // Validation
-    if (!email || !password) {
+    if (!formData.email || !formData.password) {
       setError("Please fill in all fields.");
       return;
     }
 
     setLoading(true);
-    setError(""); // Clear previous errors
-
     try {
-      const response = await loginUser({ email, password });
-
-      console.log("Login successful:", response.data);
-
-      // Redirect user to dashboard or home page
-      navigate("/"); // Change the path as needed
-
-    } catch (error) {
-      setError("Invalid email or password. Please try again.");
-      console.error("Login error:", error.response?.data || error.message);
+      const res = await loginUser(formData);
+      localStorage.setItem("user", JSON.stringify(res.data));
+      navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -40,19 +35,17 @@ export default function SignIn() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-amber-300">
       <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-md flex flex-col md:flex-row w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl">
-        {/* Image Container */}
         <div className="hidden md:flex md:w-1/2 justify-center items-center p-4">
           <img
-            src="https://colorlib.com/etc/regform/colorlib-regform-7/images/signup-image.jpg"
-            alt="Sign In Illustration"
+            src="https://colorlib.com/etc/regform/colorlib-regform-7/images/signin-image.jpg"
+            alt="Login Illustration"
             className="w-full max-w-sm object-contain"
           />
         </div>
 
-        {/* Form Container */}
         <div className="md:w-1/2 w-full p-6">
           <h2 className="text-2xl font-bold text-gray-700 text-center mb-6">
-            Sign In
+            Log In
           </h2>
           {error && (
             <div className="mb-4 text-red-600 text-sm text-center">{error}</div>
@@ -65,10 +58,11 @@ export default function SignIn() {
               <input
                 type="email"
                 id="email"
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                name="email"
                 placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={formData.email}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -79,10 +73,11 @@ export default function SignIn() {
               <input
                 type="password"
                 id="password"
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                name="password"
                 placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={formData.password}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -95,17 +90,36 @@ export default function SignIn() {
                   : "bg-blue-500 hover:bg-blue-600"
               }`}
             >
-              {loading ? "Signing In..." : "Sign In"}
+              {loading ? "Logging In..." : "Login"}
             </button>
           </form>
+
+          {/* Google Login Button (Custom OAuth2 Flow) */}
+          <div className="mt-6 text-center">
+            <button
+              onClick={initiateOAuth2Login}
+              className="w-full p-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
+            >
+              Login with Google
+            </button>
+          </div>
+
           <div className="mt-4 text-center text-l text-gray-500">
             Don’t have an account?{" "}
             <a href="/signup" className="text-black hover:underline">
               Sign up
+            </a>
+            <br />
+            <a href="/forgot-password" className="text-black hover:underline">
+              Forgot Password?
             </a>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Login;
+
+ 
