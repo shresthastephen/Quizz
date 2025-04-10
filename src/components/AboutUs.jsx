@@ -40,17 +40,6 @@ const AboutUs = () => {
       </section>
 
       <section className="about-content">
-        <div className="about-card">
-          <h2>Who We Are</h2>
-          <p className="text-justify">
-            Welcome to <strong>QuizzPro</strong>, where learning meets fun! We
-            provide interactive quizzes to help you test your knowledge, prepare
-            for exams, and engage with a community of learners. Welcome to{" "}
-            <strong>QuizzPro</strong>, where learning meets fun! We provide
-            interactive quizzes to help you test your knowledge, prepare for
-            exams, and engage with a community of learners.
-          </p>
-        </div>
         <div className="flex flex-col md:flex-row gap-6 p-4 justify-center">
           {/* mission */}
           <div className="w-full md:max-w-md bg-white px-6 py-16 rounded-lg shadow-md transition-transform duration-300 hover:-translate-y-2">
