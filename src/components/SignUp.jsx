@@ -7,6 +7,7 @@ const Signup = () => {
     name: '',
     email: '',
     password: '',
+    confirmPassword: '', 
     gender: '',
     contact: '',
     address: '',
@@ -31,6 +32,8 @@ const Signup = () => {
     if (!formData.name) errors.name = "Full Name is required";
     if (!formData.email) errors.email = "Email is required";
     if (!formData.password) errors.password = "Password is required";
+    if (!formData.confirmPassword) errors.confirmPassword = "Please confirm your password";
+    else if (formData.password !== formData.confirmPassword) errors.confirmPassword = "Passwords do not match!";
     if (!formData.gender) errors.gender = "Gender is required";
     if (!formData.contact) errors.contact = "Contact number is required";
     else if (!/^\d{10}$/.test(formData.contact)) errors.contact = "Contact number must be 10 digits";
@@ -154,6 +157,24 @@ const Signup = () => {
                   className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.password ? 'border-red-500' : ''}`}
                 />
                 {formErrors.password && <p className="text-red-500 text-sm">{formErrors.password}</p>}
+              </div>
+
+              {/* Confirm Password */}
+              <div className="mb-4">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  placeholder="Re-enter your password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.confirmPassword ? 'border-red-500' : ''}`}
+                />
+                {formErrors.confirmPassword && <p className="text-red-500 text-sm">{formErrors.confirmPassword}</p>}
               </div>
 
               {/* Gender */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { logoutUser } from "../services/api";  
+import { logoutUser } from "../services/api";
 
 const menuItems = [
   { name: "About Us", link: "/AboutUs" },
@@ -35,9 +35,15 @@ const menuItems = [
 const Nav = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const navigate = useNavigate();
-  const dropdownRef = useRef(null);
-  const navRef = useRef(null); // Added navRef
+  const navRef = useRef(null);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!user);
+  }, []);
 
   const handleDropdown = (index) => {
     setOpenDropdown(openDropdown === index ? null : index);
@@ -51,11 +57,12 @@ const Nav = () => {
     navigate("/signin");
   };
 
-  // Handle Logout
   const handleLogout = async () => {
     try {
-      await logoutUser();  
-      localStorage.removeItem("user");  
+      await logoutUser();
+      localStorage.removeItem("user");
+      setIsLoggedIn(false);
+      navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
       alert("An error occurred during logout.");
@@ -64,11 +71,8 @@ const Nav = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdown(null);
-      }
-
       if (navRef.current && !navRef.current.contains(event.target)) {
+        setOpenDropdown(null);
         setMenuOpen(false);
       }
     };
@@ -87,7 +91,7 @@ const Nav = () => {
           <Link to="/">QUIZZPRO</Link>
         </div>
 
-        {/* Hamburger Menu for Mobile */}
+        {/* Hamburger Toggle */}
         <button
           className="lg:hidden text-white focus:outline-none z-50"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -95,25 +99,86 @@ const Nav = () => {
           {menuOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
 
-        {/* Desktop & Mobile Menu */}
-        <ul
-          ref={dropdownRef}
-          className={`absolute lg:static bg-[#FFAC10] pt-4 pb-4 pl-4 pr-4 rounded-[25px] lg:flex lg:items-center gap-8 top-16 left-0 w-full lg:w-auto transform ${
-            menuOpen ? "translate-y-0" : "-translate-y-[500px]"
-          } lg:translate-y-0 transition-all duration-300 ease-in-out lg:flex-row flex flex-col lg:space-x-6 space-y-4 lg:space-y-0 z-50`}
-        >
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div className="absolute top-16 left-0 w-full bg-[#FFAC10] rounded-b-[25px] py-4 px-6 flex flex-col items-center gap-4 z-40 shadow-lg lg:hidden">
+            {menuItems.map((item, index) => (
+              <div key={index} className="relative">
+                {item.dropdown ? (
+                  <>
+                    <button
+                      onClick={() => handleDropdown(index)}
+                      className="text-lg font-medium text-black w-full text-left"
+                    >
+                      {item.name}
+                    </button>
+                    {openDropdown === index && (
+                      <ul className="mt-2 bg-white rounded-md shadow-md overflow-hidden">
+                        {item.dropdown.map((subItem, subIndex) => (
+                          <li key={subIndex}>
+                            <Link
+                              to={subItem.link}
+                              className="block px-4 py-2 text-sm text-black hover:bg-orange-200"
+                            >
+                              {subItem.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    to={item.link}
+                    className="text-lg font-medium text-black hover:text-white"
+                  >
+                    {item.name}
+                  </Link>
+                )}
+              </div>
+            ))}
+
+            <div className="pt-4 flex flex-col gap-3">
+              <button
+                onClick={handleRandomQuiz}
+                className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg"
+              >
+                Random Quiz
+              </button>
+
+              {!isLoggedIn ? (
+                <button
+                  onClick={handleSignIn}
+                  className="bg-black text-white px-4 py-2 rounded-full text-lg"
+                >
+                  Sign In
+                </button>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
+                >
+                  Logout
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Desktop Menu */}
+        <ul className="hidden lg:flex items-center gap-8 z-50">
           {menuItems.map((item, index) => (
-            <li key={index} className="relative text-center lg:text-left z-50">
+            <li key={index} className="relative">
               {item.dropdown ? (
                 <>
                   <button
                     onClick={() => handleDropdown(index)}
-                    className="text-lg font-medium text-black focus:text-white w-full lg:w-auto z-50"
+                    className="text-lg font-medium text-black hover:text-white"
                   >
                     {item.name}
                   </button>
                   {openDropdown === index && (
-                    <ul className="absolute left-0 mt-2 bg-white w-44 rounded-md shadow-lg z-50 lg:text-left text-center">
+                    <ul className="absolute left-0 mt-2 bg-white w-44 rounded-md shadow-lg z-50">
                       {item.dropdown.map((subItem, subIndex) => (
                         <li key={subIndex}>
                           <Link
@@ -137,29 +202,6 @@ const Nav = () => {
               )}
             </li>
           ))}
-
-          {/* Mobile Buttons */}
-          <div className="flex flex-col gap-3 lg:hidden z-50">
-            <button
-              onClick={handleRandomQuiz}
-              className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg"
-            >
-              Random Quiz
-            </button>
-            <button
-              onClick={handleSignIn}
-              className="bg-black text-white px-4 py-2 rounded-full text-lg"
-            >
-              Sign In
-            </button>
-            {/* Add Logout Button if user is logged in */}
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
-            >
-              Logout
-            </button>
-          </div>
         </ul>
 
         {/* Desktop Buttons */}
@@ -170,19 +212,21 @@ const Nav = () => {
           >
             Random Quiz
           </button>
-          <button
-            onClick={handleSignIn}
-            className="bg-black text-white px-4 py-2 rounded-full text-lg"
-          >
-            Sign In
-          </button>
-          {/* Add Logout Button if user is logged in */}
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
-          >
-            Logout
-          </button>
+          {!isLoggedIn ? (
+            <button
+              onClick={handleSignIn}
+              className="bg-black text-white px-4 py-2 rounded-full text-lg"
+            >
+              Sign In
+            </button>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </nav>
     </header>

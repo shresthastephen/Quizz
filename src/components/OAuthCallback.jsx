@@ -20,7 +20,7 @@ const OAuthCallback = () => {
       try {
         const response = await axios.post("http://localhost:8080/api/auth/google", {
           code,
-          redirectUri: "http://localhost:5175/callback", // this must match exactly what you registered
+          redirectUri: "http://localhost:5173/callback", // this must match exactly what you registered
         });
 
         const { token, user } = response.data;

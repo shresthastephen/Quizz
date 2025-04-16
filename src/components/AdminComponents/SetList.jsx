@@ -1,65 +1,133 @@
-import React, { useEffect, useState } from 'react';
-import { fetchSets, deleteSet } from '../../services/api'; // Adjust the import according to your project structure
+import React, { useState, useEffect } from 'react';
+import { fetchSets, deleteSet, updateSet } from '../../services/api';
 
-const SetList = () => {
-  const [sets, setSets] = useState([]);
+const SetList = ({ setSets }) => {
+  const [sets, setSetsState] = useState([]);
+  const [editingSetId, setEditingSetId] = useState(null);
+  const [editedSetName, setEditedSetName] = useState('');
 
   useEffect(() => {
-    // Fetch sets when the component mounts
     const loadSets = async () => {
       try {
         const response = await fetchSets();
-        setSets(response.data);
+        setSetsState(response.data);
+        if (setSets) setSets(response.data);
       } catch (error) {
-        console.error("Error fetching sets:", error);
+        console.error('Error loading sets:', error);
       }
     };
     loadSets();
-  }, []);
+  }, [setSets]);
 
-  const handleDelete = async (id) => {
+  const handleDeleteSet = async (id) => {
     try {
       await deleteSet(id);
-      setSets(sets.filter(set => set.id !== id)); // Remove the deleted set from the list
+      const updated = sets.filter((set) => set.setId !== id);
+      setSetsState(updated);
+      if (setSets) setSets(updated);
     } catch (error) {
-      console.error("Error deleting set:", error);
+      console.error('Error deleting set:', error);
     }
   };
 
+  const handleEditSet = (set) => {
+    setEditingSetId(set.setId);
+    setEditedSetName(set.setName);
+  };
+
+  const handleSaveEdit = async (id) => {
+    try {
+      const updatedSet = { setName: editedSetName };
+      await updateSet(id, updatedSet);
+
+      const updatedSets = sets.map((s) =>
+        s.setId === id ? { ...s, setName: editedSetName } : s
+      );
+      setSetsState(updatedSets);
+      if (setSets) setSets(updatedSets);
+
+      setEditingSetId(null);
+      setEditedSetName('');
+    } catch (error) {
+      console.error('Error updating set:', error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingSetId(null);
+    setEditedSetName('');
+  };
+
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-semibold text-center mb-6">Set List</h2>
-      <table className="w-full table-auto border-collapse">
-        <thead>
-          <tr>
-            <th className="border-b-2 p-2 text-left">Set Name</th>
-            <th className="border-b-2 p-2 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sets.length > 0 ? (
-            sets.map((set) => (
-              <tr key={set.id} className="hover:bg-gray-100">
-                <td className="border-b p-2">{set.name}</td>
-                <td className="border-b p-2 text-center">
-                  <button
-                    onClick={() => handleDelete(set.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition"
-                  >
-                    Delete
-                  </button>
-                </td>
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md mt-6">
+      <h3 className="text-2xl font-semibold mb-4 text-gray-800">Sets List</h3>
+      {sets.length === 0 ? (
+        <p className="text-red-600">No sets found. Create a new set!</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border border-gray-200 rounded-lg">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">ID</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Name</th>
+                <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Actions</th>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="2" className="p-4 text-center text-gray-500">
-                No sets available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {sets.map((set) => (
+                <tr key={set.setId} className="border-b hover:bg-gray-50">
+                  <td className="px-4 py-2 text-sm text-gray-700">{set.setId}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {editingSetId === set.setId ? (
+                      <input
+                        type="text"
+                        value={editedSetName}
+                        onChange={(e) => setEditedSetName(e.target.value)}
+                        className="p-1 border border-gray-300 rounded"
+                      />
+                    ) : (
+                      set.setName
+                    )}
+                  </td>
+                  <td className="px-4 py-2 space-x-2">
+                    {editingSetId === set.setId ? (
+                      <>
+                        <button
+                          onClick={() => handleSaveEdit(set.setId)}
+                          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={handleCancelEdit}
+                          className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm"
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => handleEditSet(set)}
+                          className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteSet(set.setId)}
+                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
