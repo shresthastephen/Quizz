@@ -24,11 +24,9 @@ function Sidebar() {
           <li className="mb-2"><Link to="/admin/questions" className="block p-2 bg-gray-200 rounded">Questions</Link></li>
           <li className="mb-2"><Link to="/admin/add-question" className="block p-2 bg-gray-200 rounded">Add Question</Link></li>
           <li className="mb-2"><Link to="/admin/users" className="block p-2 bg-gray-200 rounded">Users</Link></li>
-          <li className="mb-2"><Link to="/admin/add-user" className="block p-2 bg-gray-200 rounded">Add User</Link></li>
           <li className="mb-2"><Link to="/admin/purchases" className="block p-2 bg-gray-200 rounded">Purchases</Link></li>
           <li className="mb-2"><Link to="/admin/add-purchase" className="block p-2 bg-gray-200 rounded">Add Purchase</Link></li>
           <li className="mb-2"><Link to="/admin/quiz-attempts" className="block p-2 bg-gray-200 rounded">Quiz Attempts</Link></li>
-          <li className="mb-2"><Link to="/admin/add-quiz-attempt" className="block p-2 bg-gray-200 rounded">Add Quiz Attempt</Link></li>
           <li className="mb-2"><Link to="/admin/sets" className="block p-2 bg-gray-200 rounded">Sets</Link></li>
           <li><Link to="/admin/add-set" className="block p-2 bg-gray-200 rounded">Add Set</Link></li>
         </ul>

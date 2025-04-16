@@ -1,48 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { createCategory, updateCategory, fetchCategoryById } from '../../services/api'; // Adjust the import accordingly
+import { createCategory, updateCategory, fetchCategoryById } from '../../services/api';
 
 const CategoryForm = ({ categoryId }) => {
   const [categoryName, setCategoryName] = useState('');
+  const [remark, setRemark] = useState('');
+  const [errors, setErrors] = useState({});
+  const [editingCategory, setEditingCategory] = useState(null);
 
   useEffect(() => {
     if (categoryId) {
-      // If we are editing, fetch the category details
       const loadCategory = async () => {
         try {
           const response = await fetchCategoryById(categoryId);
-          setCategoryName(response.data.name);
+          setCategoryName(response.data.ctgName);
+          setRemark(response.data.remark);
         } catch (error) {
-          console.error("Error fetching category:", error);
+          console.error('Error fetching category:', error);
         }
       };
       loadCategory();
     }
   }, [categoryId]);
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!categoryName.trim()) {
+      newErrors.ctgName = 'Category name is required';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submit button clicked!");
-    const category = { name: categoryName };
+    if (!validateForm()) return;
+
+    const categoryData = {
+      ctgName: categoryName,
+      remark: remark,
+    };
 
     try {
       if (categoryId) {
-        console.log("update");
-        await updateCategory(categoryId, category);
-        console.log("Category updated successfully.");
+        await updateCategory(categoryId, categoryData);
       } else {
-        console.log("create");
-        await createCategory(category);
-        console.log("Category created successfully.");
+        await createCategory(categoryData);
       }
-      setCategoryName(''); // Reset input after submission
+      // Reset form after successful submission
+      setCategoryName('');
+      setRemark('');
+      setErrors({});
+      setEditingCategory(null);
     } catch (error) {
-      console.error("Error submitting category:", error);
+      console.error('Error submitting category:', error);
     }
   };
 
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">{categoryId ? "Edit Category" : "Create Category"}</h2>
+      <h2 className="text-xl font-semibold mb-4">{categoryId ? 'Edit Category' : 'Create Category'}</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Category Name:</label>
@@ -50,7 +66,18 @@ const CategoryForm = ({ categoryId }) => {
             type="text"
             value={categoryName}
             onChange={(e) => setCategoryName(e.target.value)}
-            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          />
+          {errors.ctgName && (
+            <p className="text-red-500 text-sm mt-1">{errors.ctgName}</p>
+          )}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Remark:</label>
+          <input
+            type="text"
+            value={remark}
+            onChange={(e) => setRemark(e.target.value)}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -58,7 +85,7 @@ const CategoryForm = ({ categoryId }) => {
           type="submit"
           className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
         >
-          {categoryId ? "Update" : "Create"}
+          {categoryId ? 'Update' : 'Create'}
         </button>
       </form>
     </div>

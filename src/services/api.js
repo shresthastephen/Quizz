@@ -94,7 +94,7 @@ export const signUpUser = (user) =>
   // Replace with your actual OAuth2 config
   const OAUTH2_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
   const CLIENT_ID = '379686626116-v84ksb84h5ppvhtkoep8t1c4jfhkaevd.apps.googleusercontent.com';
-  const REDIRECT_URI = 'http://localhost:5175/callback';
+  const REDIRECT_URI = 'http://localhost:5173/callback';
   const SCOPE = 'openid email profile';
   
   // Start OAuth2 Login
