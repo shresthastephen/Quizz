@@ -38,7 +38,7 @@ const QuestionList = ({ setQuestions }) => {
   };
 
   const handleEditQuestion = (question) => {
-    setEditingQuestion(question);
+    setEditingQuestion(question.qId);
     setEditedQuestionText(question.question);
     setEditedOptions([question.option1, question.option2, question.option3, question.option4]);
     setEditedCorrectAnswer(question.answer);
@@ -104,15 +104,50 @@ const QuestionList = ({ setQuestions }) => {
                 <tr key={question.qId} className="border-b hover:bg-gray-50">
                   <td className="px-4 py-2 text-sm text-gray-700">{question.qId}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">
-                    {editingQuestion && editingQuestion.qId === question.qId ? (
-                      <textarea
-                        value={editedQuestionText}
-                        onChange={(e) => setEditedQuestionText(e.target.value)}
-                        className="p-1 border border-gray-300 rounded w-full"
-                      />
-                    ) : (
-                      question.question
-                    )}
+                   {editingQuestion && editingQuestion.qId === question.qId ? (
+                     <div className="space-y-1">
+                       <textarea
+                         value={editedQuestionText}
+                         onChange={(e) => setEditedQuestionText(e.target.value)}
+                         className="p-1 border border-gray-300 rounded w-full"
+                       />
+                       {editedOptions.map((opt, index) => (
+                         <input
+                           key={index}
+                           value={opt}
+                           onChange={(e) => {
+                             const newOptions = [...editedOptions];
+                             newOptions[index] = e.target.value;
+                             setEditedOptions(newOptions);
+                           }}
+                           placeholder={`Option ${index + 1}`}
+                           className="p-1 border border-gray-300 rounded w-full"
+                         />
+                       ))}
+                       <input
+                         value={editedCorrectAnswer}
+                         onChange={(e) => setEditedCorrectAnswer(e.target.value)}
+                         placeholder="Correct Answer"
+                         className="p-1 border border-gray-300 rounded w-full"
+                       />
+                       <input
+                         value={editedRemark}
+                         onChange={(e) => setEditedRemark(e.target.value)}
+                         placeholder="Remark"
+                         className="p-1 border border-gray-300 rounded w-full"
+                       />
+                     </div>
+                   ) : (
+                     <>
+                       <div>{question.question}</div>
+                       <div className="text-xs text-gray-500">A: {question.option1}</div>
+                       <div className="text-xs text-gray-500">B: {question.option2}</div>
+                       <div className="text-xs text-gray-500">C: {question.option3}</div>
+                       <div className="text-xs text-gray-500">D: {question.option4}</div>
+                       <div className="text-xs text-green-600">Answer: {question.answer}</div>
+                       <div className="text-xs text-blue-500">Remark: {question.remark}</div>
+                     </>
+                   )}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-700">{question.category?.ctgName || '-'}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">{question.set?.name || '-'}</td>
