@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { fetchQuestions, deleteQuestion, updateQuestion } from '../../services/api';
+import { 
+  fetchQuestions, 
+  deleteQuestion, 
+  updateQuestion 
+} from '../../services/api'; 
 
 const QuestionList = ({ setQuestions }) => {
   const [questions, setQuestionsState] = useState([]);
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [editedQuestionText, setEditedQuestionText] = useState('');
+  const [editedOptions, setEditedOptions] = useState(['', '', '', '']);
+  const [editedCorrectAnswer, setEditedCorrectAnswer] = useState('');
+  const [editedRemark, setEditedRemark] = useState('');
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -22,7 +29,7 @@ const QuestionList = ({ setQuestions }) => {
   const handleDeleteQuestion = async (id) => {
     try {
       await deleteQuestion(id);
-      const updatedQuestions = questions.filter((question) => question.id !== id);
+      const updatedQuestions = questions.filter((question) => question.qId !== id);
       setQuestionsState(updatedQuestions);
       if (setQuestions) setQuestions(updatedQuestions);
     } catch (error) {
@@ -33,21 +40,35 @@ const QuestionList = ({ setQuestions }) => {
   const handleEditQuestion = (question) => {
     setEditingQuestion(question);
     setEditedQuestionText(question.question);
+    setEditedOptions([question.option1, question.option2, question.option3, question.option4]);
+    setEditedCorrectAnswer(question.answer);
+    setEditedRemark(question.remark || '');
   };
 
   const handleSaveEdit = async (id) => {
     try {
-      const updatedQuestion = { question: editedQuestionText };
+      const updatedQuestion = {
+        question: editedQuestionText,
+        option1: editedOptions[0],
+        option2: editedOptions[1],
+        option3: editedOptions[2],
+        option4: editedOptions[3],
+        answer: editedCorrectAnswer,
+        remark: editedRemark,
+      };
       await updateQuestion(id, updatedQuestion);
 
-      const updatedQuestions = questions.map((q) =>
-        q.id === id ? { ...q, question: editedQuestionText } : q
+      const updatedQuestions = questions.map((question) =>
+        question.qId === id ? { ...question, ...updatedQuestion } : question
       );
       setQuestionsState(updatedQuestions);
       if (setQuestions) setQuestions(updatedQuestions);
 
       setEditingQuestion(null);
       setEditedQuestionText('');
+      setEditedOptions(['', '', '', '']);
+      setEditedCorrectAnswer('');
+      setEditedRemark('');
     } catch (error) {
       console.error('Error updating question:', error);
     }
@@ -56,6 +77,9 @@ const QuestionList = ({ setQuestions }) => {
   const handleCancelEdit = () => {
     setEditingQuestion(null);
     setEditedQuestionText('');
+    setEditedOptions(['', '', '', '']);
+    setEditedCorrectAnswer('');
+    setEditedRemark('');
   };
 
   return (
@@ -77,27 +101,26 @@ const QuestionList = ({ setQuestions }) => {
             </thead>
             <tbody>
               {questions.map((question) => (
-                <tr key={question.id} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-2 text-sm text-gray-700">{question.id}</td>
+                <tr key={question.qId} className="border-b hover:bg-gray-50">
+                  <td className="px-4 py-2 text-sm text-gray-700">{question.qId}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">
-                    {editingQuestion && editingQuestion.id === question.id ? (
-                      <input
-                        type="text"
+                    {editingQuestion && editingQuestion.qId === question.qId ? (
+                      <textarea
                         value={editedQuestionText}
                         onChange={(e) => setEditedQuestionText(e.target.value)}
-                        className="p-1 border border-gray-300 rounded"
+                        className="p-1 border border-gray-300 rounded w-full"
                       />
                     ) : (
                       question.question
                     )}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">{question.category?.name || '-'}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{question.category?.ctgName || '-'}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">{question.set?.name || '-'}</td>
                   <td className="px-4 py-2 space-x-2">
-                    {editingQuestion && editingQuestion.id === question.id ? (
+                    {editingQuestion && editingQuestion.qId === question.qId ? (
                       <>
                         <button
-                          onClick={() => handleSaveEdit(question.id)}
+                          onClick={() => handleSaveEdit(question.qId)}
                           className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm"
                         >
                           Save
@@ -118,7 +141,7 @@ const QuestionList = ({ setQuestions }) => {
                           Edit
                         </button>
                         <button
-                          onClick={() => handleDeleteQuestion(question.id)}
+                          onClick={() => handleDeleteQuestion(question.qId)}
                           className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
                         >
                           Delete

@@ -4,7 +4,7 @@ import { createPurchase } from '../../services/api'; // Adjust the import accord
 const PurchaseForm = () => {
   const [purchaseDetails, setPurchaseDetails] = useState({
     userId: '',
-    productId: '',
+    purchaseType: '', // Changed from productId to purchaseType
     amount: '',
   });
 
@@ -19,10 +19,9 @@ const PurchaseForm = () => {
     e.preventDefault();
     try {
       await createPurchase(purchaseDetails);
-      // Reset form after successful submission
       setPurchaseDetails({
         userId: '',
-        productId: '',
+        purchaseType: '',
         amount: '',
       });
     } catch (error) {
@@ -45,17 +44,23 @@ const PurchaseForm = () => {
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium text-gray-700">Product ID:</label>
-          <input
-            type="text"
-            name="productId"
-            value={purchaseDetails.productId}
+          <label className="block text-sm font-medium text-gray-700">Purchase Type:</label>
+          <select
+            name="purchaseType"
+            value={purchaseDetails.purchaseType}
             onChange={handleChange}
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-          />
+          >
+            <option value="" disabled>Select a type</option>
+            <option value="SetA">SetA</option>
+            <option value="SetB">SetB</option>
+            <option value="Real-Time">Real-Time</option>
+          </select>
         </div>
+
         <div>
           <label className="block text-sm font-medium text-gray-700">Amount:</label>
           <input
@@ -67,6 +72,7 @@ const PurchaseForm = () => {
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
+
         <button
           type="submit"
           className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
@@ -79,3 +85,4 @@ const PurchaseForm = () => {
 };
 
 export default PurchaseForm;
+
