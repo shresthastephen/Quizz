@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { createCategory, updateCategory, fetchCategoryById } from '../../services/api';
+import { 
+  createCategory, 
+  updateCategory, 
+  fetchCategoryById 
+} from '../../services/api';
 
 const CategoryForm = ({ categoryId }) => {
   const [categoryName, setCategoryName] = useState('');
