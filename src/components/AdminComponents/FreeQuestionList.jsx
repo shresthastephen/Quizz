@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  fetchFreeQuestions, 
-  deleteFreeQuestion, 
-  updateFreeQuestion 
-} from '../../services/api'; 
+import {
+  fetchFreeQuestions,
+  deleteFreeQuestion,
+  updateFreeQuestion,
+} from '../../services/api';
 
 const FreeQuestionList = ({ setQuestions }) => {
   const [questions, setQuestionsState] = useState([]);
-  const [editingQuestion, setEditingQuestion] = useState(null);
+  const [editingQId, setEditingQId] = useState(null);
   const [editedQuestionText, setEditedQuestionText] = useState('');
   const [editedOptions, setEditedOptions] = useState(['', '', '', '']);
   const [editedCorrectAnswer, setEditedCorrectAnswer] = useState('');
@@ -38,7 +38,7 @@ const FreeQuestionList = ({ setQuestions }) => {
   };
 
   const handleEditQuestion = (question) => {
-    setEditingQuestion(question);
+    setEditingQId(question.qId);
     setEditedQuestionText(question.question);
     setEditedOptions([question.option1, question.option2, question.option3, question.option4]);
     setEditedCorrectAnswer(question.answer);
@@ -64,7 +64,8 @@ const FreeQuestionList = ({ setQuestions }) => {
       setQuestionsState(updatedQuestions);
       if (setQuestions) setQuestions(updatedQuestions);
 
-      setEditingQuestion(null);
+      // Reset editing state
+      setEditingQId(null);
       setEditedQuestionText('');
       setEditedOptions(['', '', '', '']);
       setEditedCorrectAnswer('');
@@ -75,7 +76,7 @@ const FreeQuestionList = ({ setQuestions }) => {
   };
 
   const handleCancelEdit = () => {
-    setEditingQuestion(null);
+    setEditingQId(null);
     setEditedQuestionText('');
     setEditedOptions(['', '', '', '']);
     setEditedCorrectAnswer('');
@@ -102,7 +103,7 @@ const FreeQuestionList = ({ setQuestions }) => {
               {questions.map((question) => (
                 <tr key={question.qId}>
                   <td className="px-4 py-2 text-sm text-gray-700">
-                    {editingQuestion && editingQuestion.qId === question.qId ? (
+                    {editingQId === question.qId ? (
                       <textarea
                         value={editedQuestionText}
                         onChange={(e) => setEditedQuestionText(e.target.value)}
@@ -116,7 +117,7 @@ const FreeQuestionList = ({ setQuestions }) => {
                     {question.category?.ctgName || 'N/A'}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-700">
-                    {editingQuestion && editingQuestion.qId === question.qId ? (
+                    {editingQId === question.qId ? (
                       <select
                         value={editedCorrectAnswer}
                         onChange={(e) => setEditedCorrectAnswer(e.target.value)}
@@ -134,7 +135,7 @@ const FreeQuestionList = ({ setQuestions }) => {
                     )}
                   </td>
                   <td className="px-4 py-2 space-x-2">
-                    {editingQuestion && editingQuestion.qId === question.qId ? (
+                    {editingQId === question.qId ? (
                       <>
                         <button
                           onClick={() => handleSaveEdit(question.qId)}
@@ -177,6 +178,7 @@ const FreeQuestionList = ({ setQuestions }) => {
 };
 
 export default FreeQuestionList;
+
 
 
 
