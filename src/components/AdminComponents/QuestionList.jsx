@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  fetchQuestions, 
-  deleteQuestion, 
-  updateQuestion 
-} from '../../services/api'; 
+import { fetchQuestions, deleteQuestion, updateQuestion } from '../../services/api'; 
 
 const QuestionList = ({ setQuestions }) => {
   const [questions, setQuestionsState] = useState([]);
-  const [editingQuestion, setEditingQuestion] = useState(null);
+  const [editingQuestionId, setEditingQuestionId] = useState(null);
   const [editedQuestionText, setEditedQuestionText] = useState('');
-  const [editedOptions, setEditedOptions] = useState(['', '', '', '']);
-  const [editedCorrectAnswer, setEditedCorrectAnswer] = useState('');
-  const [editedRemark, setEditedRemark] = useState('');
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -29,7 +22,7 @@ const QuestionList = ({ setQuestions }) => {
   const handleDeleteQuestion = async (id) => {
     try {
       await deleteQuestion(id);
-      const updatedQuestions = questions.filter((question) => question.qId !== id);
+      const updatedQuestions = questions.filter(q => q.qId !== id);
       setQuestionsState(updatedQuestions);
       if (setQuestions) setQuestions(updatedQuestions);
     } catch (error) {
@@ -38,48 +31,33 @@ const QuestionList = ({ setQuestions }) => {
   };
 
   const handleEditQuestion = (question) => {
-    setEditingQuestion(question.qId);
+    setEditingQuestionId(question.qId);
     setEditedQuestionText(question.question);
-    setEditedOptions([question.option1, question.option2, question.option3, question.option4]);
-    setEditedCorrectAnswer(question.answer);
-    setEditedRemark(question.remark || '');
   };
 
   const handleSaveEdit = async (id) => {
     try {
       const updatedQuestion = {
         question: editedQuestionText,
-        option1: editedOptions[0],
-        option2: editedOptions[1],
-        option3: editedOptions[2],
-        option4: editedOptions[3],
-        answer: editedCorrectAnswer,
-        remark: editedRemark,
       };
       await updateQuestion(id, updatedQuestion);
 
-      const updatedQuestions = questions.map((question) =>
-        question.qId === id ? { ...question, ...updatedQuestion } : question
+      const updatedQuestions = questions.map(q => 
+        q.qId === id ? { ...q, ...updatedQuestion } : q
       );
       setQuestionsState(updatedQuestions);
       if (setQuestions) setQuestions(updatedQuestions);
 
-      setEditingQuestion(null);
+      setEditingQuestionId(null);
       setEditedQuestionText('');
-      setEditedOptions(['', '', '', '']);
-      setEditedCorrectAnswer('');
-      setEditedRemark('');
     } catch (error) {
       console.error('Error updating question:', error);
     }
   };
 
   const handleCancelEdit = () => {
-    setEditingQuestion(null);
+    setEditingQuestionId(null);
     setEditedQuestionText('');
-    setEditedOptions(['', '', '', '']);
-    setEditedCorrectAnswer('');
-    setEditedRemark('');
   };
 
   return (
@@ -100,87 +78,32 @@ const QuestionList = ({ setQuestions }) => {
               </tr>
             </thead>
             <tbody>
-              {questions.map((question) => (
+              {questions.map(question => (
                 <tr key={question.qId} className="border-b hover:bg-gray-50">
                   <td className="px-4 py-2 text-sm text-gray-700">{question.qId}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">
-                   {editingQuestion && editingQuestion.qId === question.qId ? (
-                     <div className="space-y-1">
-                       <textarea
-                         value={editedQuestionText}
-                         onChange={(e) => setEditedQuestionText(e.target.value)}
-                         className="p-1 border border-gray-300 rounded w-full"
-                       />
-                       {editedOptions.map((opt, index) => (
-                         <input
-                           key={index}
-                           value={opt}
-                           onChange={(e) => {
-                             const newOptions = [...editedOptions];
-                             newOptions[index] = e.target.value;
-                             setEditedOptions(newOptions);
-                           }}
-                           placeholder={`Option ${index + 1}`}
-                           className="p-1 border border-gray-300 rounded w-full"
-                         />
-                       ))}
-                       <input
-                         value={editedCorrectAnswer}
-                         onChange={(e) => setEditedCorrectAnswer(e.target.value)}
-                         placeholder="Correct Answer"
-                         className="p-1 border border-gray-300 rounded w-full"
-                       />
-                       <input
-                         value={editedRemark}
-                         onChange={(e) => setEditedRemark(e.target.value)}
-                         placeholder="Remark"
-                         className="p-1 border border-gray-300 rounded w-full"
-                       />
-                     </div>
-                   ) : (
-                     <>
-                       <div>{question.question}</div>
-                       <div className="text-xs text-gray-500">A: {question.option1}</div>
-                       <div className="text-xs text-gray-500">B: {question.option2}</div>
-                       <div className="text-xs text-gray-500">C: {question.option3}</div>
-                       <div className="text-xs text-gray-500">D: {question.option4}</div>
-                       <div className="text-xs text-green-600">Answer: {question.answer}</div>
-                       <div className="text-xs text-blue-500">Remark: {question.remark}</div>
-                     </>
-                   )}
+                    {editingQuestionId === question.qId ? (
+                      <textarea
+                        value={editedQuestionText}
+                        onChange={e => setEditedQuestionText(e.target.value)}
+                        className="p-1 border border-gray-300 rounded w-full"
+                      />
+                    ) : (
+                      question.question
+                    )}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-700">{question.category?.ctgName || '-'}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">{question.set?.name || '-'}</td>
                   <td className="px-4 py-2 space-x-2">
-                    {editingQuestion && editingQuestion.qId === question.qId ? (
+                    {editingQuestionId === question.qId ? (
                       <>
-                        <button
-                          onClick={() => handleSaveEdit(question.qId)}
-                          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm"
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={handleCancelEdit}
-                          className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm"
-                        >
-                          Cancel
-                        </button>
+                        <button onClick={() => handleSaveEdit(question.qId)} className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm">Save</button>
+                        <button onClick={handleCancelEdit} className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm">Cancel</button>
                       </>
                     ) : (
                       <>
-                        <button
-                          onClick={() => handleEditQuestion(question)}
-                          className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteQuestion(question.qId)}
-                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
-                        >
-                          Delete
-                        </button>
+                        <button onClick={() => handleEditQuestion(question)} className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm">Edit</button>
+                        <button onClick={() => handleDeleteQuestion(question.qId)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm">Delete</button>
                       </>
                     )}
                   </td>
@@ -195,4 +118,3 @@ const QuestionList = ({ setQuestions }) => {
 };
 
 export default QuestionList;
-
