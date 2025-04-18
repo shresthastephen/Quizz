@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  fetchFreeQuestions,
-  deleteFreeQuestion,
-  updateFreeQuestion,
-} from '../../services/api';
+import { fetchFreeQuestions, deleteFreeQuestion, updateFreeQuestion } from '../../services/api';
 
 const FreeQuestionList = ({ setQuestions }) => {
   const [questions, setQuestionsState] = useState([]);
   const [editingQId, setEditingQId] = useState(null);
   const [editedQuestionText, setEditedQuestionText] = useState('');
-  const [editedOptions, setEditedOptions] = useState(['', '', '', '']);
-  const [editedCorrectAnswer, setEditedCorrectAnswer] = useState('');
-  const [editedRemark, setEditedRemark] = useState('');
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -40,21 +33,12 @@ const FreeQuestionList = ({ setQuestions }) => {
   const handleEditQuestion = (question) => {
     setEditingQId(question.qId);
     setEditedQuestionText(question.question);
-    setEditedOptions([question.option1, question.option2, question.option3, question.option4]);
-    setEditedCorrectAnswer(question.answer);
-    setEditedRemark(question.remark || '');
   };
 
   const handleSaveEdit = async (id) => {
     try {
       const updatedQuestion = {
         question: editedQuestionText,
-        option1: editedOptions[0],
-        option2: editedOptions[1],
-        option3: editedOptions[2],
-        option4: editedOptions[3],
-        answer: editedCorrectAnswer,
-        remark: editedRemark,
       };
       await updateFreeQuestion(id, updatedQuestion);
 
@@ -67,9 +51,6 @@ const FreeQuestionList = ({ setQuestions }) => {
       // Reset editing state
       setEditingQId(null);
       setEditedQuestionText('');
-      setEditedOptions(['', '', '', '']);
-      setEditedCorrectAnswer('');
-      setEditedRemark('');
     } catch (error) {
       console.error('Error updating question:', error);
     }
@@ -78,9 +59,6 @@ const FreeQuestionList = ({ setQuestions }) => {
   const handleCancelEdit = () => {
     setEditingQId(null);
     setEditedQuestionText('');
-    setEditedOptions(['', '', '', '']);
-    setEditedCorrectAnswer('');
-    setEditedRemark('');
   };
 
   return (
@@ -95,7 +73,6 @@ const FreeQuestionList = ({ setQuestions }) => {
               <tr>
                 <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">Question</th>
                 <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">Category</th>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">Correct Answer</th>
                 <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
               </tr>
             </thead>
@@ -116,27 +93,9 @@ const FreeQuestionList = ({ setQuestions }) => {
                   <td className="px-4 py-2 text-sm text-gray-700">
                     {question.category?.ctgName || 'N/A'}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
-                    {editingQId === question.qId ? (
-                      <select
-                        value={editedCorrectAnswer}
-                        onChange={(e) => setEditedCorrectAnswer(e.target.value)}
-                        className="p-1 border border-gray-300 rounded w-full"
-                      >
-                        <option value="">Select Correct Answer</option>
-                        {editedOptions.map((option, index) => (
-                          <option key={index} value={option}>
-                            {option || `Option ${index + 1}`}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      question.answer
-                    )}
-                  </td>
                   <td className="px-4 py-2 space-x-2">
                     {editingQId === question.qId ? (
-                      <>
+                      <div>
                         <button
                           onClick={() => handleSaveEdit(question.qId)}
                           className="px-3 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-600"
@@ -149,9 +108,9 @@ const FreeQuestionList = ({ setQuestions }) => {
                         >
                           Cancel
                         </button>
-                      </>
+                      </div>
                     ) : (
-                      <>
+                      <div>
                         <button
                           onClick={() => handleEditQuestion(question)}
                           className="px-3 py-1 text-sm bg-yellow-400 text-white rounded hover:bg-yellow-500"
@@ -164,7 +123,7 @@ const FreeQuestionList = ({ setQuestions }) => {
                         >
                           Delete
                         </button>
-                      </>
+                      </div>
                     )}
                   </td>
                 </tr>
