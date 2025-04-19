@@ -22,10 +22,11 @@ const TestGuidePage = () => {
   const [messageType, setMessageType] = useState(""); // 'login' or 'subscribe'
 
   const handleProtectedClick = (path) => {
-     if (!isLoggedIn || !isSubscribed) {
-      setMessageType(!isLoggedIn ? "login" : "subscribe");
-      setShowMessage(true);
-    } else {
+    // if (!isLoggedIn || !isSubscribed) {
+    //  setMessageType(!isLoggedIn ? "login" : "subscribe");
+    //  setShowMessage(true);
+    //} else 
+    {
       navigate(path);
     }
   };

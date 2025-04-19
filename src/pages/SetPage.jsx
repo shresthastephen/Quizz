@@ -25,8 +25,6 @@ const SetPage = () => {
 
   // Get the filtered questions based on course, set, and test params
   const questions = filterQuestions();
-  0
-
 
   useEffect(() => {
     if (submitted || timeLeft <= 0) {

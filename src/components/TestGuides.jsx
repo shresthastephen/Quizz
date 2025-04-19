@@ -2,12 +2,24 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const testGuides = [
-  { id: "ielts", name: "IELTS", description: "Prepare for the International English Language Testing System (IELTS) exam." },
-  { id: "sat", name: "SAT", description: "Strategies, practice questions, and expert tips for the SAT exam." },
-  { id: "pte", name: "PTE", description: "Pearson Test of English Academic preparation for non-native speakers." },
-  { id: "toefl", name: "TOEFL", description: "Test of English as a Foreign Language (TOEFL) preparation guide." },
-  { id: "gre", name: "GRE", description: "Practice tests and strategies for the GRE, required for graduate schools." },
-  { id: "gmat", name: "GMAT", description: "GMAT test preparation for business school admissions." },
+  { id: "ielts", 
+    name: "IELTS", 
+    description: "Prepare for the International English Language Testing System (IELTS) exam." },
+  { id: "sat", 
+    name: "SAT", 
+    description: "Strategies, practice questions, and expert tips for the SAT exam." },
+  { id: "pte", 
+    name: "PTE", 
+    description: "Pearson Test of English Academic preparation for non-native speakers." },
+  { id: "toefl", 
+    name: "TOEFL", 
+    description: "Test of English as a Foreign Language (TOEFL) preparation guide." },
+  { id: "gre", 
+    name: "GRE", 
+    description: "Practice tests and strategies for the GRE, required for graduate schools." },
+  { id: "gmat", 
+    name: "GMAT", 
+    description: "GMAT test preparation for business school admissions." },
 ];
 
 const TestGuides = () => {

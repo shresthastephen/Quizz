@@ -26,7 +26,6 @@ const menuItems = [
   {
     name: "Features",
     dropdown: [
-      { name: "Mock Tests", link: "/mocktest" },
       { name: "Performance Analytics", link: "/features/analytics" },
     ],
   },
@@ -50,7 +49,7 @@ const Nav = () => {
   };
 
   const handleRandomQuiz = () => {
-    navigate("/mocktest");
+    navigate("/random");
   };
 
   const handleSignIn = () => {

@@ -18,7 +18,7 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [category, setCategory] = useState(null);
   const [set, setSet] = useState(null);
-  const [remarks, setRemarks] = useState('');
+  const [remark, setRemark] = useState('');
   const [categories, setCategories] = useState([]);
   const [sets, setSets] = useState([]);
 
@@ -50,17 +50,18 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
       const loadQuestion = async () => {
         try {
           const response = await fetchQuestionById(questionId);
-          setQuestionText(response.data.question);
+          const data = response.data;
+          setQuestionText(data.question);
           setOptions([
-            response.data.option1 || '',
-            response.data.option2 || '',
-            response.data.option3 || '',
-            response.data.option4 || '',
+            data.option1 || '',
+            data.option2 || '',
+            data.option3 || '',
+            data.option4 || '',
           ]);
-          setCorrectAnswer(response.data.answer || '');
-          setCategory(response.data.category);
-          setSet(response.data.set);
-          setRemarks(response.data.remarks || '');
+          setCorrectAnswer(data.answer || '');
+          setCategory(data.category);
+          setSet(data.set);
+          setRemark(data.remark || '');
         } catch (error) {
           console.error('Error fetching question:', error);
         }
@@ -86,7 +87,8 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
       answer: correctAnswer,
       category: { ctgId: category?.ctgId },
       set: { setId: set?.setId },
-      remarks: remarks
+      remark: remark,
+      setType: 'free', // default or required value
     };
 
     try {
@@ -95,13 +97,19 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
       } else {
         await createQuestion(questionData);
       }
+
+      // Reset form
       setQuestionText('');
       setOptions(['', '', '', '']);
       setCorrectAnswer('');
       setCategory(null);
       setSet(null);
-      setRemarks('');
-      setEditingQuestion(null);
+      setRemark('');
+
+      // Safe callback
+      if (setEditingQuestion) {
+        setEditingQuestion(null);
+      }
     } catch (error) {
       console.error('Error submitting question:', error);
     }
@@ -120,7 +128,7 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
             value={questionText}
             onChange={(e) => setQuestionText(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
           />
         </div>
 
@@ -133,7 +141,7 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
               value={option}
               onChange={(e) => handleOptionChange(index, e.target.value)}
               required
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
             />
           </div>
         ))}
@@ -145,7 +153,7 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
             value={correctAnswer}
             onChange={(e) => setCorrectAnswer(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
           >
             <option value="">Select Correct Answer</option>
             {options.map((option, index) => (
@@ -168,7 +176,7 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
               setCategory(selectedCategory);
             }}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
           >
             <option value="">Select a category</option>
             {categories.map((cat) => (
@@ -189,7 +197,7 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
               setSet(selectedSet);
             }}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
           >
             <option value="">Select a set</option>
             {sets.map((s) => (
@@ -204,9 +212,9 @@ const QuestionForm = ({ questionId, setEditingQuestion }) => {
         <div>
           <label className="block text-sm font-medium text-gray-700">Remarks (Course):</label>
           <select
-            value={remarks}
-            onChange={(e) => setRemarks(e.target.value)}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 max-h-40 overflow-y-auto"
+            value={remark}
+            onChange={(e) => setRemark(e.target.value)}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
             required
           >
             <option value="">Select a course</option>
