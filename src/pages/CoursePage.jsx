@@ -24,11 +24,11 @@ const CoursePage = () => {
   const handleProtectedClick = (path) => {
     // For now, allow access without login or subscription
     // Remove the check for isLoggedIn and isSubscribed temporarily
-   // if (!isLoggedIn || !isSubscribed) {
+   if (!isLoggedIn || !isSubscribed) {
       // If login or subscription is required, show message
-    //  setMessageType(!isLoggedIn ? "login" : "subscribe");
-    //  setShowMessage(true);
-    //} else 
+   setMessageType(!isLoggedIn ? "login" : "subscribe");
+    setShowMessage(true);
+    } else 
     {
       navigate(path);
     }

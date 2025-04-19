@@ -35,13 +35,15 @@ const Nav = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
   const navRef = useRef(null);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
     setIsLoggedIn(!!user);
+    setIsAdmin(user?.role === "admin");
   }, []);
 
   const handleDropdown = (index) => {
@@ -58,13 +60,14 @@ const Nav = () => {
 
   const handleLogout = async () => {
     try {
-      await logoutUser();
-      localStorage.removeItem("user");
-      setIsLoggedIn(false);
-      navigate("/");
+      await logoutUser(); // you can remove this if admin doesn't use API logout
     } catch (error) {
       console.error("Logout failed:", error);
-      alert("An error occurred during logout.");
+    } finally {
+      localStorage.removeItem("user");
+      setIsLoggedIn(false);
+      setIsAdmin(false);
+      navigate("/signin");
     }
   };
 
@@ -85,12 +88,10 @@ const Nav = () => {
   return (
     <header className="bg-[#FFAC10] px-6 py-4 shadow-md relative z-50">
       <nav ref={navRef} className="flex justify-between items-center relative z-50">
-        {/* Logo */}
         <div className="text-2xl font-bold text-white">
           <Link to="/">QUIZZPRO</Link>
         </div>
 
-        {/* Hamburger Toggle */}
         <button
           className="lg:hidden text-white focus:outline-none z-50"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -153,12 +154,22 @@ const Nav = () => {
                   Sign In
                 </button>
               ) : (
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
-                >
-                  Logout
-                </button>
+                <>
+                  {isAdmin && (
+                    <button
+                      onClick={() => navigate("/admin")}
+                      className="bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
+                    >
+                      Admin Panel
+                    </button>
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
+                  >
+                    Logout
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -219,12 +230,22 @@ const Nav = () => {
               Sign In
             </button>
           ) : (
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
-            >
-              Logout
-            </button>
+            <>
+              {isAdmin && (
+                <button
+                  onClick={() => navigate("/admin")}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
+                >
+                  Admin Panel
+                </button>
+              )}
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
+              >
+                Logout
+              </button>
+            </>
           )}
         </div>
       </nav>
@@ -233,3 +254,4 @@ const Nav = () => {
 };
 
 export default Nav;
+
