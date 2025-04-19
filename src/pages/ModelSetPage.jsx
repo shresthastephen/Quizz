@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import originalQuestions from "./../lib/questions"; // Mock questions data
-import testQuestions from "./../lib/testquestions";  // Mock test questions
+import originalQuestions from "../lib/questions"; // Mock questions data
+import testQuestions from "../lib/testquestions";  // Mock test questions
 
 const DefaultPage = () => {
   const { course, set, test } = useParams(); // Get course, set, and test type from URL params
@@ -14,11 +14,11 @@ const DefaultPage = () => {
     const filterQuestions = () => {
       if (test) {
         // If test is specified, return test questions regardless of the course
-        return testQuestions.filter((question) => question.test === test);
+        return testQuestions.filter((question) => question.test === test && question.set === set);
       }
       // If no test is specified, return regular course questions filtered by course and set
       return originalQuestions.filter(
-        (question) => question.course === course && question.set === set
+        (question) => question.course === course 
       );
     };
   
@@ -107,7 +107,7 @@ const DefaultPage = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white border-[#ffac10] border-2 mt-2 shadow-md rounded-lg">
       <div className="flex justify-between items-center mb-2">
         <h1 className="text-2xl font-bold">
-          {course ? course.toUpperCase() : "Course"} - {test ? test.toUpperCase() : "Test"} - Default
+          {course ? course.toUpperCase() : "Course"} - {test ? test.toUpperCase() : "Test"} 
         </h1>
         <div className="text-red-500 font-bold text-lg">
           Time Left: {formatTime(timeLeft)}

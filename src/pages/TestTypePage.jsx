@@ -31,10 +31,18 @@ const TestTypePage = () => {
           <div className="flex gap-4">
             <div className="border-2 border-[#FFAC10] rounded-lg shadow-lg p-8 w-48 h-48 flex flex-col justify-center items-center">
               <button
-                onClick={() => navigate(`/test-guides/${test}/model/default`)}
+                 onClick={() => navigate(`/test-guides/${test}/model/set-a`)}
                 className="text-4xl font-bold text-[#FFAC10] hover:text-black transition"
               >
-                Default Set 
+                Set A
+              </button>
+            </div>
+            <div className="border-2 border-[#FFAC10] rounded-lg shadow-lg p-8 w-48 h-48 flex flex-col justify-center items-center">
+              <button
+                onClick={() => navigate(`/test-guides/${test}/model/set-b`)}
+                className="text-4xl font-bold text-[#FFAC10] hover:text-black transition"
+              >
+                Set B
               </button>
             </div>
           </div>
@@ -48,7 +56,7 @@ const TestTypePage = () => {
             <div className="border-2 border-[#FFAC10] rounded-lg shadow-lg p-8 w-48 h-48 flex flex-col justify-center items-center">
               <button
                 onClick={() => navigate(`/test-guides/${test}/old/set-a`)}
-                className="text-2xl font-bold text-[#FFAC10] hover:text-black transition"
+                className="text-4xl font-bold text-[#FFAC10] hover:text-black transition"
               >
                 Set A
               </button>
@@ -56,7 +64,7 @@ const TestTypePage = () => {
             <div className="border-2 border-[#FFAC10] rounded-lg shadow-lg p-8 w-48 h-48 flex flex-col justify-center items-center">
               <button
                 onClick={() => navigate(`/test-guides/${test}/old/set-b`)}
-                className="text-2xl font-bold text-[#FFAC10] hover:text-black transition"
+                className="text-4xl font-bold text-[#FFAC10] hover:text-black transition"
               >
                 Set B
               </button>

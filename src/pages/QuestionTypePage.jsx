@@ -31,10 +31,18 @@ const QuestionTypePage = () => {
           <div className="flex gap-4">
             <div className="border-2 border-[#FFAC10] rounded-lg shadow-lg p-8 w-48 h-48 flex flex-col justify-center items-center">
               <button
-                onClick={() => navigate(`/entrance/${course}/model/default`)}
+                onClick={() => navigate(`/entrance/${course}/model/set-a`)}
                 className="text-4xl font-bold text-[#FFAC10] hover:text-black transition"
               >
-                Default Set 
+                Set A
+              </button>
+            </div>
+            <div className="border-2 border-[#FFAC10] rounded-lg shadow-lg p-8 w-48 h-48 flex flex-col justify-center items-center">
+              <button
+                onClick={() => navigate(`/entrance/${course}/model/set-b`)}
+                className="text-4xl font-bold text-[#FFAC10] hover:text-black transition"
+              >
+                Set B
               </button>
             </div>
           </div>

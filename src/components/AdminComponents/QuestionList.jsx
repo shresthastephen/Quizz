@@ -1,5 +1,6 @@
+// src/components/AdminComponents/QuestionList.jsx
 import React, { useState, useEffect } from 'react';
-import { fetchQuestions, deleteQuestion, updateQuestion } from '../../services/api'; 
+import { fetchQuestions, deleteQuestion, updateQuestion } from '../../services/api';
 
 const QuestionList = ({ setQuestions }) => {
   const [questions, setQuestionsState] = useState([]);
@@ -9,9 +10,18 @@ const QuestionList = ({ setQuestions }) => {
   useEffect(() => {
     const loadQuestions = async () => {
       try {
-        const response = await fetchQuestions();
-        setQuestionsState(response.data);
-        if (setQuestions) setQuestions(response.data);
+        const { data } = await fetchQuestions();
+        console.log('🔍 questions payload:', data);
+
+        // Normalize ID to `qId` no matter if your JSON uses `id`, `qId` or `q_id`
+        const normalized = data.map(q => ({
+          ...q,
+          qId: q.qId ?? q.id ?? q.q_id
+        }));
+        console.log('✅ normalized questions:', normalized);
+
+        setQuestionsState(normalized);
+        if (setQuestions) setQuestions(normalized);
       } catch (error) {
         console.error('Error loading questions:', error);
       }
@@ -20,11 +30,15 @@ const QuestionList = ({ setQuestions }) => {
   }, [setQuestions]);
 
   const handleDeleteQuestion = async (id) => {
+    if (id == null || typeof id !== 'number') {
+      console.error('🚫 Invalid id for deletion:', id);
+      return;
+    }
     try {
       await deleteQuestion(id);
-      const updatedQuestions = questions.filter(q => q.qId !== id);
-      setQuestionsState(updatedQuestions);
-      if (setQuestions) setQuestions(updatedQuestions);
+      const updated = questions.filter(q => q.qId !== id);
+      setQuestionsState(updated);
+      if (setQuestions) setQuestions(updated);
     } catch (error) {
       console.error('Error deleting question:', error);
     }
@@ -36,18 +50,19 @@ const QuestionList = ({ setQuestions }) => {
   };
 
   const handleSaveEdit = async (id) => {
+    if (id == null || typeof id !== 'number') {
+      console.error('🚫 Invalid id for update:', id);
+      return;
+    }
     try {
-      const updatedQuestion = {
-        question: editedQuestionText,
-      };
+      const updatedQuestion = { question: editedQuestionText };
       await updateQuestion(id, updatedQuestion);
 
-      const updatedQuestions = questions.map(q => 
+      const updatedList = questions.map(q =>
         q.qId === id ? { ...q, ...updatedQuestion } : q
       );
-      setQuestionsState(updatedQuestions);
-      if (setQuestions) setQuestions(updatedQuestions);
-
+      setQuestionsState(updatedList);
+      if (setQuestions) setQuestions(updatedList);
       setEditingQuestionId(null);
       setEditedQuestionText('');
     } catch (error) {
@@ -92,18 +107,42 @@ const QuestionList = ({ setQuestions }) => {
                       question.question
                     )}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">{question.category?.ctgName || '-'}</td>
-                  <td className="px-4 py-2 text-sm text-gray-700">{question.set?.name || '-'}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {question.category?.ctgName || '-'}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {question.set?.setName || '-'}
+                  </td>
                   <td className="px-4 py-2 space-x-2">
                     {editingQuestionId === question.qId ? (
                       <>
-                        <button onClick={() => handleSaveEdit(question.qId)} className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm">Save</button>
-                        <button onClick={handleCancelEdit} className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm">Cancel</button>
+                        <button
+                          onClick={() => handleSaveEdit(question.qId)}
+                          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={handleCancelEdit}
+                          className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md text-sm"
+                        >
+                          Cancel
+                        </button>
                       </>
                     ) : (
                       <>
-                        <button onClick={() => handleEditQuestion(question)} className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm">Edit</button>
-                        <button onClick={() => handleDeleteQuestion(question.qId)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm">Delete</button>
+                        <button
+                          onClick={() => handleEditQuestion(question)}
+                          className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteQuestion(question.qId)}
+                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm"
+                        >
+                          Delete
+                        </button>
                       </>
                     )}
                   </td>

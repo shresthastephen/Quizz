@@ -8,7 +8,6 @@ import SignUp from "./components/SignUp";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import VerifyEmailPage from "./components/VerifyEmailPage";
-import MockTest from "./components/MockTest";
 import Nav from "./components/Nav";
 import AboutUs from "./components/AboutUs";
 import Hero from "./components/Hero";
@@ -23,9 +22,10 @@ import TestGuidePage from "./pages/TestGuidePage";
 import TestTypePage from "./pages/TestTypePage";
 import Footer from "./components/Footer";
 import SetPage from "./pages/SetPage";
-import DefaultPage from "./pages/DefaultPage";
+import DefaultPage from "./pages/ModelSetPage";
 import QuestionGeneratePage from "./pages/QuestionGeneratePage";
 import OAuthCallback from "./components/OAuthCallback";
+import RandomPage from "./components/RandomPage";
 
 const AppContent = () => {
   const location = useLocation();
@@ -71,7 +71,7 @@ const AppContent = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
-        <Route path="/mocktest" element={<MockTest />} />
+        <Route path="/random" element={<RandomPage />} />
         <Route path="/entrance" element={<Entrance />} />
         <Route path="/entrance/:course" element={<CoursePage />} />
         <Route path="/entrance/:course/:type" element={<QuestionTypePage />} />
@@ -83,7 +83,7 @@ const AppContent = () => {
         <Route path="/test-guides/:test/old/:set" element={<SetPage />} />
         <Route path="/callback" element={<OAuthCallback />} />
         <Route
-          path="/entrance/:course/model/default"
+          path="/entrance/:course/model/:set"
           element={<DefaultPage />}
         />
         <Route
@@ -91,7 +91,7 @@ const AppContent = () => {
           element={<QuestionGeneratePage />}
         />
         <Route
-          path="/test-guides/:test/model/default"
+          path="/test-guides/:test/model/:set"
           element={<DefaultPage />}
         />
         <Route

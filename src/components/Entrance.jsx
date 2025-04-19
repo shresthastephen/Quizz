@@ -20,8 +20,14 @@ const courses = [
     description: "Bachelor in Information Technology.",
   },
 
-  { id: "bce", name: "BCE", description: "Bachelor of Computer Engineering." },
-  { id: "bds", name: "BDS", description: "Bachelor of Dental Surgery." },
+  { id: "bce", 
+    name: "BCE", 
+    description: "Bachelor of Computer Engineering." 
+  },
+  { id: "bds", 
+    name: "BDS", 
+    description: "Bachelor of Dental Surgery." 
+  },
 ];
 
 const Entrance = () => {

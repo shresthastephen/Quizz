@@ -9,8 +9,6 @@ import QuestionForm from "./components/AdminComponents/QuestionForm";
 import UserList from "./components/AdminComponents/UserList";
 import PurchaseList from "./components/AdminComponents/PurchaseList";
 import PurchaseForm from "./components/AdminComponents/PurchaseForm";
-import FreeQuestionList from "./components/AdminComponents/FreeQuestionList";
-import FreeQuestionForm from "./components/AdminComponents/FreeQuestionForm";
 import QuizAttemptList from "./components/AdminComponents/QuizAttemptList";
 import SetList from "./components/AdminComponents/SetList";
 import SetForm from "./components/AdminComponents/SetForm";
@@ -28,8 +26,6 @@ const App1 = () => {
           <Route path="users" element={<UserList />} />
           <Route path="purchases" element={<PurchaseList />} />
           <Route path="add-purchase" element={<PurchaseForm />} />
-          <Route path="free-questions" element={<FreeQuestionList />} />
-          <Route path="add-free-question" element={<FreeQuestionForm />} />
           <Route path="quiz-attempts" element={<QuizAttemptList />} />
           <Route path="sets" element={<SetList />} />
           <Route path="add-set" element={<SetForm />} />
