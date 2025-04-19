@@ -39,7 +39,7 @@ const UserList = () => {
               Email
             </th>
             <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
-              Actions
+              Action
             </th>
           </tr>
         </thead>
