@@ -45,6 +45,26 @@ export const createUser = (user) => axios.post(`${API_URL}/users`, user);
 export const updateUsers = (userId, user) => axios.put(`${API_URL}/users/${userId}`, user);
 export const deleteUser = (userId) => axios.delete(`${API_URL}/users/${userId}`);
 
+// Generate Real-Time Test
+export const generateRealTimeTest = (userId, categoryName, totalMarks) =>
+  axios.post(`${API_URL}/real-time-test/generate`, {
+    userId,
+    categoryName,
+    totalMarks,
+  });
+
+// Check if User Has Paid for Real-Time Test
+export const checkUserPayment = (userId) =>
+  axios.get(`${API_URL}/real-time-test/check-payment`, {
+    params: { userId },
+  });
+
+// Get Real-Time Test Details
+export const getRealTimeTestDetails = (userId, categoryName) =>
+  axios.get(`${API_URL}/real-time-test/details`, {
+    params: { userId, categoryName },
+  });
+  
 // ========== AUTH APIs ==========
 
 // Sign Up

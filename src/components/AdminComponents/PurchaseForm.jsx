@@ -4,7 +4,7 @@ import { createPurchase } from '../../services/api'; // Adjust the import accord
 const PurchaseForm = () => {
   const [purchaseDetails, setPurchaseDetails] = useState({
     userId: '',
-    purchaseType: '', // Changed from productId to purchaseType
+    purchaseType: '', 
     amount: '',
   });
 

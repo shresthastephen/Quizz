@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { loginUser, initiateOAuth2Login } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+// Hardcoded admin credentials
+const ADMIN_EMAIL = "adminquizz025@gmail.com";
+const ADMIN_PASSWORD = "admin123";
+
+const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,17 +19,37 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
-    if (!formData.email || !formData.password) {
+    const { email, password } = formData;
+
+    if (!email || !password) {
       setError("Please fill in all fields.");
       return;
     }
 
     setLoading(true);
     try {
-      const res = await loginUser(formData);
+      // Check hardcoded admin credentials
+      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        const adminData = {
+          email: ADMIN_EMAIL,
+          role: "admin",
+          name: "Admin",
+        };
+        localStorage.setItem("user", JSON.stringify(adminData));
+        navigate("/admin");
+        return;
+      }
+
+      // Regular user login via backend
+      const res = await loginUser({
+        email,
+        rawPassword: password,
+      });
+
       localStorage.setItem("user", JSON.stringify(res.data));
       navigate("/");
     } catch (err) {
+      console.error("Login error:", err.response);
       setError(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
@@ -94,7 +118,7 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Google Login Button (Custom OAuth2 Flow) */}
+          {/* Google Login Button */}
           <div className="mt-6 text-center">
             <button
               onClick={initiateOAuth2Login}
@@ -120,6 +144,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;
+
 
  

@@ -1,34 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import originalQuestions from "./../lib/questions"; // Mock questions data
-import testQuestions from "./../lib/testquestions";  // Mock test questions
+import { generateRealTimeTest, getRealTimeTestDetails } from "../services/api"; // adjust path if needed
 
 const GeneratedPage = () => {
-  const { course, set, test } = useParams(); // Get course, set, and test type from URL params
+  const { course, test } = useParams(); // Assuming `course` = categoryName
+  const userId = localStorage.getItem("userId"); // Update if stored differently
+  const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
   const [timeLeft, setTimeLeft] = useState(300); // 5-minute timer
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
   const questionsPerPage = 5;
 
-    const filterQuestions = () => {
-      if (test) {
-        // If test is specified, return test questions regardless of the course
-        return testQuestions.filter((question) => question.test === test);
+  useEffect(() => {
+    const fetchTestData = async () => {
+      try {
+        // Step 1: Generate test (only needs to happen once)
+        await generateRealTimeTest(userId, course, 20);
+
+        // Step 2: Fetch the questions
+        const { data } = await getRealTimeTestDetails(userId, course);
+        setQuestions(data.questions); // Assuming data.questions is the array
+      } catch (error) {
+        console.error("Error fetching test data:", error);
+      } finally {
+        setLoading(false);
       }
-      // If no test is specified, return regular course questions filtered by course and set
-      return originalQuestions.filter(
-        (question) => question.course === course && question.set === set
-      );
     };
-  
-    // Get the filtered questions based on course, set, and test params
-    const questions = filterQuestions();
+
+    fetchTestData();
+  }, [userId, course]);
 
   useEffect(() => {
     if (submitted || timeLeft <= 0) return;
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
+      setTimeLeft((prev) => prev - 1);
     }, 1000);
     return () => clearInterval(timer);
   }, [timeLeft, submitted]);
@@ -59,7 +66,7 @@ const GeneratedPage = () => {
       return;
     }
 
-    if (currentPage < questions.length / questionsPerPage - 1) {
+    if (currentPage < Math.ceil(questions.length / questionsPerPage) - 1) {
       setCurrentPage((prev) => prev + 1);
     } else {
       setSubmitted(true);
@@ -103,6 +110,10 @@ const GeneratedPage = () => {
     ));
   };
 
+  if (loading) {
+    return <div className="text-center py-10 text-lg">Loading Real-Time Test...</div>;
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white border-[#ffac10] border-2 mt-2 shadow-md rounded-lg">
       <div className="flex justify-between items-center mb-2">
@@ -130,7 +141,7 @@ const GeneratedPage = () => {
               type="submit"
               className="bg-[#ffac10] text-white py-2 px-4 rounded-md hover:text-black transition"
             >
-              {currentPage < questions.length / questionsPerPage - 1
+              {currentPage < Math.ceil(questions.length / questionsPerPage) - 1
                 ? "Next Page"
                 : "Submit"}
             </button>
