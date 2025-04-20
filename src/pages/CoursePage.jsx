@@ -15,27 +15,21 @@ const CoursePage = () => {
   const courseName = courseData[course] || "Unknown Course";
   const navigate = useNavigate();
 
-  const isLoggedIn = localStorage.getItem("token");
-  const isSubscribed = localStorage.getItem("subscribed") === "true";
-
+  const isLoggedIn = Boolean(localStorage.getItem("user"));
   const [showMessage, setShowMessage] = useState(false);
-  const [messageType, setMessageType] = useState(""); // "login" or "subscribe"
+  const [redirectPath, setRedirectPath] = useState(""); // Path to redirect after login
 
   const handleProtectedClick = (path) => {
-    // For now, allow access without login or subscription
-    // Remove the check for isLoggedIn and isSubscribed temporarily
-   if (!isLoggedIn || !isSubscribed) {
-      // If login or subscription is required, show message
-   setMessageType(!isLoggedIn ? "login" : "subscribe");
-    setShowMessage(true);
-    } else 
-    {
+    if (!isLoggedIn) {
+      setRedirectPath(path);
+      setShowMessage(true);
+    } else {
       navigate(path);
     }
   };
 
-  const goToLogin = () => navigate("/SignIn", { state: { from: `/entrance/${course}` } });
-  const goToSubscribe = () => navigate("/PlanSub");
+  const goToLogin = () =>
+    navigate("/SignIn", { state: { from: redirectPath } });
 
   return (
     <div className="bg-white min-h-screen px-10 py-5 relative">
@@ -74,29 +68,23 @@ const CoursePage = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-xl shadow-xl p-8 w-[90%] max-w-md text-center">
             <h2 className="text-2xl font-bold mb-4 text-gray-800">
-              {messageType === "login"
-                ? "Sign in required"
-                : "Subscription required"}
+              Sign in required
             </h2>
             <p className="mb-6 text-gray-600">
-              {messageType === "login"
-                ? "Please sign in to continue."
-                : "You need an active subscription to access this content."}
+              Please sign in to continue.
             </p>
             <div className="flex justify-center gap-4">
               <button
-                onClick={() => {
-                  setShowMessage(false);
-                }}
+                onClick={() => setShowMessage(false)}
                 className="bg-gray-300 hover:bg-gray-400 text-black px-5 py-2 rounded-full"
               >
                 Cancel
               </button>
               <button
-                onClick={messageType === "login" ? goToLogin : goToSubscribe}
+                onClick={goToLogin}
                 className="bg-[#FFAC10] hover:bg-[#e69900] text-white px-5 py-2 rounded-full"
               >
-                {messageType === "login" ? "Sign In" : "Subscribe"}
+                Sign In
               </button>
             </div>
           </div>

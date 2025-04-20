@@ -119,6 +119,10 @@ export const signUpUser = (user) =>
   
   // Start OAuth2 Login
   export const initiateOAuth2Login = () => {
+    // Save the current path before redirecting (for later use in OAuthCallback)
+    const currentPath = window.location.pathname;
+    localStorage.setItem("redirectAfterOAuth", currentPath);
+
     const url = `${OAUTH2_AUTHORIZATION_URL}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}`;
     window.location.href = url;
   };

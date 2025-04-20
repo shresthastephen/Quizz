@@ -15,25 +15,23 @@ const TestGuidePage = () => {
   const testName = testGuideData[test] || "Unknown Test Guide";
   const navigate = useNavigate();
 
-  const isLoggedIn = localStorage.getItem("token");
-  const isSubscribed = localStorage.getItem("subscribed") === "true";
-
+  const isLoggedIn =  Boolean(localStorage.getItem("user"));
   const [showMessage, setShowMessage] = useState(false);
-  const [messageType, setMessageType] = useState(""); // 'login' or 'subscribe'
+  const [redirectPath, setRedirectPath] = useState(""); // Path to redirect after login
 
   const handleProtectedClick = (path) => {
-    // if (!isLoggedIn || !isSubscribed) {
-    //  setMessageType(!isLoggedIn ? "login" : "subscribe");
-    //  setShowMessage(true);
-    //} else
-    {
-      navigate(path);
+    if (!isLoggedIn) {
+      setRedirectPath(path); // Store the path user tried to access
+      setShowMessage(true); // Show the login message
+    } else {
+      navigate(path); // Navigate if logged in
     }
   };
 
-  const goToLogin = () =>
-    navigate("/SignIn", { state: { from: `/test-guides/${test}` } });
-  const goToSubscribe = () => navigate("/PlanSub");
+  const goToLogin = () => {
+    // Redirect to login and pass the intended path as state
+    navigate("/SignIn", { state: { from: redirectPath } });
+  };
 
   return (
     <div className="bg-white min-h-screen px-10 py-5 relative">
@@ -72,14 +70,10 @@ const TestGuidePage = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded-xl shadow-xl p-8 w-[90%] max-w-md text-center">
             <h2 className="text-2xl font-bold mb-4 text-gray-800">
-              {messageType === "login"
-                ? "Sign in required"
-                : "Subscription required"}
+              Sign in required
             </h2>
             <p className="mb-6 text-gray-600">
-              {messageType === "login"
-                ? "Please sign in to continue."
-                : "You need an active subscription to access this content."}
+              Please sign in to continue.
             </p>
             <div className="flex justify-center gap-4">
               <button
@@ -89,10 +83,10 @@ const TestGuidePage = () => {
                 Cancel
               </button>
               <button
-                onClick={messageType === "login" ? goToLogin : goToSubscribe}
+                onClick={goToLogin}
                 className="bg-[#FFAC10] hover:bg-[#e69900] text-white px-5 py-2 rounded-full"
               >
-                {messageType === "login" ? "Sign In" : "Subscribe"}
+                Sign In
               </button>
             </div>
           </div>
@@ -125,3 +119,5 @@ const Card = ({ title, description, link, onClick, isProtected }) => (
 );
 
 export default TestGuidePage;
+
+

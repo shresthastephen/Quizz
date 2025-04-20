@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { loginUser, initiateOAuth2Login } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // Hardcoded admin credentials
 const ADMIN_EMAIL = "adminquizz025@gmail.com";
@@ -11,6 +11,8 @@ const SignIn = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // ⬅️ get redirect info from router
+  const redirectPath = location.state?.from || "/"; // ⬅️ fallback to homepage
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,7 +49,7 @@ const SignIn = () => {
       });
 
       localStorage.setItem("user", JSON.stringify(res.data));
-      navigate("/");
+      navigate(redirectPath);
     } catch (err) {
       console.error("Login error:", err.response);
       setError(err.response?.data?.message || "Login failed");
