@@ -1,28 +1,35 @@
-import React, { useState } from "react";
-import { resetPassword } from "../services/api"; // Import the reset password API function
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { resetPassword } from "../services/api";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ResetPassword = () => {
-  const [formData, setFormData] = useState({ password: '', confirmPassword: '' });
+  const [newPassword, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const email = searchParams.get('email');
+  const code = searchParams.get('code');
+
+  useEffect(() => {
+    if (!email || !code) {
+      setError('Invalid or missing reset link.');
+    }
+  }, [email, code]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!formData.password || formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match or are empty.');
+    if (!newPassword) {
+      setError('Password cannot be empty.');
       return;
     }
 
     setLoading(true);
     try {
-      await resetPassword(formData.password);
+      await resetPassword(email, code, newPassword); 
       alert('Password reset successful!');
       navigate('/login');
     } catch (err) {
@@ -50,29 +57,14 @@ const ResetPassword = () => {
               name="password"
               placeholder="Enter your new password"
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-2" htmlFor="confirmPassword">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              placeholder="Confirm your new password"
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={formData.confirmPassword}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !email || !code}
             className={`w-full p-3 rounded-lg text-white transition ${
               loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
             }`}

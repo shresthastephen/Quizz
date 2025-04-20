@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { FaUserCircle } from "react-icons/fa"; // Importing user icon from react-icons
 import { logoutUser } from "../services/api";
+import { updateUser } from "../services/api"; // Import updateUser function
 
 const menuItems = [
   { name: "About Us", link: "/AboutUs" },
@@ -36,14 +38,20 @@ const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
+  const [user, setUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [currentPassword, setCurrentPassword] = useState(""); // Store current password
+  const [newName, setNewName] = useState(""); // State for new name
+  const [newEmail, setNewEmail] = useState(""); // State for new email (optional)
+  
   const navigate = useNavigate();
   const navRef = useRef(null);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setIsLoggedIn(!!user);
-    setIsAdmin(user?.role === "admin");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+    setIsLoggedIn(!!storedUser);
+    setIsAdmin(storedUser?.role === "admin");
   }, []);
 
   const handleDropdown = (index) => {
@@ -60,25 +68,53 @@ const Nav = () => {
 
   const handleLogout = async () => {
     try {
-      await logoutUser(); 
+      await logoutUser();
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
       localStorage.removeItem("user");
       setIsLoggedIn(false);
       setIsAdmin(false);
+      setUser(null);
       navigate("/signin");
     }
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (navRef.current && !navRef.current.contains(event.target)) {
-        setOpenDropdown(null);
-        setMenuOpen(false);
-      }
-    };
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    
+    if (!currentPassword) {
+      alert("Please enter your current password");
+      return;
+    }
 
+    const updatedUser = { ...user, 
+      name: newName || user.name,  // Use new name if provided, else keep the current name
+      email: newEmail || user.email,  // Use new email if provided, else keep the current email
+     }; // Replace with the updated user data
+    try {
+      await updateUser(user.id, updatedUser, currentPassword);
+      setUser(updatedUser);
+      alert("Profile updated successfully");
+      setIsModalOpen(false); // Close modal after successful update
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      alert("Error updating profile");
+    }
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen); // Toggle the modal visibility
+  };
+
+  const handleClickOutside = (event) => {
+    if (navRef.current && !navRef.current.contains(event.target)) {
+      setOpenDropdown(null);
+      setMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -155,6 +191,13 @@ const Nav = () => {
                 </button>
               ) : (
                 <>
+                  <div className="text-white">{user?.name || user?.email}</div> {/* Show user info */}
+                  <button
+                    onClick={toggleModal} // Toggle modal visibility
+                    className="bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
+                  >
+                    Update Profile
+                  </button>
                   {isAdmin && (
                     <button
                       onClick={() => navigate("/admin")}
@@ -231,6 +274,19 @@ const Nav = () => {
             </button>
           ) : (
             <>
+              {/* User Icon */}
+              <div className="relative">
+                <FaUserCircle size={32} className="text-white" />
+                <div className="absolute top-0 right-0 text-xs text-white">
+                  {user?.name ? user.name.charAt(0).toUpperCase() : ""}
+                </div>
+              </div>
+              <button
+                onClick={toggleModal} // Toggle modal visibility
+                className="bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
+              >
+                Update Profile
+              </button>
               {isAdmin && (
                 <button
                   onClick={() => navigate("/admin")}
@@ -249,9 +305,60 @@ const Nav = () => {
           )}
         </div>
       </nav>
+
+      {/* Profile Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-80">
+            <h2 className="text-xl font-bold mb-4">Update Profile</h2>
+            <form onSubmit={handleUpdateProfile}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">Name</label>
+                <input
+                  type="text"
+                  value={newName || user?.name}  // Default to current name if no new name is provided
+                  onChange={(e) => setNewName(e.target.value)}  // Update the state with new name
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">Email</label>
+                <input
+                  type="email"
+                  value={newEmail || user?.email}  // Default to current email if no new email is provided
+                  onChange={(e) => setNewEmail(e.target.value)}  // Update the state with new email
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">Current Password</label>
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 rounded"
+              >
+                Update
+              </button>
+            </form>
+            <button
+              onClick={toggleModal}
+              className="mt-4 w-full bg-gray-300 py-2 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
 
 export default Nav;
+
 

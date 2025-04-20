@@ -26,11 +26,20 @@ const OAuthCallback = () => {
         const { token, user } = response.data;
 
         if (token) {
+          // Store the token and user data in localStorage
           localStorage.setItem("token", token);
           if (user) {
             localStorage.setItem("user", JSON.stringify(user));
           }
-          navigate("/");
+
+          // Retrieve the redirect path (if any) saved before initiating OAuth
+          const redirectPath = localStorage.getItem("redirectAfterOAuth") || "/";
+          
+          // Clean up the redirect path after using it
+          localStorage.removeItem("redirectAfterOAuth");
+
+          // Navigate the user back to the saved path
+          navigate(redirectPath);
         } else {
           console.error("Token not received from backend");
           navigate("/signin");
