@@ -10,6 +10,7 @@ function Footer() {
         <div className="text-center md:text-left mb-4 md:mb-0">
           <Link
             to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="text-2xl font-bold hover:text-yellow-400 transition"
           >
             QuizPro

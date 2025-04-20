@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { fetchUsers, deleteUser } from '../../services/api'; // Adjust the import according to your project structure
+import React, { useEffect, useState } from "react";
+import { fetchUsers, deleteUser } from "../../services/api"; // Adjust the import according to your project structure
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -20,7 +20,7 @@ const UserList = () => {
   const handleDelete = async (id) => {
     try {
       await deleteUser(id);
-      setUsers(users.filter(user => user.id !== id)); // Remove the deleted user from the list
+      setUsers(users.filter((user) => user.id !== id)); // Remove the deleted user from the list
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -32,9 +32,15 @@ const UserList = () => {
       <table className="min-w-full table-auto">
         <thead>
           <tr className="border-b">
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Name</th>
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Email</th>
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Actions</th>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+              Name
+            </th>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+              Email
+            </th>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
