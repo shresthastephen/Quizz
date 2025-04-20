@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { fetchUsers, deleteUser } from "../../services/api"; // Adjust the import according to your project structure
+import { fetchUsers, deleteUser } from "../../services/api"; 
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Fetch users when the component mounts
+    // Fetch users when the component mounts using the updated fetchUsers API
     const loadUsers = async () => {
       try {
         const response = await fetchUsers();
-        setUsers(response.data);
+        setUsers(response.data); // Assuming response.data contains the list of users
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -19,7 +19,7 @@ const UserList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await deleteUser(id);
+      await deleteUser(id); // Using the deleteUser API
       setUsers(users.filter((user) => user.id !== id)); // Remove the deleted user from the list
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -32,6 +32,9 @@ const UserList = () => {
       <table className="min-w-full table-auto">
         <thead>
           <tr className="border-b">
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+              ID
+            </th>
             <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
               Name
             </th>
@@ -46,6 +49,7 @@ const UserList = () => {
         <tbody>
           {users.map((user) => (
             <tr key={user.id} className="border-b hover:bg-gray-50">
+              <td className="px-4 py-2 text-sm text-gray-900">{user.id}</td> {/* Displaying user ID */}
               <td className="px-4 py-2 text-sm text-gray-900">{user.name}</td>
               <td className="px-4 py-2 text-sm text-gray-900">{user.email}</td>
               <td className="px-4 py-2 text-sm">

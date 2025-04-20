@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { FaUserCircle } from "react-icons/fa"; // Importing user icon from react-icons
-import { logoutUser } from "../services/api";
-import { updateUser } from "../services/api"; // Import updateUser function
+import { logoutUser, updateUser } from "../services/api";
 
 const menuItems = [
   { name: "About Us", link: "/AboutUs" },
@@ -43,7 +42,7 @@ const Nav = () => {
   const [currentPassword, setCurrentPassword] = useState(""); // Store current password
   const [newName, setNewName] = useState(""); // State for new name
   const [newEmail, setNewEmail] = useState(""); // State for new email (optional)
-  
+
   const navigate = useNavigate();
   const navRef = useRef(null);
 
@@ -91,7 +90,7 @@ const Nav = () => {
     const updatedUser = { ...user, 
       name: newName || user.name,  // Use new name if provided, else keep the current name
       email: newEmail || user.email,  // Use new email if provided, else keep the current email
-     }; // Replace with the updated user data
+    }; // Replace with the updated user data
     try {
       await updateUser(user.id, updatedUser, currentPassword);
       setUser(updatedUser);
@@ -136,7 +135,7 @@ const Nav = () => {
         </button>
 
         {/* Mobile Menu */}
-        {menuOpen && (
+        {menuOpen && !isAdmin && (
           <div className="absolute top-16 left-0 w-full bg-[#FFAC10] rounded-b-[25px] py-4 px-6 flex flex-col items-center gap-4 z-40 shadow-lg lg:hidden">
             {menuItems.map((item, index) => (
               <div key={index} className="relative">
@@ -192,12 +191,12 @@ const Nav = () => {
               ) : (
                 <>
                   <div className="text-white">{user?.name || user?.email}</div> {/* Show user info */}
-                  <button
+                  <div
                     onClick={toggleModal} // Toggle modal visibility
-                    className="bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
+                    className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
                   >
-                    Update Profile
-                  </button>
+                    <FaUserCircle size={30} />
+                  </div>
                   {isAdmin && (
                     <button
                       onClick={() => navigate("/admin")}
@@ -274,19 +273,16 @@ const Nav = () => {
             </button>
           ) : (
             <>
-              {/* User Icon */}
-              <div className="relative">
-                <FaUserCircle size={32} className="text-white" />
-                <div className="absolute top-0 right-0 text-xs text-white">
-                  {user?.name ? user.name.charAt(0).toUpperCase() : ""}
+              {/* User Icon, clickable to trigger the profile update modal */}
+              {!isAdmin && (
+                <div className="relative">
+                  <FaUserCircle
+                    size={44}
+                    className="text-white cursor-pointer"
+                    onClick={toggleModal}  // Toggle the modal when the icon is clicked
+                  />
                 </div>
-              </div>
-              <button
-                onClick={toggleModal} // Toggle modal visibility
-                className="bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
-              >
-                Update Profile
-              </button>
+              )}
               {isAdmin && (
                 <button
                   onClick={() => navigate("/admin")}
@@ -360,5 +356,6 @@ const Nav = () => {
 };
 
 export default Nav;
+
 
 

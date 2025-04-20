@@ -5,6 +5,11 @@ import {
   fetchCategoryById 
 } from '../../services/api';
 
+const courses = [
+  'BCA', 'BCE', 'BDS', 'BIM', 'BIT', 'CSIT',
+  'BBA', 'BBS', 'BPH', 'BSc', 'MBBS', 'BE'
+];
+
 const CategoryForm = ({ categoryId }) => {
   const [categoryName, setCategoryName] = useState('');
   const [remark, setRemark] = useState('');
@@ -78,12 +83,18 @@ const CategoryForm = ({ categoryId }) => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Remark:</label>
-          <input
-            type="text"
+          <select
             value={remark}
             onChange={(e) => setRemark(e.target.value)}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-          />
+          >
+            <option value="">Select a course</option>
+            {courses.map((course) => (
+              <option key={course} value={course}>
+                {course}
+              </option>
+            ))}
+          </select>
         </div>
         <button
           type="submit"
