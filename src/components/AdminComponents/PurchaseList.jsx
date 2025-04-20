@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { markPurchaseAsPaid, markPurchaseAsRefunded } from '../../services/api'; // Removed fetchPurchases
+import { markPurchaseAsPaid, markPurchaseAsRefunded } from '../../services/api'; 
 
 const PurchaseList = ({ purchases }) => {  // Expecting purchases as a prop
   const [localPurchases, setLocalPurchases] = useState(purchases || []);

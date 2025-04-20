@@ -60,7 +60,7 @@ const Nav = () => {
 
   const handleLogout = async () => {
     try {
-      await logoutUser(); // you can remove this if admin doesn't use API logout
+      await logoutUser(); 
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
