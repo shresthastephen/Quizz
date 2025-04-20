@@ -25,13 +25,14 @@ const TestGuidePage = () => {
     // if (!isLoggedIn || !isSubscribed) {
     //  setMessageType(!isLoggedIn ? "login" : "subscribe");
     //  setShowMessage(true);
-    //} else 
+    //} else
     {
       navigate(path);
     }
   };
 
-  const goToLogin = () => navigate("/SignIn", { state: { from: `/test-guides/${test}` } });
+  const goToLogin = () =>
+    navigate("/SignIn", { state: { from: `/test-guides/${test}` } });
   const goToSubscribe = () => navigate("/PlanSub");
 
   return (
@@ -124,7 +125,3 @@ const Card = ({ title, description, link, onClick, isProtected }) => (
 );
 
 export default TestGuidePage;
-
-
-
-
