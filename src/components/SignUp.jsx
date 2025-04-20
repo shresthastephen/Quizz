@@ -13,30 +13,35 @@ const Signup = () => {
     address: '',
     dob: '',
     interested: '',
-    latestQualification: ''
+    latestQualification: '',
   });
 
+  const [message, setMessage] = useState("");
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  // Field-level validation
-  const validateForm = () => {
-    const errors = {};
-
-    if (!formData.name) errors.name = "Full Name is required";
-    if (!formData.email) errors.email = "Email is required";
-    if (!formData.password) errors.password = "Password is required";
-    if (!formData.confirmPassword) errors.confirmPassword = "Please confirm your password";
-    else if (formData.password !== formData.confirmPassword) errors.confirmPassword = "Passwords do not match!";
-    if (!formData.gender) errors.gender = "Gender is required";
-    if (!formData.contact) errors.contact = "Contact number is required";
-    else if (!/^\d{10}$/.test(formData.contact)) errors.contact = "Contact number must be 10 digits";
+    // Field-level validation
+    const validateForm = () => {
+      const errors = {};
+      if (!formData.fullname) errors.fullname = "Full Name is required";
+      if (!formData.email) errors.email = "Email is required";
+      if (!formData.password) errors.password = "Password is required";
+      if (!formData.confirmPassword) errors.confirmPassword = "Please confirm your password";
+      else if (formData.password !== formData.confirmPassword)
+        errors.confirmPassword = "Passwords do not match!";
+      if (!formData.gender) errors.gender = "Gender is required";
+      if (!formData.contact) errors.contact = "Contact number is required";
+      else if (!/^\d{10}$/.test(formData.contact))
+        errors.contact = "Contact number must be 10 digits";
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0; // No errors
@@ -44,9 +49,10 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setError("");
 
     // Reset error state
-    setError('');
     setLoading(true);
 
     // Validate form fields
@@ -105,74 +111,66 @@ const Signup = () => {
             {error && <p className="text-red-500 font-medium mb-4">{error}</p>}
 
             <form onSubmit={handleSubmit}>
-              {/* Name */}
+              {/* Full Name */}
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name
-                </label>
+                <label htmlFor="fullname" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                 <input
+                  id="fullname"
+                  name="fullname"
                   type="text"
-                  name="name"
-                  id="name"
                   placeholder="Enter your full name"
-                  value={formData.name}
+                  value={formData.fullname}
                   onChange={handleChange}
                   required
-                  className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.name ? 'border-red-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.fullname ? 'border-red-500' : 'border-gray-300'}`}
                 />
-                {formErrors.name && <p className="text-red-500 text-sm">{formErrors.name}</p>}
+                {formErrors.fullname && <p className="text-red-500 text-sm">{formErrors.fullname}</p>}
               </div>
 
               {/* Email */}
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                 <input
-                  type="email"
-                  name="email"
                   id="email"
+                  name="email"
+                  type="email"
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.email ? 'border-red-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.email ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {formErrors.email && <p className="text-red-500 text-sm">{formErrors.email}</p>}
               </div>
 
               {/* Password */}
               <div className="mb-4">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                  Password
-                </label>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                 <input
-                  type="password"
-                  name="password"
                   id="password"
+                  name="password"
+                  type="password"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.password ? 'border-red-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.password ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {formErrors.password && <p className="text-red-500 text-sm">{formErrors.password}</p>}
               </div>
 
               {/* Confirm Password */}
               <div className="mb-4">
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                  Confirm Password
-                </label>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
                 <input
-                  type="password"
-                  name="confirmPassword"
                   id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
                   placeholder="Re-enter your password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
-                  className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.confirmPassword ? 'border-red-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.confirmPassword ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {formErrors.confirmPassword && <p className="text-red-500 text-sm">{formErrors.confirmPassword}</p>}
               </div>
@@ -180,121 +178,98 @@ const Signup = () => {
               {/* Gender */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                <div className="flex">
-                  <label className="mr-4">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="MALE"
-                      checked={formData.gender === 'MALE'}
-                      onChange={handleChange}
-                      required
-                    />
-                    Male
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="FEMALE"
-                      checked={formData.gender === 'FEMALE'}
-                      onChange={handleChange}
-                      required
-                    />
-                    Female
-                  </label>
-                </div>
+                <select
+                  id="gender"
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  required
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.gender ? 'border-red-500' : 'border-gray-300'}`}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
                 {formErrors.gender && <p className="text-red-500 text-sm">{formErrors.gender}</p>}
               </div>
 
-              {/* Contact */}
+              {/* Contact Number */}
               <div className="mb-4">
-                <label htmlFor="contact" className="block text-sm font-medium text-gray-700 mb-1">
-                  Contact Number
-                </label>
+                <label htmlFor="contact" className="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
                 <input
-                  type="tel"
-                  name="contact"
                   id="contact"
+                  name="contact"
+                  type="tel"
                   placeholder="Enter your contact number"
                   value={formData.contact}
                   onChange={handleChange}
                   required
-                  className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.contact ? 'border-red-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${formErrors.contact ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {formErrors.contact && <p className="text-red-500 text-sm">{formErrors.contact}</p>}
               </div>
 
               {/* Address */}
               <div className="mb-4">
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
-                  Address (Optional)
-                </label>
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">Address (Optional)</label>
                 <input
-                  type="text"
-                  name="address"
                   id="address"
+                  name="address"
+                  type="text"
                   placeholder="Enter your address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300"
                 />
               </div>
 
               {/* Date of Birth */}
               <div className="mb-4">
-                <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">
-                  Date of Birth
-                </label>
+                <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
                 <input
-                  type="date"
-                  name="dob"
                   id="dob"
+                  name="dob"
+                  type="date"
                   value={formData.dob}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300"
                 />
               </div>
 
-              {/* Interested */}
+              {/* Interested In */}
               <div className="mb-4">
-                <label htmlFor="interested" className="block text-sm font-medium text-gray-700 mb-1">
-                  Interested In (Optional)
-                </label>
+                <label htmlFor="interested" className="block text-sm font-medium text-gray-700 mb-1">Interested In (Optional)</label>
                 <input
-                  type="text"
-                  name="interested"
                   id="interested"
+                  name="interested"
+                  type="text"
                   placeholder="What are you interested in?"
                   value={formData.interested}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300"
                 />
               </div>
 
               {/* Latest Qualification */}
               <div className="mb-4">
-                <label htmlFor="latestQualification" className="block text-sm font-medium text-gray-700 mb-1">
-                  Latest Qualification (Optional)
-                </label>
+                <label htmlFor="latestQualific ation" className="block text-sm font-medium text-gray-700 mb-1">Latest Qualification (Optional)</label>
                 <input
-                  type="text"
-                  name="latestQualification"
                   id="latestQualification"
+                  name="latestQualification"
+                  type="text"
                   placeholder="Enter your latest qualification"
                   value={formData.latestQualification}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300"
                 />
               </div>
 
-              {/* Submit Button with Loading */}
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full p-3 rounded-lg text-white font-semibold transition ${
-                  loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
-                }`}
+                className={`w-full py-2 px-4 rounded-lg text-white font-semibold transition ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
               >
                 {loading ? 'Signing Up...' : 'Sign Up'}
               </button>
