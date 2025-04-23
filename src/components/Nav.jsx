@@ -86,7 +86,6 @@ const Nav = () => {
       alert("Please enter your current password");
       return;
     }
-
     const updatedUser = { ...user, 
       name: newName || user.name,  // Use new name if provided, else keep the current name
       email: newEmail || user.email,  // Use new email if provided, else keep the current email
@@ -94,6 +93,8 @@ const Nav = () => {
     try {
       await updateUser(user.id, updatedUser, currentPassword);
       setUser(updatedUser);
+      // Sync to localStorage
+      localStorage.setItem("user", JSON.stringify(data));
       alert("Profile updated successfully");
       setIsModalOpen(false); // Close modal after successful update
     } catch (error) {

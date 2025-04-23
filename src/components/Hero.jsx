@@ -7,7 +7,7 @@ function Main() {
   const navigate = useNavigate();
 
   const handlePlayClick = () => {
-    navigate("/mocktest");
+    navigate("/random");
   };
 
   return (
