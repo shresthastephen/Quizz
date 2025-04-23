@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import originalQuestions from "./../lib/questions";
-import testQuestions from "./../lib/testquestions";  // Mock questions data
+import originalQuestions from "../lib/questions";
+import testQuestions from "../lib/testquestions";  // Mock questions data
 
 const SetPage = () => {
   const { course, set, test} = useParams(); // Get course & set (set-a / set-b)

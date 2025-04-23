@@ -57,7 +57,7 @@ const ResetPassword = () => {
               name="password"
               placeholder="Enter your new password"
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={password}
+              value={newPassword}
               onChange={(e) => setPassword(e.target.value)}
               required
             />

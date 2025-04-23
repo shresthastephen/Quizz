@@ -53,16 +53,16 @@ export const generateRealTimeTest = (userId, categoryName, totalMarks) =>
     totalMarks,
   });
 
-// Check if User Has Paid for Real-Time Test
-export const checkUserPayment = (userId) =>
-  axios.get(`${API_URL}/real-time-test/check-payment`, {
-    params: { userId },
-  });
-
 // Get Real-Time Test Details
 export const getRealTimeTestDetails = (userId, categoryName) =>
   axios.get(`${API_URL}/real-time-test/details`, {
     params: { userId, categoryName },
+  });
+ 
+// Check if User Has Paid for Real-Time Test
+export const checkUserPayment = (userId) =>
+  axios.get(`${API_URL}/real-time-test/check-payment`, {
+    params: { userId },
   });
   
 // ========== AUTH APIs ==========
@@ -95,8 +95,8 @@ export const signUpUser = (user) =>
   export const resetPassword = (email, code, newPassword) =>
     axios.post(`${API_URL}/users/reset-password`, null, {
       params: { email, code, newPassword },
-    });
-  
+    }); 
+
   // Update User Profile
   export const updateUser = (userId, user, currentPassword) =>
     axios.put(`${API_URL}/users/update/${userId}`, user, {

@@ -12,7 +12,7 @@ const QuizCards = () => {
       title: "ENTRANCE",
       description:
         "Prepare for entrance exams with expert guidance tailored to help you achieve your desired score.",
-      route: "/entrance", // Define the route
+      route: "/entrance", 
     },
     {
       title: "IELTS/PTE",
@@ -24,7 +24,7 @@ const QuizCards = () => {
       title: "QUIZ",
       description:
         "Prepare for quizzes with expert guidance tailored to help you achieve your desired score.",
-      route: "/mocktest",
+      route: "/random",
     },
   ];
 
