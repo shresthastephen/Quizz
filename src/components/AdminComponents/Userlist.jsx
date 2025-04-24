@@ -17,10 +17,10 @@ const UserList = () => {
     loadUsers();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (userId) => {
     try {
-      await deleteUser(id); // Using the deleteUser API
-      setUsers(users.filter((user) => user.id !== id)); // Remove the deleted user from the list
+      await deleteUser(userId); // Using the deleteUser API
+      setUsers(users.filter((user) => u.userId !== userId)); // Remove the deleted user from the list
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -48,13 +48,13 @@ const UserList = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="border-b hover:bg-gray-50">
-              <td className="px-4 py-2 text-sm text-gray-900">{user.id}</td> {/* Displaying user ID */}
+            <tr key={user.userId} className="border-b hover:bg-gray-50">
+              <td className="px-4 py-2 text-sm text-gray-900">{user.userId}</td> {/* Displaying user ID */}
               <td className="px-4 py-2 text-sm text-gray-900">{user.name}</td>
               <td className="px-4 py-2 text-sm text-gray-900">{user.email}</td>
               <td className="px-4 py-2 text-sm">
                 <button
-                  onClick={() => handleDelete(user.id)}
+                  onClick={() => handleDelete(user.userId)}
                   className="text-red-600 hover:text-red-800 focus:outline-none"
                 >
                   Delete

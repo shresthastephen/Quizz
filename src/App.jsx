@@ -33,7 +33,7 @@ import CategoryList from "./components/AdminComponents/CategoryList";
 import CategoryForm from "./components/AdminComponents/CategoryForm";
 import QuestionList from "./components/AdminComponents/QuestionList";
 import QuestionForm from "./components/AdminComponents/QuestionForm";
-import UserList from "./components/AdminComponents/UserList";
+import UserList from "./components/AdminComponents/Userlist";
 import PurchaseList from "./components/AdminComponents/PurchaseList";
 import PurchaseForm from "./components/AdminComponents/PurchaseForm";
 import QuizAttemptList from "./components/AdminComponents/QuizAttemptList";
