@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { FaUserCircle } from "react-icons/fa"; // Importing user icon from react-icons
+import { FaUserCircle } from "react-icons/fa";
 import { logoutUser, updateUser } from "../services/api";
 
 const menuItems = [
@@ -26,9 +26,7 @@ const menuItems = [
   },
   {
     name: "Features",
-    dropdown: [
-      { name: "Performance Analytics", link: "/features/analytics" },
-    ],
+    dropdown: [{ name: "Performance Analytics", link: "/features/analytics" }],
   },
 ];
 
@@ -38,10 +36,10 @@ const Nav = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
-  const [currentPassword, setCurrentPassword] = useState(""); // Store current password
-  const [newName, setNewName] = useState(""); // State for new name
-  const [newEmail, setNewEmail] = useState(""); // State for new email (optional)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newName, setNewName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
 
   const navigate = useNavigate();
   const navRef = useRef(null);
@@ -57,13 +55,9 @@ const Nav = () => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
 
-  const handleRandomQuiz = () => {
-    navigate("/random");
-  };
+  const handleRandomQuiz = () => navigate("/random");
 
-  const handleSignIn = () => {
-    navigate("/signin");
-  };
+  const handleSignIn = () => navigate("/signin");
 
   const handleLogout = async () => {
     try {
@@ -81,22 +75,23 @@ const Nav = () => {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    
     if (!currentPassword) {
       alert("Please enter your current password");
       return;
     }
-    const updatedUser = { ...user, 
-      name: newName || user.name,  // Use new name if provided, else keep the current name
-      email: newEmail || user.email,  // Use new email if provided, else keep the current email
-    }; // Replace with the updated user data
+
+    const updatedUser = {
+      ...user,
+      name: newName || user.name,
+      email: newEmail || user.email,
+    };
+
     try {
       await updateUser(user.id, updatedUser, currentPassword);
       setUser(updatedUser);
-      // Sync to localStorage
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("user", JSON.stringify(updatedUser));
       alert("Profile updated successfully");
-      setIsModalOpen(false); // Close modal after successful update
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Failed to update profile:", error);
       alert("Error updating profile");
@@ -104,7 +99,12 @@ const Nav = () => {
   };
 
   const toggleModal = () => {
-    setIsModalOpen(!isModalOpen); // Toggle the modal visibility
+    if (!isModalOpen && user) {
+      setNewName(user.name || "");
+      setNewEmail(user.email || "");
+      setCurrentPassword("");
+    }
+    setIsModalOpen(!isModalOpen);
   };
 
   const handleClickOutside = (event) => {
@@ -128,10 +128,7 @@ const Nav = () => {
           <Link to="/">QUIZZPRO</Link>
         </div>
 
-        <button
-          className="lg:hidden text-white focus:outline-none z-50"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <button className="lg:hidden text-white z-50" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
 
@@ -142,20 +139,14 @@ const Nav = () => {
               <div key={index} className="relative">
                 {item.dropdown ? (
                   <>
-                    <button
-                      onClick={() => handleDropdown(index)}
-                      className="text-lg font-medium text-black w-full text-left"
-                    >
+                    <button onClick={() => handleDropdown(index)} className="text-lg font-medium text-black">
                       {item.name}
                     </button>
                     {openDropdown === index && (
                       <ul className="mt-2 bg-white rounded-md shadow-md overflow-hidden">
                         {item.dropdown.map((subItem, subIndex) => (
                           <li key={subIndex}>
-                            <Link
-                              to={subItem.link}
-                              className="block px-4 py-2 text-sm text-black hover:bg-orange-200"
-                            >
+                            <Link to={subItem.link} className="block px-4 py-2 text-sm text-black hover:bg-orange-200">
                               {subItem.name}
                             </Link>
                           </li>
@@ -164,52 +155,32 @@ const Nav = () => {
                     )}
                   </>
                 ) : (
-                  <Link
-                    to={item.link}
-                    className="text-lg font-medium text-black hover:text-white"
-                  >
+                  <Link to={item.link} className="text-lg font-medium text-black hover:text-white">
                     {item.name}
                   </Link>
                 )}
               </div>
             ))}
-
             <div className="pt-4 flex flex-col gap-3">
-              <button
-                onClick={handleRandomQuiz}
-                className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg"
-              >
+              <button onClick={handleRandomQuiz} className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg">
                 Random Quiz
               </button>
-
               {!isLoggedIn ? (
-                <button
-                  onClick={handleSignIn}
-                  className="bg-black text-white px-4 py-2 rounded-full text-lg"
-                >
+                <button onClick={handleSignIn} className="bg-black text-white px-4 py-2 rounded-full text-lg">
                   Sign In
                 </button>
               ) : (
                 <>
-                  <div className="text-white">{user?.name || user?.email}</div> {/* Show user info */}
-                  <div
-                    onClick={toggleModal} // Toggle modal visibility
-                    className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
-                  >
+                  <div className="text-white">{user?.name || user?.email}</div>
+                  <div onClick={toggleModal} className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-full">
                     <FaUserCircle size={30} />
                   </div>
                   {isAdmin && (
-                    <button
-                      onClick={() => navigate("/admin")}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
-                    >
+                    <button onClick={() => navigate("/admin")} className="bg-blue-500 text-white px-4 py-2 rounded-full">
                       Admin Panel
                     </button>
                   )}
-                  <button
-                    onClick={handleLogout}
-                    className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
-                  >
+                  <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-full">
                     Logout
                   </button>
                 </>
@@ -224,20 +195,14 @@ const Nav = () => {
             <li key={index} className="relative">
               {item.dropdown ? (
                 <>
-                  <button
-                    onClick={() => handleDropdown(index)}
-                    className="text-lg font-medium text-black hover:text-white"
-                  >
+                  <button onClick={() => handleDropdown(index)} className="text-lg font-medium text-black hover:text-white">
                     {item.name}
                   </button>
                   {openDropdown === index && (
                     <ul className="absolute left-0 mt-2 bg-white w-44 rounded-md shadow-lg z-50">
                       {item.dropdown.map((subItem, subIndex) => (
                         <li key={subIndex}>
-                          <Link
-                            to={subItem.link}
-                            className="block px-4 py-2 text-sm text-black hover:bg-orange-200"
-                          >
+                          <Link to={subItem.link} className="block px-4 py-2 text-sm text-black hover:bg-orange-200">
                             {subItem.name}
                           </Link>
                         </li>
@@ -246,10 +211,7 @@ const Nav = () => {
                   )}
                 </>
               ) : (
-                <Link
-                  to={item.link}
-                  className="text-lg font-medium text-black hover:text-white"
-                >
+                <Link to={item.link} className="text-lg font-medium text-black hover:text-white">
                   {item.name}
                 </Link>
               )}
@@ -259,43 +221,24 @@ const Nav = () => {
 
         {/* Desktop Buttons */}
         <div className="hidden lg:flex gap-4 z-50">
-          <button
-            onClick={handleRandomQuiz}
-            className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg"
-          >
+          <button onClick={handleRandomQuiz} className="bg-white text-[#FFAC10] px-4 py-2 rounded-full text-lg">
             Random Quiz
           </button>
           {!isLoggedIn ? (
-            <button
-              onClick={handleSignIn}
-              className="bg-black text-white px-4 py-2 rounded-full text-lg"
-            >
+            <button onClick={handleSignIn} className="bg-black text-white px-4 py-2 rounded-full text-lg">
               Sign In
             </button>
           ) : (
             <>
-              {/* User Icon, clickable to trigger the profile update modal */}
               {!isAdmin && (
-                <div className="relative">
-                  <FaUserCircle
-                    size={44}
-                    className="text-white cursor-pointer"
-                    onClick={toggleModal}  // Toggle the modal when the icon is clicked
-                  />
-                </div>
+                <FaUserCircle size={44} className="text-white cursor-pointer" onClick={toggleModal} />
               )}
               {isAdmin && (
-                <button
-                  onClick={() => navigate("/admin")}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-full text-lg"
-                >
+                <button onClick={() => navigate("/admin")} className="bg-blue-500 text-white px-4 py-2 rounded-full text-lg">
                   Admin Panel
                 </button>
               )}
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 text-white px-4 py-2 rounded-full text-lg"
-              >
+              <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-full text-lg">
                 Logout
               </button>
             </>
@@ -313,8 +256,8 @@ const Nav = () => {
                 <label className="block text-sm font-medium">Name</label>
                 <input
                   type="text"
-                  value={newName || user?.name}  // Default to current name if no new name is provided
-                  onChange={(e) => setNewName(e.target.value)}  // Update the state with new name
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
@@ -322,8 +265,8 @@ const Nav = () => {
                 <label className="block text-sm font-medium">Email</label>
                 <input
                   type="email"
-                  value={newEmail || user?.email}  // Default to current email if no new email is provided
-                  onChange={(e) => setNewEmail(e.target.value)}  // Update the state with new email
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
@@ -336,17 +279,11 @@ const Nav = () => {
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded"
-              >
+              <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
                 Update
               </button>
             </form>
-            <button
-              onClick={toggleModal}
-              className="mt-4 w-full bg-gray-300 py-2 rounded"
-            >
+            <button onClick={toggleModal} className="mt-4 w-full bg-gray-300 py-2 rounded">
               Close
             </button>
           </div>
@@ -357,6 +294,4 @@ const Nav = () => {
 };
 
 export default Nav;
-
-
 
