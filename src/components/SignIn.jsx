@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { loginUser, initiateOAuth2Login } from "../services/api";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
-// Hardcoded admin credentials
+//  admin credentials
 const ADMIN_EMAIL = "adminquizz025@gmail.com";
 const ADMIN_PASSWORD = "admin123";
 
@@ -11,8 +11,8 @@ const SignIn = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // ⬅️ get redirect info from router
-  const redirectPath = location.state?.from || "/"; // ⬅️ fallback to homepage
+  const location = useLocation(); // get redirect info from router
+  const redirectPath = location.state?.from || "/"; // fallback to homepage
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +30,7 @@ const SignIn = () => {
 
     setLoading(true);
     try {
-      // Check hardcoded admin credentials
+      //  admin credentials
       if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
         const adminData = {
           email: ADMIN_EMAIL,
@@ -42,7 +42,7 @@ const SignIn = () => {
         return;
       }
 
-      // Regular user login via backend
+      // user login via backend
       const res = await loginUser({
         email,
         rawPassword: password,
@@ -70,9 +70,16 @@ const SignIn = () => {
         </div>
 
         <div className="md:w-1/2 w-full p-6">
+          <Link to="/" className="block text-center mb-2">
+            <h1 className="text-3xl font-extrabold text-black-600 hover:underline scursor-pointer">
+              QuizzPro
+            </h1>
+          </Link>
+
           <h2 className="text-2xl font-bold text-gray-700 text-center mb-6">
             Log In
           </h2>
+
           {error && (
             <div className="mb-4 text-red-600 text-sm text-center">{error}</div>
           )}
@@ -120,7 +127,7 @@ const SignIn = () => {
             </button>
           </form>
 
-          {/* Google Login Button */}
+          {/* Google login */}
           <div className="mt-6 text-center">
             <button
               onClick={initiateOAuth2Login}
@@ -147,6 +154,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-
- 
