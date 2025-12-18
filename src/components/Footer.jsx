@@ -13,7 +13,7 @@ function Footer() {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="text-2xl font-bold hover:text-yellow-400 transition"
           >
-            QuizPro
+            QuizzPro
             <p className="text-gray-400 text-sm">
               Challenge Your Mind, Conquer the Quiz!
             </p>
@@ -60,9 +60,16 @@ function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-gray-700 mt-6 pt-4 text-center text-gray-400 text-sm flex justify-center items-center gap-1">
+      <div className="border-t border-gray-700 mt-6 pt-4 text-center text-gray-400 text- flex justify-center items-center gap-1">
+        <span>All Rights Reserved 2025</span>
         <Copyright className="w-4 h-4" />
-        <span>2025 QuizPro. All rights reserved.</span>
+        <a
+          href="https://samastagroups.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="font-bold">SamastaGroups</span>
+        </a>
       </div>
     </footer>
   );
