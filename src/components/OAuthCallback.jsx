@@ -20,25 +20,24 @@ const OAuthCallback = () => {
       try {
         const response = await axios.post("http://localhost:8080/api/auth/google", {
           code,
-          redirectUri: "http://localhost:5173/callback", // this must match exactly what you registered
+          redirectUri: "http://localhost:5173/callback", //  match registered
         });
 
         const { token, user } = response.data;
 
         if (token) {
-          // Store the token and user data in localStorage
+          // store the token and user data in localStorage
           localStorage.setItem("token", token);
           if (user) {
             localStorage.setItem("user", JSON.stringify(user));
           }
 
-          // Retrieve the redirect path (if any) saved before initiating OAuth
+          // retrieve the redirect path
           const redirectPath = localStorage.getItem("redirectAfterOAuth") || "/";
           
-          // Clean up the redirect path after using it
+          // clean up the redirect path after using it
           localStorage.removeItem("redirectAfterOAuth");
 
-          // Navigate the user back to the saved path
           navigate(redirectPath);
         } else {
           console.error("Token not received from backend");

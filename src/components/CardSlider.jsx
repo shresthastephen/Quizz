@@ -69,7 +69,7 @@ const QuizCards = () => {
             <div
               key={index}
               className={`quiz-card ${index === 1 ? "active" : ""}`}
-              onClick={() => handleCardClick(card.route)} // Make card clickable
+              onClick={() => handleCardClick(card.route)} // clickable
             >
               <h3>{card.title}</h3>
               <p>{card.description}</p>

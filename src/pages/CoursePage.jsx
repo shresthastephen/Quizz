@@ -17,7 +17,7 @@ const CoursePage = () => {
 
   const isLoggedIn = Boolean(localStorage.getItem("user"));
   const [showMessage, setShowMessage] = useState(false);
-  const [redirectPath, setRedirectPath] = useState(""); // Path to redirect after login
+  const [redirectPath, setRedirectPath] = useState(""); 
 
   const handleProtectedClick = (path) => {
     if (!isLoggedIn) {

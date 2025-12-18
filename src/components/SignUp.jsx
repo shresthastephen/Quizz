@@ -29,7 +29,7 @@ const Signup = () => {
     }));
   };
 
-  // Field-level validation
+  // validation
   const validateForm = () => {
     const errors = {};
     if (!formData.fullname) errors.fullname = "Full Name is required";
@@ -53,13 +53,13 @@ const Signup = () => {
     setMessage("");
     setError("");
 
-    // Reset error state
+    // reset error state
     setLoading(true);
 
-    // Validate form fields
+    // Validate form
     if (!validateForm()) {
       setLoading(false);
-      return; // Stop the form submission if validation fails
+      return; // stop the form submission if validation fails
     }
 
     try {
@@ -67,7 +67,7 @@ const Signup = () => {
       alert("Signed up! Check your email for the verification code.");
       navigate("/verify-email");
     } catch (err) {
-      // Handle different error responses
+      // handle different error responses
       if (err.response) {
         if (err.response.status === 400) {
           setError("Invalid input data. Please check the form and try again.");
@@ -85,7 +85,7 @@ const Signup = () => {
   };
 
   const handleOAuth2Login = () => {
-    initiateOAuth2Login(); // Initiates Google OAuth2 login
+    initiateOAuth2Login(); // initiates google OAuth2 
   };
   // ... all imports and state remain the same
 
@@ -105,7 +105,7 @@ const Signup = () => {
           </div>
         </div>
 
-        {/* Right Panel - Form expanded width */}
+        {/* Right Panel */}
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full bg-white sm:p-6 rounded-lg shadow-lg max-w-3xl">
             <h2 className="text-3xl font-bold mb-4 text-center">Sign Up</h2>
@@ -113,9 +113,7 @@ const Signup = () => {
             {error && <p className="text-red-500 font-medium mb-4">{error}</p>}
 
             <form onSubmit={handleSubmit}>
-              {/* Two-column grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Full Name */}
                 <div>
                   <label
                     htmlFor="fullname"
@@ -142,7 +140,6 @@ const Signup = () => {
                   )}
                 </div>
 
-                {/* Email */}
                 <div>
                   <label
                     htmlFor="email"
@@ -167,7 +164,7 @@ const Signup = () => {
                   )}
                 </div>
 
-                {/* Password */}
+                
                 <div>
                   <label
                     htmlFor="password"
@@ -194,7 +191,7 @@ const Signup = () => {
                   )}
                 </div>
 
-                {/* Confirm Password */}
+                
                 <div>
                   <label
                     htmlFor="confirmPassword"
@@ -223,7 +220,7 @@ const Signup = () => {
                   )}
                 </div>
 
-                {/* Gender */}
+               
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Gender
@@ -248,7 +245,7 @@ const Signup = () => {
                   )}
                 </div>
 
-                {/* Contact */}
+                
                 <div>
                   <label
                     htmlFor="contact"
@@ -273,7 +270,7 @@ const Signup = () => {
                   )}
                 </div>
 
-                {/* Address */}
+                
                 <div>
                   <label
                     htmlFor="address"
@@ -292,7 +289,7 @@ const Signup = () => {
                   />
                 </div>
 
-                {/* DOB */}
+               
                 <div>
                   <label
                     htmlFor="dob"
@@ -310,7 +307,7 @@ const Signup = () => {
                   />
                 </div>
 
-                {/* Interested In */}
+                
                 <div>
                   <label
                     htmlFor="interested"
@@ -329,7 +326,7 @@ const Signup = () => {
                   />
                 </div>
 
-                {/* Latest Qualification */}
+                
                 <div>
                   <label
                     htmlFor="latestQualification"
@@ -349,7 +346,7 @@ const Signup = () => {
                 </div>
               </div>
 
-              {/* Submit Button */}
+             
               <button
                 type="submit"
                 disabled={loading}
@@ -362,7 +359,7 @@ const Signup = () => {
                 {loading ? "Signing Up..." : "Sign Up"}
               </button>
 
-              {/* Google Login Button */}
+             
               <div className="mt-4 text-center">
                 <button
                   onClick={handleOAuth2Login}
@@ -372,7 +369,7 @@ const Signup = () => {
                 </button>
               </div>
 
-              {/* Sign In Link */}
+             
               <p className="text-center text-sm mt-4">
                 Already have an account?{" "}
                 <a href="/signin" className="text-blue-500">

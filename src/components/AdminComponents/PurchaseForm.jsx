@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createPurchase } from '../../services/api'; // Adjust the import according to your project structure
+import { createPurchase } from '../../services/api'; 
 
 const PurchaseForm = () => {
   const [purchaseDetails, setPurchaseDetails] = useState({

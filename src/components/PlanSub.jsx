@@ -11,7 +11,7 @@ function PlanSub() {
         Subscribe to unlock exclusive quiz challenges, rewards, and premium content!
       </p>
       <div className="flex flex-wrap gap-6 justify-center animate-fadeIn animate-delay-400">
-        {/* Subscription Cards */}
+        {/* subscription */}
         {[
           { title: "1 Month", price: "$4.99" },
           { title: "6 Months", price: "$24.99" },

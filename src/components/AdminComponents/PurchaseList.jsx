@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { markPurchaseAsPaid, markPurchaseAsRefunded } from '../../services/api'; 
 
-const PurchaseList = ({ purchases }) => {  // Expecting purchases as a prop
+const PurchaseList = ({ purchases }) => {  
   const [localPurchases, setLocalPurchases] = useState(purchases || []);
 
   const handleMarkAsPaid = async (id) => {
