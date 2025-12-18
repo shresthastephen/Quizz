@@ -55,7 +55,7 @@ const CategoryForm = ({ categoryId }) => {
       } else {
         await createCategory(categoryData);
       }
-      // Reset form after successful submission
+      // reset form after  submission
       setCategoryName('');
       setRemark('');
       setErrors({});

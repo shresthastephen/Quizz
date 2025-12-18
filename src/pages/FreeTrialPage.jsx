@@ -13,16 +13,16 @@ const FreeTrialPage = () => {
 
     const filterQuestions = () => {
       if (test) {
-        // If test is specified, return test questions regardless of the course
+        
         return testQuestions.filter((question) => question.test === test);
       }
-      // If no test is specified, return regular course questions filtered by course and set
+      
       return originalQuestions.filter(
         (question) => question.course === course && question.set === set
       );
     };
   
-    // Get the filtered questions based on course, set, and test params
+    
     const questions = filterQuestions();
 
   useEffect(() => {

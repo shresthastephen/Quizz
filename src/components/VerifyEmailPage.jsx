@@ -21,10 +21,10 @@ const VerifyEmailPage = () => {
     }
 
     try {
-      // Call the API to verify the email
+      // call API to verify the email
       await verifyEmail(email, verificationCode);
       alert('Email verified successfully!');
-      navigate('/signin'); // Redirect to the sign-in page after verification
+      navigate('/signin'); // redirect to the sign-in page after verification
     } catch (err) {
       setError(err.response?.data?.message || 'Verification failed. Please try again.');
     } finally {
